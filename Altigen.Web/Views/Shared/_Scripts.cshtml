@@ -8,9 +8,9 @@
             var dropdowns = document.querySelectorAll('.nav-item.dropdown');
             if (dropdowns.length > 0 && typeof SV !== 'undefined') {
                 new SV.HoverIntent(dropdowns, {
-                    exitDelay: 300,
-                    interval: 50,
-                    sensitivity: 50,
+                    exitDelay: 400,
+                    interval: 100,
+                    sensitivity: 7,
                     onEnter: function (elem) {
                         var toggle = elem.querySelector('.dropdown-toggle');
                         if (toggle) {
