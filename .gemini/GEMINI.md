@@ -31,6 +31,7 @@
 - **Strongly Typed Models**: Always use strongly typed models (mostly `IPublishedContent` or custom ViewModels) in views.
 - **Logic Placement**: Minimize logic in Razor views. Move business logic to Controllers, Services, or ViewComponents.
 - **Partial Views**: Encapsulate reusable UI components into Partial Views.
+- **No Magic Strings**: Avoid using hardcoded strings for Content Type Aliases or Property Aliases. Use generated constants (ModelsBuilder) or `nameof` where possible.
 
 ## 5. JavaScript Rules
 - **Modern Syntax**: Use ES6+ features (e.g., `const`/`let` instead of `var`, arrow functions, template literals).

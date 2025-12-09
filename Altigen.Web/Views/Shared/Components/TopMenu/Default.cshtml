@@ -1,57 +1,98 @@
-<nav class="main-menu">
-    <ul class="nav justify-content-end">
-        <li class="nav-item">
-            <a href="#" class="nav-link">Nasıl Yıkıyoruz?</a>
-        </li>
-        <li class="nav-item dropdown position-static">
-            <a href="#" class="nav-link dropdown-toggle" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-display="static">Hizmetlerimiz</a>
-            <div class="dropdown-menu shadow-lg border-0 mt-0" aria-labelledby="servicesDropdown" style="border-radius: 0 0 20px 20px; overflow: hidden;">
-                <div class="px-4 py-3">
-                    <div class="row g-5">
-                        <div class="col-auto">
-                            <h6 class="text-primary text-uppercase fw-bold mb-3">Yıkama Hizmetleri</h6>
-                            <ul class="list-unstyled w-100 h-100 d-flex flex-column gap-2">
-                                <li><a href="#" class="dropdown-item">Makina Halısı Yıkama</a></li>
-                                <li><a href="#" class="dropdown-item">El Dokuma Halı Yıkama</a></li>
-                                <li><a href="#" class="dropdown-item">Yorgan & Battaniye Yıkama</a></li>
-                                <li><a href="#" class="dropdown-item">Stor Perde Yıkama</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-auto">
-                            <h6 class="text-primary text-uppercase fw-bold mb-3">Özel Bakım</h6>
-                            <ul class="list-unstyled w-100 h-100 d-flex flex-column gap-2">
-                                <li><a href="#" class="dropdown-item">Leke Çıkarma İşlemleri</a></li>
-                                <li><a href="#" class="dropdown-item">Halı Tamiri & Saçak</a></li>
-                                <li><a href="#" class="dropdown-item">Yerinde Koltuk Yıkama</a></li>
-                                <li><a href="#" class="dropdown-item">Overlok Hizmeti</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-auto">
-                            <h6 class="text-primary text-uppercase fw-bold mb-3">Kurumsal</h6>
-                            <ul class="list-unstyled w-100 h-100 d-flex flex-column gap-2">
-                                <li><a href="#" class="dropdown-item">Otel Halı Yıkama</a></li>
-                                <li><a href="#" class="dropdown-item">Cami Halısı Temizliği</a></li>
-                                <li><a href="#" class="dropdown-item">Yurt & Pansiyon Hizmetleri</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-auto">
-                            <div class="card border-0 text-white rounded-3 overflow-hidden" style="width: 250px;">
-                                <img src="https://images.pexels.com/photos/4440638/pexels-photo-4440638.jpeg?auto=compress&cs=tinysrgb&w=400" class="card-img" alt="Special Offer" style="height: 100%; object-fit: cover;">
-                                <div class="card-img-overlay d-flex flex-column justify-content-end bg-dark bg-opacity-50">
-                                    <h5 class="card-title">Bahar Kampanyası</h5>
-                                    <p class="card-text small">%20 İndirim Fırsatı</p>
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Cms.Core.Models
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IPublishedContent>
+
+@if (Model == null)
+{
+    return;
+}
+
+@{
+    var menuItems = Model.Value<IEnumerable<BlockListItem>>("menuItems");
+}
+
+@if (menuItems != null && menuItems.Any())
+{
+    <nav class="main-menu">
+        <ul class="nav justify-content-end">
+            @foreach (var item in menuItems)
+            {
+                var content = item.Content;
+                var title = content.Value<string>("title");
+                var link = content.Value<Link>("link");
+                var isMegaMenu = content.Value<bool>("isMegaMenu");
+                var subItems = content.Value<IEnumerable<BlockListItem>>("subItems");
+
+                var url = link?.Url ?? "#";
+                var target = link?.Target ?? "_self";
+
+                if (isMegaMenu && subItems != null && subItems.Any())
+                {
+                    <li class="nav-item dropdown position-static">
+                        <a href="@url" class="nav-link dropdown-toggle" id="dropdown-@content.Key" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-display="static">@title</a>
+                        <div class="dropdown-menu shadow-lg border-0 mt-0" aria-labelledby="dropdown-@content.Key" style="border-radius: 0 0 20px 20px; overflow: hidden;">
+                            <div class="px-4 py-3">
+                                <div class="row g-5">
+                                    @foreach (var subItem in subItems)
+                                    {
+                                        var subContent = subItem.Content;
+                                        var isPromo = subContent.Value<bool>("isPromoCard");
+                                        var isColHeader = subContent.Value<bool>("isColumnHeader");
+
+                                        if (isPromo)
+                                        {
+                                            var promoImg = subContent.Value<MediaWithCrops>("promoImage");
+                                            var promoText = subContent.Value<string>("promoText");
+                                            var promoTitle = subContent.Value<string>("title");
+
+                                            <div class="col-auto">
+                                                <div class="card border-0 text-white rounded-3 overflow-hidden" style="width: 250px;">
+                                                    @if(promoImg != null)
+                                                    {
+                                                        <img src="@promoImg.Url()" class="card-img" alt="@promoTitle" style="height: 100%; object-fit: cover;">
+                                                    }
+                                                    <div class="card-img-overlay d-flex flex-column justify-content-end bg-dark bg-opacity-50">
+                                                        <h5 class="card-title">@promoTitle</h5>
+                                                        <p class="card-text small">@promoText</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        else if (isColHeader)
+                                        {
+                                            var colTitle = subContent.Value<string>("title");
+                                            var colLinks = subContent.Value<IEnumerable<BlockListItem>>("subItems");
+
+                                            <div class="col-auto">
+                                                <h6 class="text-primary text-uppercase fw-bold mb-3">@colTitle</h6>
+                                                @if (colLinks != null && colLinks.Any())
+                                                {
+                                                     <ul class="list-unstyled w-100 h-100 d-flex flex-column gap-2">
+                                                        @foreach(var linkItem in colLinks)
+                                                        {
+                                                            var linkContent = linkItem.Content;
+                                                            var lTitle = linkContent.Value<string>("title");
+                                                            var lLink = linkContent.Value<Link>("link");
+                                                            <li><a href="@(lLink?.Url ?? "#")" target="@(lLink?.Target ?? "_self")" class="dropdown-item">@lTitle</a></li>
+                                                        }
+                                                     </ul>
+                                                }
+                                            </div>
+                                        }
+                                    }
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li class="nav-item">
-            <a href="#" class="nav-link">Pratik Bilgiler</a>
-        </li>
-        <li class="nav-item">
-            <a href="#" class="nav-link">İletişim</a>
-        </li>
-    </ul>
-</nav>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a href="@url" target="@target" class="nav-link">@title</a>
+                    </li>
+                }
+            }
+        </ul>
+    </nav>
+}

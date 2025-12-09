@@ -18,14 +18,14 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-	/// <summary>Settings</summary>
-	[PublishedModel("settings")]
-	public partial class Settings : PublishedContentModel, IFooterSettings, IHeaderSettings
+	/// <summary>Navigation Item</summary>
+	[PublishedModel("navigationItem")]
+	public partial class NavigationItem : PublishedElementModel
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.1+86411e4")]
-		public new const string ModelTypeAlias = "settings";
+		public new const string ModelTypeAlias = "navigationItem";
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.1+86411e4")]
 		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.1+86411e4")]
@@ -34,14 +34,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 			=> PublishedModelUtility.GetModelContentType(contentTypeCache, ModelItemType, ModelTypeAlias);
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.1+86411e4")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedContentTypeCache contentTypeCache, Expression<Func<Settings, TValue>> selector)
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedContentTypeCache contentTypeCache, Expression<Func<NavigationItem, TValue>> selector)
 			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(contentTypeCache), selector);
 #pragma warning restore 0109
 
 		private IPublishedValueFallback _publishedValueFallback;
 
 		// ctor
-		public Settings(IPublishedContent content, IPublishedValueFallback publishedValueFallback)
+		public NavigationItem(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
 			: base(content, publishedValueFallback)
 		{
 			_publishedValueFallback = publishedValueFallback;
@@ -50,51 +50,64 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
-		/// Desktop: Fallback Header Desktop
+		/// Is Column Header?
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.1+86411e4")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("footerSettingsLogoDesktop")]
-		public virtual global::Umbraco.Cms.Core.Models.MediaWithCrops FooterSettingsLogoDesktop => global::Umbraco.Cms.Web.Common.PublishedModels.FooterSettings.GetFooterSettingsLogoDesktop(this, _publishedValueFallback);
+		[ImplementPropertyType("isColumnHeader")]
+		public virtual bool IsColumnHeader => this.Value<bool>(_publishedValueFallback, "isColumnHeader");
 
 		///<summary>
-		/// Mobile: Fallback Tablet
+		/// Is Mega Menu?
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.1+86411e4")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("footerSettingsLogoMobile")]
-		public virtual global::Umbraco.Cms.Core.Models.MediaWithCrops FooterSettingsLogoMobile => global::Umbraco.Cms.Web.Common.PublishedModels.FooterSettings.GetFooterSettingsLogoMobile(this, _publishedValueFallback);
+		[ImplementPropertyType("isMegaMenu")]
+		public virtual bool IsMegaMenu => this.Value<bool>(_publishedValueFallback, "isMegaMenu");
 
 		///<summary>
-		/// Tablet: Fallback Desktop
+		/// Is Promo Card?
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.1+86411e4")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("footerSettingsLogoTablet")]
-		public virtual global::Umbraco.Cms.Core.Models.MediaWithCrops FooterSettingsLogoTablet => global::Umbraco.Cms.Web.Common.PublishedModels.FooterSettings.GetFooterSettingsLogoTablet(this, _publishedValueFallback);
+		[ImplementPropertyType("isPromoCard")]
+		public virtual bool IsPromoCard => this.Value<bool>(_publishedValueFallback, "isPromoCard");
 
 		///<summary>
-		/// Desktop
+		/// Link
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.1+86411e4")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("headerSettingsLogoDesktop")]
-		public virtual global::Umbraco.Cms.Core.Models.MediaWithCrops HeaderSettingsLogoDesktop => global::Umbraco.Cms.Web.Common.PublishedModels.HeaderSettings.GetHeaderSettingsLogoDesktop(this, _publishedValueFallback);
+		[ImplementPropertyType("link")]
+		public virtual global::Umbraco.Cms.Core.Models.Link Link => this.Value<global::Umbraco.Cms.Core.Models.Link>(_publishedValueFallback, "link");
 
 		///<summary>
-		/// Mobile: Fallback Tablet
+		/// Promo Image
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.1+86411e4")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("headerSettingsLogoMobile")]
-		public virtual global::Umbraco.Cms.Core.Models.MediaWithCrops HeaderSettingsLogoMobile => global::Umbraco.Cms.Web.Common.PublishedModels.HeaderSettings.GetHeaderSettingsLogoMobile(this, _publishedValueFallback);
+		[ImplementPropertyType("promoImage")]
+		public virtual global::Umbraco.Cms.Core.Models.MediaWithCrops PromoImage => this.Value<global::Umbraco.Cms.Core.Models.MediaWithCrops>(_publishedValueFallback, "promoImage");
 
 		///<summary>
-		/// Tablet: Fallback Desktop
+		/// Promo Text
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.1+86411e4")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("headerSettingsLogoTablet")]
-		public virtual global::Umbraco.Cms.Core.Models.MediaWithCrops HeaderSettingsLogoTablet => global::Umbraco.Cms.Web.Common.PublishedModels.HeaderSettings.GetHeaderSettingsLogoTablet(this, _publishedValueFallback);
+		[ImplementPropertyType("promoText")]
+		public virtual string PromoText => this.Value<string>(_publishedValueFallback, "promoText");
+
+		///<summary>
+		/// Sub Items: Child items for dropdowns or mega menu columns.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.1+86411e4")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("subItems")]
+		public virtual global::Umbraco.Cms.Core.Models.Blocks.BlockListModel SubItems => this.Value<global::Umbraco.Cms.Core.Models.Blocks.BlockListModel>(_publishedValueFallback, "subItems");
+
+		///<summary>
+		/// Title
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.1+86411e4")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("title")]
+		public virtual string Title => this.Value<string>(_publishedValueFallback, "title");
 	}
 }
