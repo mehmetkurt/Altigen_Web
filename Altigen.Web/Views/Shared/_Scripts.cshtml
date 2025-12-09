@@ -7,8 +7,8 @@
         if (window.innerWidth >= 992) {
             var dropdowns = document.querySelectorAll('.nav-item.dropdown');
             if (dropdowns.length > 0 && typeof SV !== 'undefined') {
-                new SV.HoverIntent(dropdowns, {
-                    exitDelay: 400,
+                SV.HoverIntent(dropdowns, {
+                    exitDelay: 500,
                     interval: 100,
                     sensitivity: 7,
                     onEnter: function (elem) {
