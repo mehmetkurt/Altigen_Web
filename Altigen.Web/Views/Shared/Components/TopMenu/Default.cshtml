@@ -119,6 +119,10 @@
                     <li class="nav-item @(hasDropdown ? "has-dropdown" : "")" data-target="@(hasDropdown ? contentId : "")">
                         <a href="@url" target="@target" class="nav-link" itemprop="url">
                             <span itemprop="name">@title</span>
+                            @if (hasDropdown)
+                            {
+                                <span class="material-symbols-outlined icon-toggle ms-1" style="font-size: 1.2rem; vertical-align: middle;">expand_more</span>
+                            }
                         </a>
                     </li>
                 }

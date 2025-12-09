@@ -10,14 +10,18 @@
         -moz-osx-font-smoothing: grayscale;
 
         .main-nav {
+            // Flex container setup for Gap
+            .nav {
+                gap: 1.5rem; // Add spacing between items here instead of padding
+            }
             // Linkler
             .nav-link {
                 position: relative;
-                font-size: 1.1rem;
+                font-size: 1rem;
                 font-weight: 500;
-                padding: 1rem 1.5rem;
+                padding: 1rem 0; // USER REQUEST: Remove horizontal padding
                 color: $white; // USER REQUEST: White Text
-                
+
                 &::after {
                     content: '';
                     position: absolute;
@@ -25,6 +29,7 @@
                     left: 50%;
                     width: 0;
                     height: 2px;
+                    opacity: 0.5;
                     background: $white; // White underline
                     transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
                     transform: translateX(-50%);
@@ -32,25 +37,34 @@
 
                 &:hover, &.active {
                     color: $white;
-                    opacity: 1;
+                    opacity: 0.5;
+
                     &::after {
                         width: 100%;
                     }
+                    // Rotate icon when active or hovered
+                    .icon-toggle {
+                        transform: rotate(180deg);
+                    }
+                }
+
+                .icon-toggle {
+                    transition: transform 0.3s ease;
+                    display: inline-block; // Ensure transform works
                 }
             }
         }
-
         // Dropdown Wrapper (The "Stage")
         .morph-dropdown-wrapper {
             position: absolute;
             top: 100%; // Linklerin hemen altı
             left: 0;
             margin-top: 20px;
-            width: 100%; 
+            width: 100%;
             // display: none; // REMOVED: display:none breaks offsetWidth calculation in JS!
-            visibility: hidden; 
+            visibility: hidden;
             opacity: 0;
-            pointer-events: none; 
+            pointer-events: none;
             perspective: 2000px;
             z-index: 1050; // Higher than header sticky (1030)
 
@@ -69,7 +83,6 @@
             transform-origin: 0% 0%;
             // Not: Width ve height JS ile scaleX/scaleY olarak .bg-layer üzerinde yönetilir
         }
-
         // Animated Background
         .bg-layer {
             position: absolute;
@@ -85,7 +98,6 @@
             transition: opacity 0.1s, transform 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
             will-change: transform, opacity; // GPU Hint
         }
-
         // Arrow Pointer
         .arrow {
             position: absolute;
@@ -102,7 +114,6 @@
             z-index: 10;
             pointer-events: none;
         }
-
         // Content Area
         .dropdown-content-wrapper {
             position: absolute; // Changed from relative to ensure exact overlay on bg-layer
@@ -124,7 +135,7 @@
             transition: opacity 0.25s ease, visibility 0.25s;
             width: auto; // Content genişliği neyse o
             min-width: 300px;
-            
+
             &.active {
                 opacity: 1;
                 visibility: visible;

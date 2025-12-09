@@ -10441,11 +10441,14 @@ body, p {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+  .morph-navigation .main-nav .nav {
+    gap: 1.5rem;
+  }
   .morph-navigation .main-nav .nav-link {
     position: relative;
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 500;
-    padding: 1rem 1.5rem;
+    padding: 1rem 0;
     color: #ffffff;
   }
   .morph-navigation .main-nav .nav-link::after {
@@ -10455,16 +10458,24 @@ body, p {
     left: 50%;
     width: 0;
     height: 2px;
+    opacity: 0.5;
     background: #ffffff;
     transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
     transform: translateX(-50%);
   }
   .morph-navigation .main-nav .nav-link:hover, .morph-navigation .main-nav .nav-link.active {
     color: #ffffff;
-    opacity: 1;
+    opacity: 0.5;
   }
   .morph-navigation .main-nav .nav-link:hover::after, .morph-navigation .main-nav .nav-link.active::after {
     width: 100%;
+  }
+  .morph-navigation .main-nav .nav-link:hover .icon-toggle, .morph-navigation .main-nav .nav-link.active .icon-toggle {
+    transform: rotate(180deg);
+  }
+  .morph-navigation .main-nav .nav-link .icon-toggle {
+    transition: transform 0.3s ease;
+    display: inline-block;
   }
   .morph-navigation .morph-dropdown-wrapper {
     position: absolute;
