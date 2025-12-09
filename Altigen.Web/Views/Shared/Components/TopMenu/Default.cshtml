@@ -10,11 +10,12 @@
 
 @{
     var menuItems = Model.Value<IEnumerable<BlockListItem>>("menuItems");
+    var renderId = Guid.NewGuid().ToString("N");
 }
 
 @if (menuItems != null && menuItems.Any())
 {
-    <nav class="main-menu">
+    <nav class="main-menu" itemscope itemtype="http://schema.org/SiteNavigationElement">
         <ul class="nav justify-content-end">
             @foreach (var item in menuItems)
             {
@@ -30,8 +31,8 @@
                 if (isMegaMenu && subItems != null && subItems.Any())
                 {
                     <li class="nav-item dropdown position-static">
-                        <a href="@url" class="nav-link dropdown-toggle" id="dropdown-@content.Key" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-display="static">@title</a>
-                        <div class="dropdown-menu shadow-lg border-0 mt-0" aria-labelledby="dropdown-@content.Key" style="border-radius: 0 0 20px 20px; overflow: hidden;">
+                        <a href="@url" class="nav-link dropdown-toggle" id="dropdown-@content.Key-@renderId" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-display="static" itemprop="url"><span itemprop="name">@title</span></a>
+                        <div class="dropdown-menu shadow-lg border-0 mt-0" aria-labelledby="dropdown-@content.Key-@renderId" style="border-radius: 0 0 20px 20px; overflow: hidden;">
                             <div class="px-4 py-3">
                                 <div class="row g-5">
                                     @foreach (var subItem in subItems)
@@ -74,7 +75,7 @@
                                                             var linkContent = linkItem.Content;
                                                             var lTitle = linkContent.Value<string>("title");
                                                             var lLink = linkContent.Value<Link>("link");
-                                                            <li><a href="@(lLink?.Url ?? "#")" target="@(lLink?.Target ?? "_self")" class="dropdown-item">@lTitle</a></li>
+                                                            <li><a href="@(lLink?.Url ?? "#")" target="@(lLink?.Target ?? "_self")" class="dropdown-item" itemprop="url"><span itemprop="name">@lTitle</span></a></li>
                                                         }
                                                      </ul>
                                                 }
@@ -89,7 +90,7 @@
                 else
                 {
                     <li class="nav-item">
-                        <a href="@url" target="@target" class="nav-link">@title</a>
+                        <a href="@url" target="@target" class="nav-link" itemprop="url"><span itemprop="name">@title</span></a>
                     </li>
                 }
             }

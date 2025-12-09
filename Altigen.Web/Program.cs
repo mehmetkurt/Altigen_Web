@@ -16,6 +16,13 @@ await app.BootUmbracoAsync();
 
 app.UseHttpsRedirection();
 
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
+    context.Response.Headers.Add("Content-Security-Policy", "frame-ancestors 'self'");
+    await next();
+});
+
 app.UseUmbraco()
     .WithMiddleware(u =>
     {

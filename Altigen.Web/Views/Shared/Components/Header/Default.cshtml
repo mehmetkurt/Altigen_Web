@@ -8,17 +8,17 @@
         <div class="header-inner">
             <div class="row align-items-center">
                 @* Logo Column *@
-                <div class="col-6 col-xl-3">
+                <div class="col-6 col-xl-2">
                     @await Component.InvokeAsync("Logo", new { logo = Model })
                 </div>
 
                 @* Desktop Menu Column *@
-                <div class="col-xl-7 d-none d-xl-block">
+                <div class="col-xl-9 d-none d-xl-block">
                     @await Component.InvokeAsync("TopMenu")
                 </div>
 
                 @* Desktop Actions Column *@
-                <div class="col-xl-2 d-none d-xl-block text-end">
+                <div class="col-xl-1 d-none d-xl-block text-end">
                     @* Placeholder for future actions *@
                     <button class="btn btn-primary rounded-circle p-2 d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px;" aria-label="Call Us">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16">
@@ -29,7 +29,7 @@
 
                 @* Mobile Toggle Column *@
                 <div class="col-6 d-xl-none text-end">
-                    <button class="btn btn-outline-dark border-0 p-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu">
+                    <button class="btn btn-outline-dark border-0 p-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu" aria-label="Toggle navigation">
                         <div class="hamburger-lines d-flex flex-column align-items-end gap-1">
                             <span class="line line-1 bg-white rounded-pill"></span>
                             <span class="line line-2 bg-white rounded-pill"></span>

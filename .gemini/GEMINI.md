@@ -19,7 +19,14 @@
     - Avoid `!important` tags unless overriding external libraries (e.g., Bootstrap) requires it.
     - Use **kebab-case** for CSS classes (e.g., `btn-primary`, `user-card`).
 
-## 3. C# / .NET Rules
+## 3. Accessibility (a11y) Rules
+- **Discernible Text**: All buttons and links MUST have discernible text.
+    - If a button contains only an icon, use `aria-label` or a visually hidden span (`.visually-hidden`) to provide context.
+    - Reference: [Deque University - Button Name](https://dequeuniversity.com/rules/axe/4.4/button-name)
+- **Semantic HTML**: Use correct semantic tags (`nav`, `main`, `header`, `footer`) to help screen readers.
+- **Microdata**: Ensure critical components (Navigation, Breadcrumbs) use Schema.org Microdata.
+
+## 4. C# / .NET Rules
 - **Naming Conventions**:
     - Use **PascalCase** for classes, methods, and public properties.
     - Use **camelCase** for private fields and method parameters.
