@@ -15,7 +15,8 @@
 
 @if (menuItems != null && menuItems.Any())
 {
-    <nav class="main-menu" itemscope itemtype="http://schema.org/SiteNavigationElement">
+    @* MOBILE MENU (Standard Bootstrap - Visible below XL) *@
+    <nav class="main-menu d-xl-none" itemscope itemtype="http://schema.org/SiteNavigationElement">
         <ul class="nav justify-content-end">
             @foreach (var item in menuItems)
             {
@@ -31,8 +32,8 @@
                 if (isMegaMenu && subItems != null && subItems.Any())
                 {
                     <li class="nav-item dropdown position-static">
-                        <a href="@url" class="nav-link dropdown-toggle" id="dropdown-@content.Key-@renderId" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-display="static" itemprop="url"><span itemprop="name">@title</span></a>
-                        <div class="dropdown-menu shadow-lg border-0 mt-0" aria-labelledby="dropdown-@content.Key-@renderId" style="border-radius: 0 0 20px 20px; overflow: hidden;">
+                        <a href="@url" class="nav-link dropdown-toggle" id="mobile-dropdown-@content.Key-@renderId" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-display="static" itemprop="url"><span itemprop="name">@title</span></a>
+                        <div class="dropdown-menu shadow-lg border-0 mt-0" aria-labelledby="mobile-dropdown-@content.Key-@renderId" style="border-radius: 0 0 20px 20px; overflow: hidden;">
                             <div class="px-4 py-3">
                                 <div class="row g-5">
                                     @foreach (var subItem in subItems)
@@ -96,4 +97,113 @@
             }
         </ul>
     </nav>
+
+    @* DESKTOP MENU (Morphing Menu - Visible XL+) *@
+    <div class="morph-navigation d-none d-xl-block" itemscope itemtype="http://schema.org/SiteNavigationElement">
+        
+        @* 1. Nav Triggers *@
+        <nav class="main-nav">
+            <ul class="nav justify-content-end">
+                @foreach (var item in menuItems)
+                {
+                    var content = item.Content;
+                    var title = content.Value<string>("title");
+                    var link = content.Value<Link>("link");
+                    var isMegaMenu = content.Value<bool>("isMegaMenu");
+                    
+                    var url = link?.Url ?? "#";
+                    var target = link?.Target ?? "_self";
+                    var hasDropdown = isMegaMenu && item.Content.Value<IEnumerable<BlockListItem>>("subItems")?.Any() == true;
+                    var contentId = $"dropdown-{content.Key}-{renderId}";
+
+                    <li class="nav-item @(hasDropdown ? "has-dropdown" : "")" data-target="@(hasDropdown ? contentId : "")">
+                        <a href="@url" target="@target" class="nav-link" itemprop="url">
+                            <span itemprop="name">@title</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
+
+        @* 2. Separated Content Container *@
+        <div class="morph-dropdown-wrapper">
+            <div class="morph-dropdown-list">
+                @* Animated Background *@
+                <div class="bg-layer" aria-hidden="true"></div>
+                <div class="arrow"></div>
+
+                <div class="dropdown-content-wrapper">
+                    @foreach (var item in menuItems)
+                    {
+                        var content = item.Content;
+                        var isMegaMenu = content.Value<bool>("isMegaMenu");
+                        var subItems = content.Value<IEnumerable<BlockListItem>>("subItems");
+
+                        if (isMegaMenu && subItems != null && subItems.Any())
+                        {
+                            var contentId = $"dropdown-{content.Key}-{renderId}";
+                            
+                            <div id="@contentId" class="morph-content">
+                                <div class="morph-content-inner px-4 py-4">
+                                     <div class="row g-5">
+                                        @foreach (var subItem in subItems)
+                                        {
+                                            var subContent = subItem.Content;
+                                            var isPromo = subContent.Value<bool>("isPromoCard");
+                                            var isColHeader = subContent.Value<bool>("isColumnHeader");
+
+                                            if (isPromo)
+                                            {
+                                                var promoImg = subContent.Value<MediaWithCrops>("promoImage");
+                                                var promoText = subContent.Value<string>("promoText");
+                                                var promoTitle = subContent.Value<string>("title");
+
+                                                <div class="col-auto">
+                                                    <div class="card border-0 text-white rounded-3 overflow-hidden" style="width: 250px;">
+                                                        @if(promoImg != null)
+                                                        {
+                                                            <img src="@promoImg.Url()" class="card-img" alt="@promoTitle" style="height: 100%; object-fit: cover;">
+                                                        }
+                                                        <div class="card-img-overlay d-flex flex-column justify-content-end bg-dark bg-opacity-50">
+                                                            <h5 class="card-title">@promoTitle</h5>
+                                                            <p class="card-text small">@promoText</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                            else if (isColHeader)
+                                            {
+                                                var colTitle = subContent.Value<string>("title");
+                                                var colLinks = subContent.Value<IEnumerable<BlockListItem>>("subItems");
+
+                                                <div class="col-auto">
+                                                    <h6 class="text-primary text-uppercase fw-bold mb-3">@colTitle</h6>
+                                                    @if (colLinks != null && colLinks.Any())
+                                                    {
+                                                         <ul class="list-unstyled w-100 h-100 d-flex flex-column gap-2">
+                                                            @foreach(var linkItem in colLinks)
+                                                            {
+                                                                var linkContent = linkItem.Content;
+                                                                var lTitle = linkContent.Value<string>("title");
+                                                                var lLink = linkContent.Value<Link>("link");
+                                                                <li>
+                                                                    <a href="@(lLink?.Url ?? "#")" target="@(lLink?.Target ?? "_self")" class="dropdown-item">
+                                                                        @lTitle
+                                                                    </a>
+                                                                </li>
+                                                            }
+                                                         </ul>
+                                                    }
+                                                </div>
+                                            }
+                                        }
+                                     </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 }

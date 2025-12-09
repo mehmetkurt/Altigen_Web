@@ -1,0 +1,146 @@
+/* -------------------------------------------------------------------------- */
+/*                               MORPHING MENU                                */
+/* -------------------------------------------------------------------------- */
+
+// Desktop Only (XL+)
+@include media-breakpoint-up(xl) {
+    .morph-navigation {
+        position: relative;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+
+        .main-nav {
+            // Linkler
+            .nav-link {
+                position: relative;
+                font-size: 1.1rem;
+                font-weight: 500;
+                padding: 1rem 1.5rem;
+                color: $white; // USER REQUEST: White Text
+                
+                &::after {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    left: 50%;
+                    width: 0;
+                    height: 2px;
+                    background: $white; // White underline
+                    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+                    transform: translateX(-50%);
+                }
+
+                &:hover, &.active {
+                    color: $white;
+                    opacity: 1;
+                    &::after {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+
+        // Dropdown Wrapper (The "Stage")
+        .morph-dropdown-wrapper {
+            position: absolute;
+            top: 100%; // Linklerin hemen altı
+            left: 0;
+            margin-top: 20px;
+            width: 100%; 
+            // display: none; // REMOVED: display:none breaks offsetWidth calculation in JS!
+            visibility: hidden; 
+            opacity: 0;
+            pointer-events: none; 
+            perspective: 2000px;
+            z-index: 1050; // Higher than header sticky (1030)
+
+            &.active {
+                // display: block;
+                visibility: visible;
+                opacity: 1;
+                pointer-events: auto;
+            }
+        }
+
+        .morph-dropdown-list {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform-origin: 0% 0%;
+            // Not: Width ve height JS ile scaleX/scaleY olarak .bg-layer üzerinde yönetilir
+        }
+
+        // Animated Background
+        .bg-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 1px;
+            height: 1px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 50px -10px rgba(50, 50, 93, 0.25), 0 30px 60px -30px rgba(0, 0, 0, 0.3);
+            transform-origin: 0% 0%; // Sol üstten büyü
+            opacity: 0;
+            transition: opacity 0.1s, transform 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+            will-change: transform, opacity; // GPU Hint
+        }
+
+        // Arrow Pointer
+        .arrow {
+            position: absolute;
+            top: -6px;
+            left: 0; // JS ile translateX yapılacak
+            width: 12px;
+            height: 12px;
+            background: #ffffff;
+            transform: rotate(45deg);
+            box-shadow: -1px -1px 0 0 rgba(0, 0, 0, 0.05); // Hafif gölge
+            opacity: 0;
+            transition: opacity 0.1s, transform 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+            will-change: transform, opacity;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        // Content Area
+        .dropdown-content-wrapper {
+            position: absolute; // Changed from relative to ensure exact overlay on bg-layer
+            top: 0;
+            left: 0;
+            z-index: 5;
+            overflow: hidden; // Taşan içerikleri kes
+            // Wrapper da translateX ile hareket eder
+            transition: transform 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+            will-change: transform;
+        }
+
+        .morph-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s;
+            width: auto; // Content genişliği neyse o
+            min-width: 300px;
+            
+            &.active {
+                opacity: 1;
+                visibility: visible;
+                position: relative; // Yer kaplaması için
+            }
+
+            .morph-content-inner {
+                // İçerik paddingleri
+            }
+        }
+    }
+}
+
+// Open States controlled by JS
+.morph-navigation.is-dropdown-visible {
+    .bg-layer, .arrow {
+        opacity: 1;
+    }
+}

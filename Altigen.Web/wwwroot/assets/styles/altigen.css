@@ -10431,3 +10431,118 @@ body, p {
 .floating-whatsapp {
   animation: whatsapp-pulse 2s infinite;
 }
+
+/* -------------------------------------------------------------------------- */
+/*                               MORPHING MENU                                */
+/* -------------------------------------------------------------------------- */
+@media (min-width: 1200px) {
+  .morph-navigation {
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .morph-navigation .main-nav .nav-link {
+    position: relative;
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding: 1rem 1.5rem;
+    color: #ffffff;
+  }
+  .morph-navigation .main-nav .nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: #ffffff;
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transform: translateX(-50%);
+  }
+  .morph-navigation .main-nav .nav-link:hover, .morph-navigation .main-nav .nav-link.active {
+    color: #ffffff;
+    opacity: 1;
+  }
+  .morph-navigation .main-nav .nav-link:hover::after, .morph-navigation .main-nav .nav-link.active::after {
+    width: 100%;
+  }
+  .morph-navigation .morph-dropdown-wrapper {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 20px;
+    width: 100%;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    perspective: 2000px;
+    z-index: 1050;
+  }
+  .morph-navigation .morph-dropdown-wrapper.active {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .morph-navigation .morph-dropdown-list {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: 0% 0%;
+  }
+  .morph-navigation .bg-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 1px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 50px -10px rgba(50, 50, 93, 0.25), 0 30px 60px -30px rgba(0, 0, 0, 0.3);
+    transform-origin: 0% 0%;
+    opacity: 0;
+    transition: opacity 0.1s, transform 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+    will-change: transform, opacity;
+  }
+  .morph-navigation .arrow {
+    position: absolute;
+    top: -6px;
+    left: 0;
+    width: 12px;
+    height: 12px;
+    background: #ffffff;
+    transform: rotate(45deg);
+    box-shadow: -1px -1px 0 0 rgba(0, 0, 0, 0.05);
+    opacity: 0;
+    transition: opacity 0.1s, transform 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+    will-change: transform, opacity;
+    z-index: 10;
+    pointer-events: none;
+  }
+  .morph-navigation .dropdown-content-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    overflow: hidden;
+    transition: transform 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+    will-change: transform;
+  }
+  .morph-navigation .morph-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s;
+    width: auto;
+    min-width: 300px;
+  }
+  .morph-navigation .morph-content.active {
+    opacity: 1;
+    visibility: visible;
+    position: relative;
+  }
+}
+.morph-navigation.is-dropdown-visible .bg-layer, .morph-navigation.is-dropdown-visible .arrow {
+  opacity: 1;
+}
