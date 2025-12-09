@@ -1,0 +1,32 @@
+﻿<script src="/assets/scripts/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="/assets/scripts/hoverintent.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        if (window.innerWidth >= 992) {
+            var dropdowns = document.querySelectorAll('.nav-item.dropdown');
+            if (dropdowns.length > 0 && typeof SV !== 'undefined') {
+                new SV.HoverIntent(dropdowns, {
+                    exitDelay: 300,
+                    interval: 50,
+                    sensitivity: 50,
+                    onEnter: function (elem) {
+                        var toggle = elem.querySelector('.dropdown-toggle');
+                        if (toggle) {
+                            var instance = bootstrap.Dropdown.getOrCreateInstance(toggle);
+                            instance.show();
+                        }
+                    },
+                    onExit: function (elem) {
+                        var toggle = elem.querySelector('.dropdown-toggle');
+                        if (toggle) {
+                            var instance = bootstrap.Dropdown.getOrCreateInstance(toggle);
+                            instance.hide();
+                        }
+                    }
+                });
+            }
+        }
+    });
+</script>

@@ -1,0 +1,57 @@
+
+
+@mixin dosis($weight: 400) {
+  font-family: "Dosis", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: $weight;
+  font-style: normal;
+}
+
+.dosis-200 { @include dosis(200); }
+.dosis-300 { @include dosis(300); }
+.dosis-400 { @include dosis(400); }
+.dosis-500 { @include dosis(500); }
+.dosis-600 { @include dosis(600); }
+.dosis-700 { @include dosis(700); }
+.dosis-800 { @include dosis(800); }
+
+
+
+@mixin science-gothic($weight: 400) {
+  font-family: "Science Gothic", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: $weight;
+  font-style: normal;
+  font-variation-settings:
+    "slnt" 0,
+    "wdth" 100,
+    "CTRS" 0;
+}
+
+.science-gothic-100 { @include science-gothic(100); }
+.science-gothic-200 { @include science-gothic(200); }
+.science-gothic-300 { @include science-gothic(300); }
+.science-gothic-400 { @include science-gothic(400); }
+.science-gothic-500 { @include science-gothic(500); }
+.science-gothic-600 { @include science-gothic(600); }
+.science-gothic-700 { @include science-gothic(700); }
+.science-gothic-800 { @include science-gothic(800); }
+.science-gothic-900 { @include science-gothic(900); }
+
+
+
+@mixin open-sans($weight: 400) {
+  font-family: "Open Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: $weight;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+
+.open-sans-300 { @include open-sans(300); }
+.open-sans-400 { @include open-sans(400); }
+.open-sans-500 { @include open-sans(500); }
+.open-sans-600 { @include open-sans(600); }
+.open-sans-700 { @include open-sans(700); }
+.open-sans-800 { @include open-sans(800); }

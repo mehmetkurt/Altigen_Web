@@ -1,0 +1,21 @@
+﻿
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@Model?.Name - Altigen</title>
+    @await Html.PartialAsync("_Styles")
+    @await RenderSectionAsync("Head", required: false)
+</head>
+<body>
+    @await Component.InvokeAsync("Header")
+    <main>
+        @RenderBody()
+    </main>
+    @await Component.InvokeAsync("Footer")
+    @await Html.PartialAsync("_WhatsApp")
+    @await Html.PartialAsync("_Scripts")
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,28 @@
+.site-logo {
+    // Mobile Styles (Header Only)
+    .main-header & {
+        @include media-breakpoint-down(xl) {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 20px;
+            z-index: 1040;
+
+            img {
+                max-height: 75px;
+            }
+        }
+    }
+
+    > a {
+        display: block;
+        align-items: center;
+        text-decoration: none;
+
+        img {
+            object-fit: contain;
+            max-width: 100%;
+            display: block;
+        }
+    }
+}

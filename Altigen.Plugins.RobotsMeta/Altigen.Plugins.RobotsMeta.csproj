@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <StaticWebAssetBasePath>/</StaticWebAssetBasePath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>Altigen.Plugins.RobotsMeta</PackageId>
+    <Product>Altigen.Plugins.RobotsMeta</Product>
+    <Title>Altigen.Plugins.RobotsMeta</Title>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Umbraco.Cms.Web.Website" Version="*" />
+    <PackageReference Include="Umbraco.Cms.Web.Common" Version="*" />
+    <PackageReference Include="Umbraco.Cms.Api.Common" Version="*" />
+    <PackageReference Include="Umbraco.Cms.Api.Management" Version="*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Dont include the client folder as part of packaging nuget build -->
+    <Compile Remove="wwwroot\**" />
+    <Content Remove="Client\**" />
+    <Content Remove="wwwroot\**" />
+    <EmbeddedResource Remove="wwwroot\**" />
+    <None Remove="wwwroot\**" />
+
+    <!-- However make the Umbraco-package.json included for dotnet pack or nuget package and visible to the solution -->
+    <None Include="Client\public\umbraco-package.json" Pack="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Client\scripts\" />
+    <Folder Include="Client\src\property-editor\" />
+  </ItemGroup>
+
+	<Target Name="CopyPluginsToWeb" AfterTargets="Build">
+		<ItemGroup>
+			<PluginFiles Include="wwwroot\App_Plugins\**\*.*" />
+		</ItemGroup>
+		<Copy SourceFiles="@(PluginFiles)"
+			  DestinationFolder="..\Altigen.Web\wwwroot\App_Plugins\%(RecursiveDir)"
+			  SkipUnchangedFiles="true" />
+	</Target>
+</Project>

@@ -1,0 +1,11 @@
+h1, h2, h3 {
+    @include science-gothic(700);
+}
+
+h4, h5, h6 {
+    @include dosis(600);
+}
+
+body, p {
+    @include open-sans(400);
+}

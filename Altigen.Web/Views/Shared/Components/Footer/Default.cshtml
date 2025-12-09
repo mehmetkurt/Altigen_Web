@@ -1,0 +1,8 @@
+@using Umbraco.Cms.Core.Models
+@using Altigen.Web.Models
+@model LogoViewModel
+<footer>
+    @await Component.InvokeAsync("Logo", new { logo = Model })
+    @await Component.InvokeAsync("FooterMenu")
+    <p>&copy; 2025 Altigen</p>
+</footer>

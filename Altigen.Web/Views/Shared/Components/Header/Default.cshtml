@@ -1,0 +1,55 @@
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Web.Common.PublishedModels
+@using Altigen.Web.Models
+@model LogoViewModel
+
+<header class="main-header sticky-top py-3">
+    <div class="container">
+        <div class="header-inner">
+            <div class="row align-items-center">
+                @* Logo Column *@
+                <div class="col-6 col-xl-3">
+                    @await Component.InvokeAsync("Logo", new { logo = Model })
+                </div>
+
+                @* Desktop Menu Column *@
+                <div class="col-xl-7 d-none d-xl-block">
+                    @await Component.InvokeAsync("TopMenu")
+                </div>
+
+                @* Desktop Actions Column *@
+                <div class="col-xl-2 d-none d-xl-block text-end">
+                    @* Placeholder for future actions *@
+                    <button class="btn btn-primary rounded-circle p-2 d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px;" aria-label="Call Us">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
+                        </svg>
+                    </button>
+                </div>
+
+                @* Mobile Toggle Column *@
+                <div class="col-6 d-xl-none text-end">
+                    <button class="btn btn-outline-dark border-0 p-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu">
+                        <div class="hamburger-lines d-flex flex-column align-items-end gap-1">
+                            <span class="line line-1 bg-white rounded-pill"></span>
+                            <span class="line line-2 bg-white rounded-pill"></span>
+                            <span class="line line-3 bg-white rounded-pill"></span>
+                            <span class="line line-4 bg-white rounded-pill"></span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+@* Mobile Offcanvas Menu *@
+<div class="offcanvas offcanvas-end" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="mobileMenuLabel">Menu</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        @await Component.InvokeAsync("TopMenu")
+    </div>
+</div>

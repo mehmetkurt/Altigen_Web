@@ -1,0 +1,26 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Altigen.Web.Models
+@model LogoViewModel
+
+@{
+    var locationClass = $"logo-{Model.Location.ToString().ToLower()}";
+}
+
+<div class="site-logo @locationClass">
+    <a href="/" class="text-dark text-decoration-none" aria-label="Home">
+        <picture>
+            @if (Model.MobileUrl != Model.TabletUrl && !string.IsNullOrEmpty(Model.MobileUrl))
+            {
+                <source media="(max-width: 575.98px)" srcset="@Model.MobileUrl">
+            }
+            @if (Model.TabletUrl != Model.DesktopUrl && !string.IsNullOrEmpty(Model.TabletUrl))
+            {
+                <source media="(max-width: 1199.98px)" srcset="@Model.TabletUrl">
+            }
+            @if (!string.IsNullOrEmpty(Model.DesktopUrl))
+            {
+                <img src="@Model.DesktopUrl" alt="Altigen Logo" width="auto" height="auto">
+            }
+        </picture>
+    </a>
+</div>

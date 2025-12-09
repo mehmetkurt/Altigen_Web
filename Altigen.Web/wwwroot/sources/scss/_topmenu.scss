@@ -1,0 +1,239 @@
+.main-menu {
+    // Mobile Styles (Default / Down XL)
+    @include media-breakpoint-down(xl) {
+        .nav {
+            flex-direction: column;
+            gap: 0.5rem;
+            align-items: stretch;
+            width: 100%;
+        }
+
+        .nav-link {
+            color: $gray-800;
+            font-weight: 600;
+            padding: 1rem 0;
+            font-size: 1.1rem;
+            border-bottom: 1px solid $gray-200;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            &:hover {
+                color: $primary;
+            }
+            
+            // Dropdown arrow for mobile
+            &.dropdown-toggle::after {
+                margin-left: auto;
+            }
+        }
+
+        .dropdown-menu {
+            position: static !important;
+            transform: none !important;
+            background: transparent !important;
+            border: none;
+            box-shadow: none;
+            padding: 0 0 1rem 1rem;
+            width: 100%;
+            max-width: 100%;
+            margin-top: 0;
+            
+            &.show {
+                display: block;
+            }
+
+            .row {
+                flex-direction: column;
+                gap: 1.5rem !important;
+            }
+
+            .col-auto {
+                width: 100%;
+            }
+
+            // Mobile headers inside dropdown
+            .text-primary {
+                color: $primary !important; // darker blue for white bg
+                font-size: 0.9rem;
+                margin-bottom: 0.5rem !important;
+                display: block;
+            }
+
+            // Mobile list items
+            ul {
+                padding-left: 0;
+            }
+
+            .dropdown-item {
+                color: $gray-600;
+                padding: 0.5rem 0;
+                font-size: 1rem;
+                white-space: normal;
+                background: transparent;
+                
+                &:hover, &:active {
+                    color: $primary;
+                    background: transparent;
+                }
+
+                &::before {
+                    display: none;
+                }
+            }
+            
+            // Hide promo card on mobile to save space
+            .card {
+                display: none;
+            }
+        }
+    }
+
+    // Desktop Styles
+    @include media-breakpoint-up(xl) {
+        .nav {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: white;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: color 0.3s ease;
+
+            &:hover {
+                color: #dbeafe;
+            }
+        }
+
+        .dropdown-menu {
+            background-color: rgba(32, 72, 109, 0.95);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px !important;
+            padding: 1rem;
+            position: absolute;
+            width: max-content;
+            max-width: 95vw;
+            left: 50%;
+            transform: translateX(-50%) !important;
+            top: calc(100% + 15px) !important;
+            margin-top: 0;
+            box-shadow: 0 0 #0000,0 0 #0000,0px 4px 4px 0px rgba(0, 0, 0, .25);
+
+            &::before {
+                content: '';
+                position: absolute;
+                top: -25px;
+                left: 0;
+                width: 100%;
+                height: 25px;
+                background: transparent;
+            }
+
+            .text-primary {
+                color: #93c5fd !important;
+                letter-spacing: 0.5px;
+                font-size: 0.85rem;
+            }
+
+            .dropdown-item {
+                color: rgba(255, 255, 255, 0.7);
+                padding: 0.6rem 0;
+                font-size: 0.95rem;
+                transition: all 0.2s ease;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                white-space: nowrap;
+                background: transparent;
+                position: relative;
+
+                &::before {
+                    content: '›';
+                    color: #93c5fd;
+                    font-size: 1.2rem;
+                    opacity: 0;
+                    position: absolute; 
+                    left: -15px;
+                    transform: translateX(-10px);
+                    transition: all 0.2s ease;
+                    line-height: 1;
+                }
+
+                &:hover {
+                    background-color: transparent;
+                    color: #ffffff;
+
+                    &::before {
+                        opacity: 1;
+                        transform: translateX(0);
+                    }
+                }
+            }
+
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        .nav-item.dropdown {
+            position: static;
+
+            > .nav-link {
+                position: relative;
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    bottom: -25px;
+                    left: 0;
+                    width: 100%;
+                    height: 30px;
+                    background: transparent;
+                    z-index: 10;
+                }
+
+                &::after {
+                    display: inline-block !important;
+                    margin-left: 0.4em;
+                    vertical-align: middle;
+                    content: "";
+                    border-top: 0.35em solid;
+                    border-right: 0.35em solid transparent;
+                    border-bottom: 0;
+                    border-left: 0.35em solid transparent;
+                    opacity: 0.9;
+                    transform: translateY(1px);
+                }
+
+                border-bottom: none !important;
+                text-decoration: none !important;
+                outline: 0 !important;
+                box-shadow: none !important;
+
+                &:hover, &:focus, &.show, &:active {
+                    text-decoration: none !important;
+                    border-bottom: none !important;
+                    outline: 0 !important;
+                    box-shadow: none !important;
+                }
+            }
+        }
+
+        .dropdown-toggle::after {
+            vertical-align: middle;
+            margin-left: 0.5em;
+        }
+    }
+}

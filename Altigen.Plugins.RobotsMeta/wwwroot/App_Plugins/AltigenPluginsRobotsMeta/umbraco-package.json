@@ -1,0 +1,14 @@
+{
+  "id": "Altigen.Plugins.RobotsMeta",
+  "name": "Altigen.Plugins.RobotsMeta",
+  "version": "0.0.0",
+  "allowTelemetry": true,
+  "extensions": [
+    {
+      "name": "Altigen Plugins Robots Meta Bundle",
+      "alias": "Altigen.Plugins.RobotsMeta.Bundle",
+      "type": "bundle",
+      "js": "/App_Plugins/AltigenPluginsRobotsMeta/altigen-plugins-robots-meta.js"
+    }
+  ]
+}
