@@ -39,9 +39,13 @@
 - **Logic Placement**: Minimize logic in Razor views. Move business logic to Controllers, Services, or ViewComponents.
 - **Partial Views**: Encapsulate reusable UI components into Partial Views.
 - **No Magic Strings**: Avoid using hardcoded strings for Content Type Aliases or Property Aliases. Use generated constants (ModelsBuilder) or `nameof` where possible.
+- **View Inheritance**: Do not use explicit `@inherits` in views unless necessary. Rely on `_ViewImports.cshtml` and use `@model` instead.
 
 ## 5. JavaScript Rules
 - **Modern Syntax**: Use ES6+ features (e.g., `const`/`let` instead of `var`, arrow functions, template literals).
 - **Equality**: Always use strict equality (`===` and `!==`).
 - **Modularity**: Write small, single-responsibility functions.
 - **Production Cleanliness**: Remove `console.log` and debugging artifacts before deploying to production.
+- **Component & Script Structure**:
+    - **Separate ViewComponents**: Complex UI sections must be extracted into independent ViewComponents.
+    - **No Inline JavaScript**: JavaScript MUST NOT be written inline in Razor views (`.cshtml`). Always use separate `.js` files named after the component, page, or module.

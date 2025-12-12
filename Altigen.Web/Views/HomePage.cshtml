@@ -4,58 +4,8 @@
 }
 
 
-<!-- Swiper -->
-<div class="swiper main-slider">
-    <div class="swiper-wrapper">
-        <div class="swiper-slide d-flex align-items-center justify-content-center bg-dark text-white" style="background-image: url('https://rimparusa.com/yukleme/product/1-carpet-washing-machines-4.jpg'); background-size: cover; background-position: center;">
-            <div class="container text-center">
-                <h1 class="display-3 fw-bold">Hoş Geldiniz</h1>
-                <p class="lead">Profesyonel Halı Yıkama Hizmetleri</p>
-            </div>
-        </div>
-        <div class="swiper-slide d-flex align-items-center justify-content-center bg-secondary text-white" style="background-image: url('https://kingstoncarpetcleaning.ca/wp-content/uploads/2023/03/carpet-cleaning-machine-1.png'); background-size: cover; background-position: center;">
-             <div class="container text-center">
-                <h2 class="display-4">Kaliteli Hizmet</h2>
-                <p class="lead">Bize güvenebilirsiniz.</p>
-            </div>
-        </div>
-        <div class="swiper-slide d-flex align-items-center justify-content-center bg-primary text-white" style="background-image: url('https://images.pexels.com/photos/1107717/pexels-photo-1107717.jpeg'); background-size: cover; background-position: center;">
-             <div class="container text-center">
-                <h2 class="display-4">Hızlı Teslimat</h2>
-                <p class="lead">Zamanında kapınızda.</p>
-            </div>
-        </div>
-    </div>
-    <div class="swiper-pagination"></div>
-    <div class="swiper-button-next"></div>
-    <div class="swiper-button-prev"></div>
-</div>
-
-<style>
-    .main-slider {
-        width: 100%;
-        height: 80vh;
-    }
-</style>
+@await Component.InvokeAsync("MainSlider")
 
 @section Scripts {
-    <script>
-        var swiper = new Swiper(".main-slider", {
-            spaceBetween: 30,
-            effect: "fade",
-            loop: true,
-            navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-            },
-            pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-            },
-            autoplay: {
-                delay: 5000,
-                disableOnInteraction: false,
-            },
-        });
-    </script>
+    <script src="~/assets/scripts/main-slider.js"></script>
 }
