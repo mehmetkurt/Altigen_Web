@@ -10026,7 +10026,7 @@ body, p {
   font-variation-settings: "wdth" 100;
 }
 
-@media (max-width: 1199.98px) {
+@media (max-width: 575.98px) {
   .main-header .site-logo {
     position: absolute;
     left: 50%;

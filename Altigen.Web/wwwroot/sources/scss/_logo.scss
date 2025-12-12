@@ -1,7 +1,7 @@
 .site-logo {
     // Mobile Styles (Header Only)
     .main-header & {
-        @include media-breakpoint-down(xl) {
+        @include media-breakpoint-down(sm) { // USER REQUEST: Mobile Only (< 576px)
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
