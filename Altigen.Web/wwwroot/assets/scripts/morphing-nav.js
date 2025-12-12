@@ -78,6 +78,11 @@ class MorphingNav {
         this.dropdownWrapper.classList.add('active');
 
         // 3. Calculate Dimensions & Positions
+        // CRITICAL FIX: Reset wrapper width so the new content isn't clamped by the OLD width.
+        // The child has max-width: 100%, so if parent is small, child wraps early. We must uncage it.
+        this.contentWrapper.style.width = '';
+        this.contentWrapper.style.height = ''; 
+
         const targetWidth = selectedDropdown.offsetWidth;
         const targetHeight = selectedDropdown.offsetHeight;
         
@@ -86,7 +91,21 @@ class MorphingNav {
 
         let leftPosition = (triggerRect.left + triggerRect.width / 2) - (targetWidth / 2) - navRect.left;
 
-        if (leftPosition < 0) leftPosition = 10;
+        // --- Collision Detection ---
+        const windowWidth = window.innerWidth;
+        const absoluteRight = navRect.left + leftPosition + targetWidth;
+        const offset = 15; // Padding from window edge
+
+        // 1. Right Edge Collision
+        if (absoluteRight > windowWidth - offset) {
+            const excess = absoluteRight - (windowWidth - offset);
+            leftPosition -= excess;
+        }
+
+        // 2. Left Edge Collision (Generic clamp)
+        if (navRect.left + leftPosition < offset) {
+             leftPosition = offset - navRect.left;
+        }
         
         // 4. Apply Transforms
         // CRITICAL FIX: If first open, disable transition for a moment to prevent "slide from zero"

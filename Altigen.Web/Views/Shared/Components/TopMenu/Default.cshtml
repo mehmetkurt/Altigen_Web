@@ -103,7 +103,7 @@
         
         @* 1. Nav Triggers *@
         <nav class="main-nav">
-            <ul class="nav justify-content-end">
+            <ul class="nav justify-content-center">
                 @foreach (var item in menuItems)
                 {
                     var content = item.Content;
@@ -148,8 +148,8 @@
                             var contentId = $"dropdown-{content.Key}-{renderId}";
                             
                             <div id="@contentId" class="morph-content">
-                                <div class="morph-content-inner px-4 py-4">
-                                     <div class="row g-5">
+                                <div class="morph-content-inner">
+                                     <div class="row g-4">
                                         @foreach (var subItem in subItems)
                                         {
                                             var subContent = subItem.Content;
@@ -162,8 +162,8 @@
                                                 var promoText = subContent.Value<string>("promoText");
                                                 var promoTitle = subContent.Value<string>("title");
 
-                                                <div class="col-auto">
-                                                    <div class="card border-0 text-white rounded-3 overflow-hidden" style="width: 250px;">
+                                                <div class="col mega-col">
+                                                    <div class="card border-0 text-white rounded-3 overflow-hidden h-100">
                                                         @if(promoImg != null)
                                                         {
                                                             <img src="@promoImg.Url()" class="card-img" alt="@promoTitle" style="height: 100%; object-fit: cover;">
@@ -180,8 +180,8 @@
                                                 var colTitle = subContent.Value<string>("title");
                                                 var colLinks = subContent.Value<IEnumerable<BlockListItem>>("subItems");
 
-                                                <div class="col-auto">
-                                                    <h6 class="text-primary text-uppercase fw-bold mb-3">@colTitle</h6>
+                                                <div class="col mega-col">
+                                                    <h6 class="dropdown-header text-primary text-uppercase fw-bold mb-3 ps-0">@colTitle</h6>
                                                     @if (colLinks != null && colLinks.Any())
                                                     {
                                                          <ul class="list-unstyled w-100 h-100 d-flex flex-column gap-2">
