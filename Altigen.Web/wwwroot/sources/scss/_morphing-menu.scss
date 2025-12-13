@@ -1,8 +1,10 @@
-/* -------------------------------------------------------------------------- */
-/*                               MORPHING MENU                                */
-/* -------------------------------------------------------------------------- */
+$mega-menu-min-width: 250px;
+$mega-menu-col-min-width: 250px;
+$mega-menu-gap: 1.5rem;
+$mega-menu-padding: 2rem;
+$mega-menu-header-size: 0.875rem; // 14px
+$mega-menu-item-size: 0.8125rem; // 13px
 
-// Desktop Only (XL+)
 @include media-breakpoint-up(xl) {
     .morph-navigation {
         position: relative;
@@ -10,17 +12,16 @@
         -moz-osx-font-smoothing: grayscale;
 
         .main-nav {
-            // Flex container setup for Gap
             .nav {
-                gap: 1.5rem; // Add spacing between items here instead of padding
+                gap: $mega-menu-gap;
             }
-            // Linkler
+
             .nav-link {
                 position: relative;
                 font-size: 1rem;
                 font-weight: 500;
-                padding: 1rem 0; // USER REQUEST: Remove horizontal padding
-                color: $white; // USER REQUEST: White Text
+                padding: 1rem 0;
+                color: $white;
 
                 &::after {
                     content: '';
@@ -30,7 +31,7 @@
                     width: 0;
                     height: 2px;
                     opacity: 0.5;
-                    background: $white; // White underline
+                    background: $white;
                     transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
                     transform: translateX(-50%);
                 }
@@ -42,7 +43,7 @@
                     &::after {
                         width: 100%;
                     }
-                    // Rotate icon when active or hovered
+
                     .icon-toggle {
                         transform: rotate(180deg);
                     }
@@ -50,26 +51,24 @@
 
                 .icon-toggle {
                     transition: transform 0.3s ease;
-                    display: inline-block; // Ensure transform works
+                    display: inline-block;
                 }
             }
         }
-        // Dropdown Wrapper (The "Stage")
+
         .morph-dropdown-wrapper {
             position: absolute;
-            top: 100%; // Linklerin hemen altı
+            top: 100%;
             left: 0;
             margin-top: 20px;
             width: 100%;
-            // display: none; // REMOVED: display:none breaks offsetWidth calculation in JS!
             visibility: hidden;
             opacity: 0;
             pointer-events: none;
             perspective: 2000px;
-            z-index: 1050; // Higher than header sticky (1030)
+            z-index: 1050;
 
             &.active {
-                // display: block;
                 visibility: visible;
                 opacity: 1;
                 pointer-events: auto;
@@ -81,9 +80,8 @@
             top: 0;
             left: 0;
             transform-origin: 0% 0%;
-            // Not: Width ve height JS ile scaleX/scaleY olarak .bg-layer üzerinde yönetilir
         }
-        // Animated Background
+
         .bg-layer {
             position: absolute;
             top: 0;
@@ -93,35 +91,34 @@
             background: #ffffff;
             border-radius: 12px;
             box-shadow: 0 10px 50px -10px rgba(50, 50, 93, 0.25), 0 30px 60px -30px rgba(0, 0, 0, 0.3);
-            transform-origin: 0% 0%; // Sol üstten büyü
+            transform-origin: 0% 0%;
             opacity: 0;
             transition: opacity 0.1s, transform 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
-            will-change: transform, opacity; // GPU Hint
+            will-change: transform, opacity;
         }
-        // Arrow Pointer
+
         .arrow {
             position: absolute;
             top: -6px;
-            left: 0; // JS ile translateX yapılacak
+            left: 0;
             width: 12px;
             height: 12px;
             background: #ffffff;
             transform: rotate(45deg);
-            box-shadow: -1px -1px 0 0 rgba(0, 0, 0, 0.05); // Hafif gölge
+            box-shadow: -1px -1px 0 0 rgba(0, 0, 0, 0.05);
             opacity: 0;
             transition: opacity 0.1s, transform 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
             will-change: transform, opacity;
             z-index: 10;
             pointer-events: none;
         }
-        // Content Area
+
         .dropdown-content-wrapper {
-            position: absolute; // Changed from relative to ensure exact overlay on bg-layer
+            position: absolute;
             top: 0;
             left: 0;
             z-index: 5;
-            overflow: hidden; // Taşan içerikleri kes
-            // Wrapper da translateX ile hareket eder
+            overflow: hidden;
             transition: transform 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
             will-change: transform;
         }
@@ -133,10 +130,10 @@
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.25s ease, visibility 0.25s;
-            width: max-content; // Force to be as wide as content needs (Stripe behavior)
-            min-width: 600px;
-            max-width: 100%; // But clamp if it exceeds container (Header)
-            
+            width: fit-content;
+            min-width: $mega-menu-min-width;
+            max-width: max-content;
+
             &.active {
                 opacity: 1;
                 visibility: visible;
@@ -144,54 +141,62 @@
             }
 
             .morph-content-inner {
-                padding: 2rem; 
+                padding: $mega-menu-padding; 
                 white-space: normal; 
                 
-                .mega-col {
-                    min-width: 250px; 
+                .mega-menu-grid {
+                    display: grid;
+                    grid-template-columns: repeat(3, minmax($mega-menu-col-min-width, max-content));
+                    gap: $mega-menu-gap;
+
+                    &.grid-cols-1 {
+                        grid-template-columns: minmax($mega-menu-col-min-width, max-content);
+                    }
+
+                    &.grid-cols-2 {
+                        grid-template-columns: repeat(2, minmax($mega-menu-col-min-width, max-content));
+                    }
                 }
             }
 
-            // Stripe-like Link Styling
             .dropdown-header {
-                font-size: 0.75rem;
+                font-size: $mega-menu-header-size;
                 letter-spacing: 0.05em;
                 margin-bottom: 1rem;
             }
 
             .dropdown-item {
-                display: block; // Bootstrap default override if needed
-                width: fit-content; // USER REQUEST: Only expand to content width (not full column)
+                display: block;
+                width: 100%;
                 padding: 0.5rem 0.75rem;
-                margin-left: -0.75rem; // Pull back to align text with header
+                margin-left: -0.75rem;
                 border-radius: 8px;
                 font-weight: 500;
-                font-size: 0.75rem; 
+                font-size: $mega-menu-item-size; 
                 color: $body-color; 
                 transition: all 0.2s ease;
+                white-space: normal;
 
                 &:hover {
                     background-color: rgba($primary, 0.05);
                     color: $primary;
-                    // padding-left: 1rem; // REMOVED: Causes layout shift
                     
                     span {
-                        transform: translateX(5px); // Nudge text only
+                        transform: translateX(5px);
                     }
                 }
                 
                 span {
                     position: relative;
                     z-index: 1;
-                    display: inline-block; // Important for transform
-                    transition: transform 0.2s ease; // Smooth nudge
+                    display: inline-block;
+                    transition: transform 0.2s ease;
                 }
             }
         }
     }
 }
 
-// Open States controlled by JS
 .morph-navigation.is-dropdown-visible {
     .bg-layer, .arrow {
         opacity: 1;

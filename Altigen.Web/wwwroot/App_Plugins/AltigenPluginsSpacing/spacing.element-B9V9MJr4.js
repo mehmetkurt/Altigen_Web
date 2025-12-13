@@ -1,0 +1,262 @@
+import { LitElement as r, html as c, css as h, state as v, property as p, customElement as d } from "@umbraco-cms/backoffice/external/lit";
+import { UmbElementMixin as g } from "@umbraco-cms/backoffice/element-api";
+var f = Object.defineProperty, _ = Object.getOwnPropertyDescriptor, o = (t, e, l, a) => {
+  for (var i = a > 1 ? void 0 : a ? _(e, l) : e, u = t.length - 1, s; u >= 0; u--)
+    (s = t[u]) && (i = (a ? s(e, l, i) : s(i)) || i);
+  return a && i && f(e, l, i), i;
+};
+let n = class extends g(r) {
+  constructor() {
+    super(...arguments), this._value = { unit: "px", isLinked: !0 };
+  }
+  set value(t) {
+    if (!t) {
+      this._value = { unit: "px", isLinked: !0 };
+      return;
+    }
+    try {
+      const e = JSON.parse(t);
+      this._value = {
+        unit: "px",
+        isLinked: !0,
+        ...e
+      };
+    } catch {
+      this._value = { unit: "px", isLinked: !0 };
+    }
+  }
+  get value() {
+    return JSON.stringify(this._value);
+  }
+  _update(t, e) {
+    this._value.isLinked ? this._value = {
+      ...this._value,
+      top: e,
+      right: e,
+      bottom: e,
+      left: e
+    } : this._value = { ...this._value, [t]: e }, this._dispatchChange();
+  }
+  _toggleLink() {
+    if (this._value = { ...this._value, isLinked: !this._value.isLinked }, this._value.isLinked) {
+      const t = this._value.top || this._value.right || this._value.bottom || this._value.left || "";
+      this._value = {
+        ...this._value,
+        top: t,
+        right: t,
+        bottom: t,
+        left: t
+      }, this._dispatchChange();
+    } else
+      this.requestUpdate();
+  }
+  _changeUnit(t) {
+    const e = t.target;
+    this._value = { ...this._value, unit: e.value }, this._dispatchChange();
+  }
+  _dispatchChange() {
+    this.dispatchEvent(new CustomEvent("property-value-change", { bubbles: !0, composed: !0 }));
+  }
+  render() {
+    return c`
+            <div class="spacing-wrapper">
+                
+                <div class="header-controls">
+                     <div class="unit-selector">
+                        <select @change=${this._changeUnit} .value=${this._value.unit || "px"}>
+                            <option value="px">px</option>
+                            <option value="%">%</option>
+                            <option value="em">em</option>
+                            <option value="rem">rem</option>
+                            <option value="vw">vw</option>
+                            <option value="vh">vh</option>
+                            <option value="">custom</option>
+                        </select>
+                        <span class="unit-arrow">▼</span>
+                     </div>
+                </div>
+
+                <div class="inputs-container">
+                    
+                    <div class="input-group">
+                        <uui-input 
+                            .value=${this._value.top ?? ""} 
+                            @input=${(t) => this._update("top", t.target.value)}
+                            type="text">
+                        </uui-input>
+                        <label>Top</label>
+                    </div>
+
+                    <div class="input-group">
+                        <uui-input 
+                            .value=${this._value.right ?? ""} 
+                            @input=${(t) => this._update("right", t.target.value)}
+                            type="text">
+                        </uui-input>
+                        <label>Right</label>
+                    </div>
+
+                    <div class="input-group">
+                        <uui-input 
+                            .value=${this._value.bottom ?? ""} 
+                            @input=${(t) => this._update("bottom", t.target.value)}
+                            type="text">
+                        </uui-input>
+                        <label>Bottom</label>
+                    </div>
+
+                    <div class="input-group">
+                        <uui-input 
+                            .value=${this._value.left ?? ""} 
+                            @input=${(t) => this._update("left", t.target.value)}
+                            type="text">
+                        </uui-input>
+                        <label>Left</label>
+                    </div>
+
+                    <div class="link-control">
+                        <uui-button 
+                            compact 
+                            look="${this._value.isLinked ? "primary" : "secondary"}" 
+                            @click=${this._toggleLink}
+                            title="${this._value.isLinked ? "Unlink values" : "Link values"}">
+                            <span class="link-icon">
+                                ${this._value.isLinked ? "🔗" : "🔓"}
+                            </span>
+                        </uui-button>
+                    </div>
+
+                </div>
+            </div>
+        `;
+  }
+};
+n.styles = h`
+        :host {
+            display: block;
+            font-family: inherit;
+        }
+        
+        .spacing-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            max-width: 400px;
+        }
+
+        .header-controls {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            height: 18px; /* Compact header */
+            padding-right: 4px;
+        }
+
+        .unit-selector {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .unit-selector select {
+            appearance: none;
+            -webkit-appearance: none;
+            background: transparent;
+            border: none;
+            color: var(--uui-color-text-alt); /* Softer */
+            font-size: 10px;
+            text-transform: lowercase;
+            font-weight: 600;
+            cursor: pointer;
+            padding-right: 14px; /* Space for arrow */
+        }
+        
+        .unit-selector select:hover, .unit-selector select:focus {
+            color: var(--uui-color-interactive);
+            outline: none;
+        }
+
+        .unit-arrow {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 6px;
+            color: var(--uui-color-text-alt);
+            pointer-events: none;
+        }
+
+        .inputs-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr auto; /* 4 inputs + link button */
+            gap: 4px;
+            align-items: start;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+
+        uui-input {
+            width: 100%;
+            text-align: center;
+            --uui-input-padding-left: 2px;
+            --uui-input-padding-right: 2px;
+            --uui-input-height: 26px; 
+            font-size: 12px;
+        }
+
+        .input-group label {
+            font-size: 9px;
+            color: #a1a1a1; /* Fixed soft gray */
+            font-weight: 500;
+            margin-top: 2px;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+        
+        .input-group:hover label {
+            opacity: 1;
+            color: var(--uui-color-text);
+        }
+
+        .link-control {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 26px; /* Match input height */
+            padding-left: 2px;
+        }
+
+        .link-icon {
+            font-size: 12px; /* Smaller icon too */
+            line-height: 1;
+            opacity: 0.7;
+        }
+        
+        uui-button[look="secondary"] .link-icon {
+             filter: grayscale(100%);
+             opacity: 0.5;
+        }
+    `;
+o([
+  v()
+], n.prototype, "_value", 2);
+o([
+  p({ attribute: !1 })
+], n.prototype, "config", 2);
+o([
+  p({ type: String })
+], n.prototype, "value", 1);
+n = o([
+  d("altigen-spacing-editor")
+], n);
+const y = n;
+export {
+  n as AltigenSpacingEditorElement,
+  y as default
+};
+//# sourceMappingURL=spacing.element-B9V9MJr4.js.map

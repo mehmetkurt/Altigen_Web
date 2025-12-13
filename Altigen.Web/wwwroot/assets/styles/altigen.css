@@ -10432,9 +10432,6 @@ body, p {
   animation: whatsapp-pulse 2s infinite;
 }
 
-/* -------------------------------------------------------------------------- */
-/*                               MORPHING MENU                                */
-/* -------------------------------------------------------------------------- */
 @media (min-width: 1200px) {
   .morph-navigation {
     position: relative;
@@ -10545,9 +10542,9 @@ body, p {
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.25s ease, visibility 0.25s;
-    width: max-content;
-    min-width: 600px;
-    max-width: 100%;
+    width: fit-content;
+    min-width: 250px;
+    max-width: max-content;
   }
   .morph-navigation .morph-content.active {
     opacity: 1;
@@ -10558,24 +10555,33 @@ body, p {
     padding: 2rem;
     white-space: normal;
   }
-  .morph-navigation .morph-content .morph-content-inner .mega-col {
-    min-width: 250px;
+  .morph-navigation .morph-content .morph-content-inner .mega-menu-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(250px, max-content));
+    gap: 1.5rem;
+  }
+  .morph-navigation .morph-content .morph-content-inner .mega-menu-grid.grid-cols-1 {
+    grid-template-columns: minmax(250px, max-content);
+  }
+  .morph-navigation .morph-content .morph-content-inner .mega-menu-grid.grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(250px, max-content));
   }
   .morph-navigation .morph-content .dropdown-header {
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     letter-spacing: 0.05em;
     margin-bottom: 1rem;
   }
   .morph-navigation .morph-content .dropdown-item {
     display: block;
-    width: fit-content;
+    width: 100%;
     padding: 0.5rem 0.75rem;
     margin-left: -0.75rem;
     border-radius: 8px;
     font-weight: 500;
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     color: #212529;
     transition: all 0.2s ease;
+    white-space: normal;
   }
   .morph-navigation .morph-content .dropdown-item:hover {
     background-color: rgba(32, 72, 109, 0.05);

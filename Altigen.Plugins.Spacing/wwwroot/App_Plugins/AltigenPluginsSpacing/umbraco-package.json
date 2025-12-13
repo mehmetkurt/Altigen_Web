@@ -1,0 +1,14 @@
+{
+  "id": "Altigen.Plugins.Spacing",
+  "name": "Altigen.Plugins.Spacing",
+  "version": "0.0.0",
+  "allowTelemetry": true,
+  "extensions": [
+    {
+      "name": "Altigen Plugins Spacing Bundle",
+      "alias": "Altigen.Plugins.Spacing.Bundle",
+      "type": "bundle",
+      "js": "/App_Plugins/AltigenPluginsSpacing/altigen-plugins-spacing.js"
+    }
+  ]
+}

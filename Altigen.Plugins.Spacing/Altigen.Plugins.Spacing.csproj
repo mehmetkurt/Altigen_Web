@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<StaticWebAssetBasePath>/</StaticWebAssetBasePath>
+		<PackageId>Altigen.Plugins.Spacing</PackageId>
+		<Product>Altigen.Plugins.Spacing</Product>
+		<Title>Altigen.Plugins.Spacing</Title>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Umbraco.Cms.Core" Version="17.0.0" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<ClientProjectDirectory>$(MSBuildProjectDirectory)\Client</ClientProjectDirectory>
+		<ClientDistDirectory>$(MSBuildProjectDirectory)\wwwroot\App_Plugins\AltigenPluginsSpacing</ClientDistDirectory>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- Dont include the client folder as part of packaging nuget build -->
+		<Compile Remove="wwwroot\**" />
+		<Content Remove="Client\**" />
+		<Content Remove="wwwroot\**" />
+		<EmbeddedResource Remove="wwwroot\**" />
+		<None Remove="wwwroot\**" />
+	</ItemGroup>
+
+
+	<Target Name="BuildClient" BeforeTargets="Build">
+		<Exec Command="npm install" WorkingDirectory="$(ClientProjectDirectory)" Condition="!Exists('$(ClientProjectDirectory)\node_modules')" />
+		<Exec Command="npm run build" WorkingDirectory="$(ClientProjectDirectory)" />
+	</Target>
+
+
+	<Target Name="CopyPluginsToWeb" AfterTargets="Build">
+		<ItemGroup>
+			<PluginFiles Include="wwwroot\App_Plugins\**\*.*" />
+		</ItemGroup>
+		<Copy SourceFiles="@(PluginFiles)"
+			  DestinationFolder="..\Altigen.Web\wwwroot\App_Plugins\%(RecursiveDir)"
+			  SkipUnchangedFiles="true" />
+	</Target>
+
+</Project>

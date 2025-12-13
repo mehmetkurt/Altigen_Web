@@ -40,6 +40,7 @@
 - **Partial Views**: Encapsulate reusable UI components into Partial Views.
 - **No Magic Strings**: Avoid using hardcoded strings for Content Type Aliases or Property Aliases. Use generated constants (ModelsBuilder) or `nameof` where possible.
 - **View Inheritance**: Do not use explicit `@inherits` in views unless necessary. Rely on `_ViewImports.cshtml` and use `@model` instead.
+- **Block List Labels (UFM)**: Umbraco v14+ removes AngularJS support for labels. Do NOT use `{{ propertyAlias }}`. Use **Umbraco Flavored Markdown (UFM)** syntax: `{=propertyAlias}` or `{umbValue: propertyAlias}`. For more complex labels, check the official documentation.
 
 ## 5. JavaScript Rules
 - **Modern Syntax**: Use ES6+ features (e.g., `const`/`let` instead of `var`, arrow functions, template literals).

@@ -29,10 +29,13 @@
                 var url = link?.Url ?? "#";
                 var target = link?.Target ?? "_self";
 
+                var itemClass = GetItemClass(item);
+                var itemStyle = GetItemStyle(item);
+
                 if (isMegaMenu && subItems != null && subItems.Any())
                 {
                     <li class="nav-item dropdown position-static">
-                        <a href="@url" class="nav-link dropdown-toggle" id="mobile-dropdown-@content.Key-@renderId" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-display="static" itemprop="url"><span itemprop="name">@title</span></a>
+                        <a href="@url" class="nav-link dropdown-toggle @itemClass" style="@itemStyle" id="mobile-dropdown-@content.Key-@renderId" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-display="static" itemprop="url"><span itemprop="name">@title</span></a>
                         <div class="dropdown-menu shadow-lg border-0 mt-0" aria-labelledby="mobile-dropdown-@content.Key-@renderId" style="border-radius: 0 0 20px 20px; overflow: hidden;">
                             <div class="px-4 py-3">
                                 <div class="row g-5">
@@ -42,6 +45,9 @@
                                         var isPromo = subContent.Value<bool>("isPromoCard");
                                         var isColHeader = subContent.Value<bool>("isColumnHeader");
 
+                                        var subItemClass = GetItemClass(subItem);
+                                        var subItemStyle = GetItemStyle(subItem);
+
                                         if (isPromo)
                                         {
                                             var promoImg = subContent.Value<MediaWithCrops>("promoImage");
@@ -49,7 +55,7 @@
                                             var promoTitle = subContent.Value<string>("title");
 
                                             <div class="col-auto">
-                                                <div class="card border-0 text-white rounded-3 overflow-hidden" style="width: 250px;">
+                                                <div class="card border-0 text-white rounded-3 overflow-hidden @subItemClass" style="width: 250px; @subItemStyle">
                                                     @if(promoImg != null)
                                                     {
                                                         <img src="@promoImg.Url()" class="card-img" alt="@promoTitle" style="height: 100%; object-fit: cover;">
@@ -67,7 +73,7 @@
                                             var colLinks = subContent.Value<IEnumerable<BlockListItem>>("subItems");
 
                                             <div class="col-auto">
-                                                <h6 class="text-primary text-uppercase fw-bold mb-3">@colTitle</h6>
+                                                <h6 class="text-primary text-uppercase fw-bold mb-3 @subItemClass" style="@subItemStyle">@colTitle</h6>
                                                 @if (colLinks != null && colLinks.Any())
                                                 {
                                                      <ul class="list-unstyled w-100 h-100 d-flex flex-column gap-2">
@@ -76,7 +82,19 @@
                                                             var linkContent = linkItem.Content;
                                                             var lTitle = linkContent.Value<string>("title");
                                                             var lLink = linkContent.Value<Link>("link");
-                                                            <li><a href="@(lLink?.Url ?? "#")" target="@(lLink?.Target ?? "_self")" class="dropdown-item" itemprop="url"><span itemprop="name">@lTitle</span></a></li>
+                                                            
+                                                            var linkClass = GetItemClass(linkItem);
+                                                            var linkStyle = GetItemStyle(linkItem);
+
+                                                            <li>
+                                                                <a href="@(lLink?.Url ?? "#")" 
+                                                                   target="@(lLink?.Target ?? "_self")" 
+                                                                   class="dropdown-item @linkClass" 
+                                                                   style="@linkStyle"
+                                                                   itemprop="url">
+                                                                    <span itemprop="name">@lTitle</span>
+                                                                </a>
+                                                            </li>
                                                         }
                                                      </ul>
                                                 }
@@ -91,7 +109,7 @@
                 else
                 {
                     <li class="nav-item">
-                        <a href="@url" target="@target" class="nav-link" itemprop="url"><span itemprop="name">@title</span></a>
+                        <a href="@url" target="@target" class="nav-link @itemClass" style="@itemStyle" itemprop="url"><span itemprop="name">@title</span></a>
                     </li>
                 }
             }
@@ -116,8 +134,11 @@
                     var hasDropdown = isMegaMenu && item.Content.Value<IEnumerable<BlockListItem>>("subItems")?.Any() == true;
                     var contentId = $"dropdown-{content.Key}-{renderId}";
 
+                    var itemClass = GetItemClass(item);
+                    var itemStyle = GetItemStyle(item);
+
                     <li class="nav-item @(hasDropdown ? "has-dropdown" : "")" data-target="@(hasDropdown ? contentId : "")">
-                        <a href="@url" target="@target" class="nav-link" itemprop="url">
+                        <a href="@url" target="@target" class="nav-link @itemClass" style="@itemStyle" itemprop="url">
                             <span itemprop="name">@title</span>
                             @if (hasDropdown)
                             {
@@ -149,12 +170,19 @@
                             
                             <div id="@contentId" class="morph-content">
                                 <div class="morph-content-inner">
-                                     <div class="row g-4">
+                                     @{
+                                         var itemCount = subItems.Count();
+                                         var gridClass = itemCount >= 3 ? "grid-cols-3" : $"grid-cols-{itemCount}";
+                                     }
+                                     <div class="mega-menu-grid @gridClass">
                                         @foreach (var subItem in subItems)
                                         {
                                             var subContent = subItem.Content;
                                             var isPromo = subContent.Value<bool>("isPromoCard");
                                             var isColHeader = subContent.Value<bool>("isColumnHeader");
+                                            
+                                            var subItemClass = GetItemClass(subItem);
+                                            var subItemStyle = GetItemStyle(subItem);
 
                                             if (isPromo)
                                             {
@@ -162,8 +190,8 @@
                                                 var promoText = subContent.Value<string>("promoText");
                                                 var promoTitle = subContent.Value<string>("title");
 
-                                                <div class="col mega-col">
-                                                    <div class="card border-0 text-white rounded-3 overflow-hidden h-100">
+                                                <div class="col">
+                                                    <div class="card border-0 text-white rounded-3 overflow-hidden h-100 @subItemClass" style="@subItemStyle">
                                                         @if(promoImg != null)
                                                         {
                                                             <img src="@promoImg.Url()" class="card-img" alt="@promoTitle" style="height: 100%; object-fit: cover;">
@@ -180,8 +208,8 @@
                                                 var colTitle = subContent.Value<string>("title");
                                                 var colLinks = subContent.Value<IEnumerable<BlockListItem>>("subItems");
 
-                                                <div class="col mega-col">
-                                                    <h6 class="dropdown-header text-primary text-uppercase fw-bold mb-3 ps-0">@colTitle</h6>
+                                                <div class="col">
+                                                    <h6 class="dropdown-header text-primary text-uppercase fw-bold mb-3 ps-0 @subItemClass" style="@subItemStyle">@colTitle</h6>
                                                     @if (colLinks != null && colLinks.Any())
                                                     {
                                                          <ul class="list-unstyled w-100 h-100 d-flex flex-column gap-2">
@@ -190,8 +218,15 @@
                                                                 var linkContent = linkItem.Content;
                                                                 var lTitle = linkContent.Value<string>("title");
                                                                 var lLink = linkContent.Value<Link>("link");
+                                                                
+                                                                var linkClass = GetItemClass(linkItem);
+                                                                var linkStyle = GetItemStyle(linkItem);
+
                                                                 <li>
-                                                                    <a href="@(lLink?.Url ?? "#")" target="@(lLink?.Target ?? "_self")" class="dropdown-item">
+                                                                    <a href="@(lLink?.Url ?? "#")" 
+                                                                       target="@(lLink?.Target ?? "_self")" 
+                                                                       class="dropdown-item @linkClass"
+                                                                       style="@linkStyle">
                                                                         @lTitle
                                                                     </a>
                                                                 </li>
@@ -210,4 +245,88 @@
             </div>
         </div>
     </div>
+}
+
+@functions {
+    public string GetItemStyle(BlockListItem item)
+    {
+        var settings = item.Settings;
+        if (settings == null) return string.Empty;
+
+        var width = settings.Value<string>("width");
+        var paddingJson = settings.Value<string>("padding");
+        var marginJson = settings.Value<string>("margin");
+        var customStyle = settings.Value<string>("style");
+
+        var styleList = new List<string>();
+        if (!string.IsNullOrWhiteSpace(width)) styleList.Add($"width: {width}");
+        
+        var padding = ParseSpacingJson(paddingJson);
+        if (!string.IsNullOrWhiteSpace(padding)) styleList.Add($"padding: {padding}");
+
+        var margin = ParseSpacingJson(marginJson);
+        if (!string.IsNullOrWhiteSpace(margin)) styleList.Add($"margin: {margin}");
+
+        if (!string.IsNullOrWhiteSpace(customStyle)) styleList.Add(customStyle);
+
+        return styleList.Any() ? string.Join("; ", styleList) : string.Empty;
+    }
+
+    public string GetItemClass(BlockListItem item)
+    {
+        var settings = item.Settings;
+        if (settings == null) return string.Empty;
+
+        var cssClass = settings.Value<string>("cssClass");
+        var isBold = settings.Value<bool>("isBold");
+
+        var classes = new List<string>();
+        if (isBold) classes.Add("fw-bold");
+        if (!string.IsNullOrWhiteSpace(cssClass)) classes.Add(cssClass);
+
+        return classes.Any() ? string.Join(" ", classes) : "";
+    }
+
+    /* 
+       Helper to parse our Custom Spacing Editor JSON 
+       Format: { "top": "10", "right": "20", "bottom": "10", "left": "20", "unit": "px" }
+    */
+    public string ParseSpacingJson(string json)
+    {
+        if (string.IsNullOrWhiteSpace(json)) return null;
+
+        try 
+        {
+            if (json.Trim().StartsWith("{"))
+            {
+                var spacing = System.Text.Json.JsonSerializer.Deserialize<SpacingModel>(json);
+                if (spacing == null) return null;
+
+                var unit = spacing.unit ?? "px";
+                // If custom unit (empty string or 'custom'), assume user typed unit in value or just numbers
+                // But for now let's adhere to the editor logic: if unit is not empty, append it.
+                
+                var top = !string.IsNullOrWhiteSpace(spacing.top) ? spacing.top + unit : "0";
+                var right = !string.IsNullOrWhiteSpace(spacing.right) ? spacing.right + unit : "0";
+                var bottom = !string.IsNullOrWhiteSpace(spacing.bottom) ? spacing.bottom + unit : "0";
+                var left = !string.IsNullOrWhiteSpace(spacing.left) ? spacing.left + unit : "0";
+
+                return $"{top} {right} {bottom} {left}";
+            }
+            return json; // Fallback for old text-string values
+        }
+        catch 
+        {
+            return json; // Fallback
+        }
+    }
+
+    public class SpacingModel 
+    {
+        public string top { get; set; }
+        public string right { get; set; }
+        public string bottom { get; set; }
+        public string left { get; set; }
+        public string unit { get; set; }
+    }
 }

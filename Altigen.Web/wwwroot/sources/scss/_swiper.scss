@@ -1,26 +1,24 @@
-// Swiper Navigation Buttons Global Styles
 .swiper-button-next,
 .swiper-button-prev {
     width: 3rem;
     height: 3rem;
-    background-color: rgba(255, 255, 255, 0.5); // White bg with 0.5 opacity
-    border-radius: 50%; // Fully rounded
-    color: rgba(0, 0, 0, 0.4); // "Transparent" (Translucent) arrow color for visibility
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    color: rgba(0, 0, 0, 0.4);
     transition: all 0.3s ease;
-    backdrop-filter: blur(4px); // Premium glass effect
+    backdrop-filter: blur(4px);
 
     &::after {
-        font-size: 1.2rem; // Adjust arrow size
+        font-size: 1.2rem;
         font-weight: bold;
     }
 
     &:hover {
-        background-color: rgba(0, 0, 0, 0.5); // Light black on hover
-        color: #fff; // White arrow on dark hover for contrast
+        background-color: rgba(0, 0, 0, 0.5);
+        color: #fff;
     }
 }
 
-// Positioning Overrides (60px offset)
 .swiper-button-next {
     right: 60px !important; 
     left: auto;
@@ -30,21 +28,20 @@
     left: 60px !important;
     right: auto;
 }
-// Swiper Pagination Global Styles
+
 .swiper-pagination {
-    // Ensure sufficient contrast and positioning
     .swiper-pagination-bullet {
-        width: 14px; // Larger size
-        height: 14px; // Larger size
-        background-color: rgba(255, 255, 255, 0.5); // Inactive: White glass (Match Button Default)
-        opacity: 1; // Override default opacity to control it via rgba
+        width: 14px;
+        height: 14px;
+        background-color: rgba(255, 255, 255, 0.5);
+        opacity: 1;
         transition: all 0.3s ease;
         backdrop-filter: blur(4px);
         box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
 
         &-active {
-            background-color: rgba(0, 0, 0, 0.5); // Active: Dark glass (Match Button Hover)
-            transform: scale(1.2); // Slight pop for active state
+            background-color: rgba(0, 0, 0, 0.5);
+            transform: scale(1.2);
         }
     }
 }
