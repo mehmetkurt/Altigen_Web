@@ -1,9 +1,9 @@
 import { LitElement as p, html as c, css as h, state as d, property as r, customElement as v } from "@umbraco-cms/backoffice/external/lit";
 import { UmbElementMixin as g } from "@umbraco-cms/backoffice/element-api";
-var f = Object.defineProperty, x = Object.getOwnPropertyDescriptor, o = (t, e, l, a) => {
-  for (var i = a > 1 ? void 0 : a ? x(e, l) : e, u = t.length - 1, s; u >= 0; u--)
-    (s = t[u]) && (i = (a ? s(e, l, i) : s(i)) || i);
-  return a && i && f(e, l, i), i;
+var f = Object.defineProperty, x = Object.getOwnPropertyDescriptor, o = (t, e, u, a) => {
+  for (var i = a > 1 ? void 0 : a ? x(e, u) : e, l = t.length - 1, s; l >= 0; l--)
+    (s = t[l]) && (i = (a ? s(e, u, i) : s(i)) || i);
+  return a && i && f(e, u, i), i;
 };
 let n = class extends g(p) {
   constructor() {
@@ -12,6 +12,10 @@ let n = class extends g(p) {
   set value(t) {
     if (!t) {
       this._value = { unit: "px", isLinked: !0 };
+      return;
+    }
+    if (typeof t == "object") {
+      this._value = { unit: "px", isLinked: !0, ...t };
       return;
     }
     try {
@@ -26,7 +30,7 @@ let n = class extends g(p) {
     }
   }
   get value() {
-    return JSON.stringify(this._value);
+    return this._value;
   }
   _update(t, e) {
     this._value.isLinked ? this._value = {
@@ -264,7 +268,7 @@ o([
   r({ attribute: !1 })
 ], n.prototype, "config", 2);
 o([
-  r({ type: String })
+  r({ attribute: !1 })
 ], n.prototype, "value", 1);
 n = o([
   v("altigen-spacing-editor")
@@ -274,4 +278,4 @@ export {
   n as AltigenSpacingEditorElement,
   b as default
 };
-//# sourceMappingURL=spacing.element-BbispM2e.js.map
+//# sourceMappingURL=spacing.element-BuSo1oD3.js.map

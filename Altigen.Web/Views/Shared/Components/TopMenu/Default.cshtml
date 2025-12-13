@@ -254,18 +254,16 @@
         if (settings == null) return string.Empty;
 
         var width = settings.Value<string>("width");
-        var paddingJson = settings.Value<string>("padding");
-        var marginJson = settings.Value<string>("margin");
         var customStyle = settings.Value<string>("style");
 
         var styleList = new List<string>();
         if (!string.IsNullOrWhiteSpace(width)) styleList.Add($"width: {width}");
         
-        var padding = ParseSpacingJson(paddingJson);
-        if (!string.IsNullOrWhiteSpace(padding)) styleList.Add($"padding: {padding}");
+        var paddingStyle = GetSpacingStyle(settings.Value("padding"), "padding");
+        if (!string.IsNullOrWhiteSpace(paddingStyle)) styleList.Add(paddingStyle);
 
-        var margin = ParseSpacingJson(marginJson);
-        if (!string.IsNullOrWhiteSpace(margin)) styleList.Add($"margin: {margin}");
+        var marginStyle = GetSpacingStyle(settings.Value("margin"), "margin");
+        if (!string.IsNullOrWhiteSpace(marginStyle)) styleList.Add(marginStyle);
 
         if (!string.IsNullOrWhiteSpace(customStyle)) styleList.Add(customStyle);
 
@@ -291,33 +289,77 @@
        Helper to parse our Custom Spacing Editor JSON 
        Format: { "top": "10", "right": "20", "bottom": "10", "left": "20", "unit": "px" }
     */
-    public string ParseSpacingJson(string json)
+    public string GetSpacingStyle(object input, string prefix)
     {
-        if (string.IsNullOrWhiteSpace(json)) return null;
+        if (input == null) return null;
 
         try 
         {
-            if (json.Trim().StartsWith("{"))
+            SpacingModel spacing = null;
+
+            if (input is string jsonStr)
             {
-                var spacing = System.Text.Json.JsonSerializer.Deserialize<SpacingModel>(json);
-                if (spacing == null) return null;
-
-                var unit = spacing.unit ?? "px";
-                // If custom unit (empty string or 'custom'), assume user typed unit in value or just numbers
-                // But for now let's adhere to the editor logic: if unit is not empty, append it.
-                
-                var top = !string.IsNullOrWhiteSpace(spacing.top) ? spacing.top + unit : "0";
-                var right = !string.IsNullOrWhiteSpace(spacing.right) ? spacing.right + unit : "0";
-                var bottom = !string.IsNullOrWhiteSpace(spacing.bottom) ? spacing.bottom + unit : "0";
-                var left = !string.IsNullOrWhiteSpace(spacing.left) ? spacing.left + unit : "0";
-
-                return $"{top} {right} {bottom} {left}";
+                 if (string.IsNullOrWhiteSpace(jsonStr)) return null;
+                 if (jsonStr.Trim().StartsWith("{"))
+                 {
+                     spacing = System.Text.Json.JsonSerializer.Deserialize<SpacingModel>(jsonStr);
+                 }
+                 else
+                 {
+                     return $"{prefix}: {jsonStr} !important"; // Fallback with important
+                 }
             }
-            return json; // Fallback for old text-string values
+            else if (input is System.Text.Json.JsonDocument doc)
+            {
+                spacing = System.Text.Json.JsonSerializer.Deserialize<SpacingModel>(doc);
+            }
+            else
+            {
+                // Fallback attempt
+                var str = input.ToString();
+                if (str.Trim().StartsWith("{")) {
+                     spacing = System.Text.Json.JsonSerializer.Deserialize<SpacingModel>(str);
+                } else {
+                     return $"{prefix}: {str} !important";
+                }
+            }
+
+            if (spacing == null) return null;
+
+            var t = spacing.top;
+            var r = spacing.right;
+            var b = spacing.bottom;
+            var l = spacing.left;
+
+            bool hasT = !string.IsNullOrWhiteSpace(t);
+            bool hasR = !string.IsNullOrWhiteSpace(r);
+            bool hasB = !string.IsNullOrWhiteSpace(b);
+            bool hasL = !string.IsNullOrWhiteSpace(l);
+
+            // 1. All Empty -> Return null
+            if (!hasT && !hasR && !hasB && !hasL) return null;
+
+            var unit = spacing.unit;
+            if (string.IsNullOrEmpty(unit)) unit = "px";
+
+            // 2. All Filled -> Shorthand Optimization
+            if (hasT && hasR && hasB && hasL)
+            {
+                return $"{prefix}: {t}{unit} {r}{unit} {b}{unit} {l}{unit} !important";
+            }
+
+            // 3. Partial -> Longhand (Skip empty)
+            var styles = new List<string>();
+            if (hasT) styles.Add($"{prefix}-top: {t}{unit} !important");
+            if (hasR) styles.Add($"{prefix}-right: {r}{unit} !important");
+            if (hasB) styles.Add($"{prefix}-bottom: {b}{unit} !important");
+            if (hasL) styles.Add($"{prefix}-left: {l}{unit} !important");
+
+            return string.Join("; ", styles);
         }
         catch 
         {
-            return json; // Fallback
+            return null;
         }
     }
 

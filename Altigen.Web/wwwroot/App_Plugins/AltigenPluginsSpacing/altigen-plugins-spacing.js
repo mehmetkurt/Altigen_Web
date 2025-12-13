@@ -3,7 +3,7 @@ const i = [
     type: "propertyEditorUi",
     alias: "Altigen.PropertyEditorUi.Spacing",
     name: "Spacing UI",
-    js: () => import("./spacing.element-BbispM2e.js"),
+    js: () => import("./spacing.element-BuSo1oD3.js"),
     meta: {
       label: "Spacing (Box Model)",
       icon: "icon-box",

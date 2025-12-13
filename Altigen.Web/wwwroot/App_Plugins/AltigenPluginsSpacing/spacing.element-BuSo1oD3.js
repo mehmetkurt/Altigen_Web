@@ -1,106 +1,73 @@
-import { LitElement, css, html, customElement, property, state } from "@umbraco-cms/backoffice/external/lit";
-import { UmbElementMixin } from "@umbraco-cms/backoffice/element-api";
-
-interface SpacingValue {
-    top?: string;
-    right?: string;
-    bottom?: string;
-    left?: string;
-    unit?: string;
-    isLinked?: boolean;
-}
-
-@customElement('altigen-spacing-editor')
-export class AltigenSpacingEditorElement extends UmbElementMixin(LitElement) {
-
-    @state()
-    private _value: SpacingValue = { unit: 'px', isLinked: true };
-
-    @property({ attribute: false })
-    public config: any;
-
-    @property({ attribute: false })
-    public set value(value: string | SpacingValue | undefined) {
-        if (!value) {
-            this._value = { unit: 'px', isLinked: true };
-            return;
-        }
-
-        if (typeof value === 'object') {
-            this._value = { unit: 'px', isLinked: true, ...value };
-            return;
-        }
-        
-        try {
-            const parsed = JSON.parse(value);
-            this._value = { 
-                unit: 'px', 
-                isLinked: true,
-                ...parsed 
-            };
-        } catch {
-            this._value = { unit: 'px', isLinked: true };
-        }
+import { LitElement as p, html as c, css as h, state as d, property as r, customElement as v } from "@umbraco-cms/backoffice/external/lit";
+import { UmbElementMixin as g } from "@umbraco-cms/backoffice/element-api";
+var f = Object.defineProperty, x = Object.getOwnPropertyDescriptor, o = (t, e, u, a) => {
+  for (var i = a > 1 ? void 0 : a ? x(e, u) : e, l = t.length - 1, s; l >= 0; l--)
+    (s = t[l]) && (i = (a ? s(e, u, i) : s(i)) || i);
+  return a && i && f(e, u, i), i;
+};
+let n = class extends g(p) {
+  constructor() {
+    super(...arguments), this._value = { unit: "px", isLinked: !0 };
+  }
+  set value(t) {
+    if (!t) {
+      this._value = { unit: "px", isLinked: !0 };
+      return;
     }
-
-    public get value(): SpacingValue {
-        return this._value;
+    if (typeof t == "object") {
+      this._value = { unit: "px", isLinked: !0, ...t };
+      return;
     }
-
-    private _update(side: 'top' | 'right' | 'bottom' | 'left', val: string) {
-        if (this._value.isLinked) {
-            // Update all sides if linked
-            this._value = { 
-                ...this._value, 
-                top: val, 
-                right: val, 
-                bottom: val, 
-                left: val 
-            };
-        } else {
-            // Update only specific side
-            this._value = { ...this._value, [side]: val };
-        }
-        this._dispatchChange();
+    try {
+      const e = JSON.parse(t);
+      this._value = {
+        unit: "px",
+        isLinked: !0,
+        ...e
+      };
+    } catch {
+      this._value = { unit: "px", isLinked: !0 };
     }
-
-    private _toggleLink() {
-        this._value = { ...this._value, isLinked: !this._value.isLinked };
-        
-        // If we just linked, sync all values to the top value (or first available)
-        if (this._value.isLinked) {
-            const syncVal = this._value.top || this._value.right || this._value.bottom || this._value.left || "";
-            this._value = {
-                ...this._value,
-                top: syncVal,
-                right: syncVal,
-                bottom: syncVal,
-                left: syncVal
-            };
-            this._dispatchChange();
-        } else {
-            // Just trigger re-render to update icon state
-            this.requestUpdate();
-        }
-    }
-
-    private _changeUnit(e: Event) {
-        const target = e.target as HTMLSelectElement;
-        this._value = { ...this._value, unit: target.value };
-        this._dispatchChange();
-    }
-
-    private _dispatchChange() {
-        this.dispatchEvent(new CustomEvent('property-value-change', { bubbles: true, composed: true }));
-    }
-
-    render() {
-        return html`
+  }
+  get value() {
+    return this._value;
+  }
+  _update(t, e) {
+    this._value.isLinked ? this._value = {
+      ...this._value,
+      top: e,
+      right: e,
+      bottom: e,
+      left: e
+    } : this._value = { ...this._value, [t]: e }, this._dispatchChange();
+  }
+  _toggleLink() {
+    if (this._value = { ...this._value, isLinked: !this._value.isLinked }, this._value.isLinked) {
+      const t = this._value.top || this._value.right || this._value.bottom || this._value.left || "";
+      this._value = {
+        ...this._value,
+        top: t,
+        right: t,
+        bottom: t,
+        left: t
+      }, this._dispatchChange();
+    } else
+      this.requestUpdate();
+  }
+  _changeUnit(t) {
+    const e = t.target;
+    this._value = { ...this._value, unit: e.value }, this._dispatchChange();
+  }
+  _dispatchChange() {
+    this.dispatchEvent(new CustomEvent("property-value-change", { bubbles: !0, composed: !0 }));
+  }
+  render() {
+    return c`
             <div class="spacing-wrapper">
                 
                 <div class="header-controls">
                      <div class="unit-selector">
-                        <select @change=${this._changeUnit} .value=${this._value.unit || 'px'}>
+                        <select @change=${this._changeUnit} .value=${this._value.unit || "px"}>
                             <option value="px">px</option>
                             <option value="%">%</option>
                             <option value="em">em</option>
@@ -117,8 +84,8 @@ export class AltigenSpacingEditorElement extends UmbElementMixin(LitElement) {
                     
                     <div class="input-group">
                         <uui-input 
-                            .value=${this._value.top ?? ''} 
-                            @input=${(e: any) => this._update('top', e.target.value)}
+                            .value=${this._value.top ?? ""} 
+                            @input=${(t) => this._update("top", t.target.value)}
                             type="text">
                         </uui-input>
                         <label>Top</label>
@@ -126,8 +93,8 @@ export class AltigenSpacingEditorElement extends UmbElementMixin(LitElement) {
 
                     <div class="input-group">
                         <uui-input 
-                            .value=${this._value.right ?? ''} 
-                            @input=${(e: any) => this._update('right', e.target.value)}
+                            .value=${this._value.right ?? ""} 
+                            @input=${(t) => this._update("right", t.target.value)}
                             type="text">
                         </uui-input>
                         <label>Right</label>
@@ -135,8 +102,8 @@ export class AltigenSpacingEditorElement extends UmbElementMixin(LitElement) {
 
                     <div class="input-group">
                         <uui-input 
-                            .value=${this._value.bottom ?? ''} 
-                            @input=${(e: any) => this._update('bottom', e.target.value)}
+                            .value=${this._value.bottom ?? ""} 
+                            @input=${(t) => this._update("bottom", t.target.value)}
                             type="text">
                         </uui-input>
                         <label>Bottom</label>
@@ -144,8 +111,8 @@ export class AltigenSpacingEditorElement extends UmbElementMixin(LitElement) {
 
                     <div class="input-group">
                         <uui-input 
-                            .value=${this._value.left ?? ''} 
-                            @input=${(e: any) => this._update('left', e.target.value)}
+                            .value=${this._value.left ?? ""} 
+                            @input=${(t) => this._update("left", t.target.value)}
                             type="text">
                         </uui-input>
                         <label>Left</label>
@@ -154,11 +121,11 @@ export class AltigenSpacingEditorElement extends UmbElementMixin(LitElement) {
                     <div class="link-control">
                         <uui-button 
                             compact 
-                            look="${this._value.isLinked ? 'primary' : 'secondary'}" 
+                            look="${this._value.isLinked ? "primary" : "secondary"}" 
                             @click=${this._toggleLink}
-                            title="${this._value.isLinked ? 'Unlink values' : 'Link values'}">
+                            title="${this._value.isLinked ? "Unlink values" : "Link values"}">
                             <span class="link-icon">
-                                ${this._value.isLinked ? '🔗' : '🔓'}
+                                ${this._value.isLinked ? "🔗" : "🔓"}
                             </span>
                         </uui-button>
                     </div>
@@ -166,9 +133,9 @@ export class AltigenSpacingEditorElement extends UmbElementMixin(LitElement) {
                 </div>
             </div>
         `;
-    }
-
-    static styles = css`
+  }
+};
+n.styles = h`
         :host {
             display: block;
             font-family: inherit;
@@ -294,12 +261,21 @@ export class AltigenSpacingEditorElement extends UmbElementMixin(LitElement) {
              opacity: 0.5;
         }
     `;
-}
-
-export default AltigenSpacingEditorElement;
-
-declare global {
-    interface HTMLElementTagNameMap {
-        'altigen-spacing-editor': AltigenSpacingEditorElement;
-    }
-}
+o([
+  d()
+], n.prototype, "_value", 2);
+o([
+  r({ attribute: !1 })
+], n.prototype, "config", 2);
+o([
+  r({ attribute: !1 })
+], n.prototype, "value", 1);
+n = o([
+  v("altigen-spacing-editor")
+], n);
+const b = n;
+export {
+  n as AltigenSpacingEditorElement,
+  b as default
+};
+//# sourceMappingURL=spacing.element-BuSo1oD3.js.map
