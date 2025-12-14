@@ -1,0 +1,11 @@
+@model Altigen.Web.ViewComponents.SeoViewModel
+
+@if (!string.IsNullOrWhiteSpace(Model.Title))
+{
+    <title>@Model.Title</title>
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.Description))
+{
+    <meta name="description" content="@Model.Description" />
+}

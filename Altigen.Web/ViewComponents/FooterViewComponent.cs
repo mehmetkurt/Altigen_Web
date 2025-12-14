@@ -16,17 +16,17 @@ public class FooterViewComponent : ViewComponent
 
     public IViewComponentResult Invoke()
     {
-        var settingsNode = _umbracoHelper.ContentAtRoot().DescendantsOrSelf<Settings>().FirstOrDefault();
+        var settingsNode = _umbracoHelper.ContentAtRoot().DescendantsOrSelf<GlobalSettings>().FirstOrDefault();
 
         if (settingsNode == null)
         {
-             return View(null);
+            return View(null);
         }
 
         // Business Fallback: Footer defaults to Header logo if not specified
         var headerDesktop = settingsNode.HeaderSettingsLogoDesktop;
         var footerDesktop = settingsNode.FooterSettingsLogoDesktop ?? headerDesktop;
-        
+
         // Pass raw device values - Responsive Fallback handled in LogoViewComponent
         var footerTablet = settingsNode.FooterSettingsLogoTablet;
         var footerMobile = settingsNode.FooterSettingsLogoMobile;

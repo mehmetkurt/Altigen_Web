@@ -16,11 +16,11 @@ public class HeaderViewComponent : ViewComponent
 
     public IViewComponentResult Invoke()
     {
-        var settingsNode = _umbracoHelper.ContentAtRoot().DescendantsOrSelf<Settings>().FirstOrDefault();
-        
+        var settingsNode = _umbracoHelper.ContentAtRoot().DescendantsOrSelf<GlobalSettings>().FirstOrDefault();
+
         if (settingsNode == null)
         {
-             return View(null);
+            return View(null);
         }
 
         // Pass raw values - Fallback is now handled in LogoViewComponent
@@ -28,8 +28,8 @@ public class HeaderViewComponent : ViewComponent
         var tablet = settingsNode.HeaderSettingsLogoTablet;
         var mobile = settingsNode.HeaderSettingsLogoMobile;
 
-        return View(new LogoViewModel 
-        { 
+        return View(new LogoViewModel
+        {
             DesktopLogo = desktop,
             TabletLogo = tablet,
             MobileLogo = mobile,

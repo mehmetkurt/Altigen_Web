@@ -22,6 +22,18 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 	/// <summary>Sitemap</summary>
 	public partial interface ISitemap : IPublishedElement
 	{
+		/// <summary>Change Frequency</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.0+da502e0")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		string SitemapChangeFreq { get; }
+
+		/// <summary>Hide from Sitemap</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.0+da502e0")]
+		bool SitemapHide { get; }
+
+		/// <summary>Priority</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.0+da502e0")]
+		decimal SitemapPriority { get; }
 	}
 
 	/// <summary>Sitemap</summary>
@@ -54,5 +66,40 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		}
 
 		// properties
+
+		///<summary>
+		/// Change Frequency: How frequently the page is likely to change
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.0+da502e0")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("sitemapChangeFreq")]
+		public virtual string SitemapChangeFreq => GetSitemapChangeFreq(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Change Frequency</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.0+da502e0")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static string GetSitemapChangeFreq(ISitemap that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "sitemapChangeFreq");
+
+		///<summary>
+		/// Hide from Sitemap: Hide this page from the XML sitemap
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.0+da502e0")]
+		[ImplementPropertyType("sitemapHide")]
+		public virtual bool SitemapHide => GetSitemapHide(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Hide from Sitemap</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.0+da502e0")]
+		public static bool GetSitemapHide(ISitemap that, IPublishedValueFallback publishedValueFallback) => that.Value<bool>(publishedValueFallback, "sitemapHide");
+
+		///<summary>
+		/// Priority: The priority of this URL relative to other URLs on your site
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.0+da502e0")]
+		[ImplementPropertyType("sitemapPriority")]
+		public virtual decimal SitemapPriority => GetSitemapPriority(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Priority</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.0+da502e0")]
+		public static decimal GetSitemapPriority(ISitemap that, IPublishedValueFallback publishedValueFallback) => that.Value<decimal>(publishedValueFallback, "sitemapPriority");
 	}
 }

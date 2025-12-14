@@ -18,14 +18,14 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-	/// <summary>Settings</summary>
-	[PublishedModel("settings")]
-	public partial class Settings : PublishedContentModel, IFooterSettings, IHeaderSettings
+	/// <summary>Global Settings</summary>
+	[PublishedModel("globalSettings")]
+	public partial class GlobalSettings : PublishedContentModel, IFooterSettings, IHeaderSettings, ISeoSettings
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.0+da502e0")]
-		public new const string ModelTypeAlias = "settings";
+		public new const string ModelTypeAlias = "globalSettings";
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.0+da502e0")]
 		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.0+da502e0")]
@@ -34,14 +34,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 			=> PublishedModelUtility.GetModelContentType(contentTypeCache, ModelItemType, ModelTypeAlias);
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.0+da502e0")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedContentTypeCache contentTypeCache, Expression<Func<Settings, TValue>> selector)
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedContentTypeCache contentTypeCache, Expression<Func<GlobalSettings, TValue>> selector)
 			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(contentTypeCache), selector);
 #pragma warning restore 0109
 
 		private IPublishedValueFallback _publishedValueFallback;
 
 		// ctor
-		public Settings(IPublishedContent content, IPublishedValueFallback publishedValueFallback)
+		public GlobalSettings(IPublishedContent content, IPublishedValueFallback publishedValueFallback)
 			: base(content, publishedValueFallback)
 		{
 			_publishedValueFallback = publishedValueFallback;
@@ -96,5 +96,37 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("headerSettingsLogoTablet")]
 		public virtual global::Umbraco.Cms.Core.Models.MediaWithCrops HeaderSettingsLogoTablet => global::Umbraco.Cms.Web.Common.PublishedModels.HeaderSettings.GetHeaderSettingsLogoTablet(this, _publishedValueFallback);
+
+		///<summary>
+		/// Global SEO Description
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.0+da502e0")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("globalSeoDescription")]
+		public virtual string GlobalSeoDescription => global::Umbraco.Cms.Web.Common.PublishedModels.SeoSettings.GetGlobalSeoDescription(this, _publishedValueFallback);
+
+		///<summary>
+		/// Global SEO Title
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.0+da502e0")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("globalSeoTitle")]
+		public virtual string GlobalSeoTitle => global::Umbraco.Cms.Web.Common.PublishedModels.SeoSettings.GetGlobalSeoTitle(this, _publishedValueFallback);
+
+		///<summary>
+		/// Global Title Prefix
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.0+da502e0")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("globalSeoTitlePrefix")]
+		public virtual string GlobalSeoTitlePrefix => global::Umbraco.Cms.Web.Common.PublishedModels.SeoSettings.GetGlobalSeoTitlePrefix(this, _publishedValueFallback);
+
+		///<summary>
+		/// Global Title Suffix
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.0+da502e0")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("globalSeoTitleSuffix")]
+		public virtual string GlobalSeoTitleSuffix => global::Umbraco.Cms.Web.Common.PublishedModels.SeoSettings.GetGlobalSeoTitleSuffix(this, _publishedValueFallback);
 	}
 }
