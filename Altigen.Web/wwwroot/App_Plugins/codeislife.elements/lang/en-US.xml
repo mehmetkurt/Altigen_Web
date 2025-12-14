@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<language alias="en" intName="English" localName="English" lcid="" culture="en-US">
+  <area alias="sections">
+  </area>
+  <area alias="propertyEditorGroups">
+    <key alias="Code Is Life">Code Is Life</key>
+  </area>
+  <area alias="dataTypes">
+    <key alias="CodeIsLife.Spacing">Spacing</key>
+    <key alias="CodeIsLife.RobotsMeta">Robots Meta</key>
+  </area>
+</language>

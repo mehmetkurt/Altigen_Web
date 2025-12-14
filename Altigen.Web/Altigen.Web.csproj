@@ -30,9 +30,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Altigen.Plugins.RobotsMeta\Altigen.Plugins.RobotsMeta.csproj" />
     <ProjectReference Include="..\Altigen.Web.Core\Altigen.Web.Core.csproj" />
-    <ProjectReference Include="..\Altigen.Plugins.Spacing\Altigen.Plugins.Spacing.csproj" />
+    <ProjectReference Include="..\Packages\CodeIsLife.Elements\src\CodeIsLife.Elements\CodeIsLife.Elements.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

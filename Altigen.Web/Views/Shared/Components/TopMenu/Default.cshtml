@@ -1,7 +1,7 @@
 @using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Cms.Core.Models.PublishedContent
 @using Umbraco.Cms.Core.Models
-@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IPublishedContent>
+@model IPublishedContent
 
 @if (Model == null)
 {
@@ -29,8 +29,8 @@
                 var url = link?.Url ?? "#";
                 var target = link?.Target ?? "_self";
 
-                var itemClass = GetItemClass(item);
-                var itemStyle = GetItemStyle(item);
+                var itemClass = ElementStyleHelper.GetItemClass(item);
+                var itemStyle = ElementStyleHelper.GetItemStyle(item);
 
                 if (isMegaMenu && subItems != null && subItems.Any())
                 {
@@ -45,8 +45,8 @@
                                         var isPromo = subContent.Value<bool>("isPromoCard");
                                         var isColHeader = subContent.Value<bool>("isColumnHeader");
 
-                                        var subItemClass = GetItemClass(subItem);
-                                        var subItemStyle = GetItemStyle(subItem);
+                                        var subItemClass = ElementStyleHelper.GetItemClass(subItem);
+                                        var subItemStyle = ElementStyleHelper.GetItemStyle(subItem);
 
                                         if (isPromo)
                                         {
@@ -83,8 +83,8 @@
                                                             var lTitle = linkContent.Value<string>("title");
                                                             var lLink = linkContent.Value<Link>("link");
                                                             
-                                                            var linkClass = GetItemClass(linkItem);
-                                                            var linkStyle = GetItemStyle(linkItem);
+                                                            var linkClass = ElementStyleHelper.GetItemClass(linkItem);
+                                                            var linkStyle = ElementStyleHelper.GetItemStyle(linkItem);
 
                                                             <li>
                                                                 <a href="@(lLink?.Url ?? "#")" 
@@ -134,8 +134,8 @@
                     var hasDropdown = isMegaMenu && item.Content.Value<IEnumerable<BlockListItem>>("subItems")?.Any() == true;
                     var contentId = $"dropdown-{content.Key}-{renderId}";
 
-                    var itemClass = GetItemClass(item);
-                    var itemStyle = GetItemStyle(item);
+                    var itemClass = ElementStyleHelper.GetItemClass(item);
+                    var itemStyle = ElementStyleHelper.GetItemStyle(item);
 
                     <li class="nav-item @(hasDropdown ? "has-dropdown" : "")" data-target="@(hasDropdown ? contentId : "")">
                         <a href="@url" target="@target" class="nav-link @itemClass" style="@itemStyle" itemprop="url">
@@ -181,8 +181,8 @@
                                             var isPromo = subContent.Value<bool>("isPromoCard");
                                             var isColHeader = subContent.Value<bool>("isColumnHeader");
                                             
-                                            var subItemClass = GetItemClass(subItem);
-                                            var subItemStyle = GetItemStyle(subItem);
+                                            var subItemClass = ElementStyleHelper.GetItemClass(subItem);
+                                            var subItemStyle = ElementStyleHelper.GetItemStyle(subItem);
 
                                             if (isPromo)
                                             {
@@ -219,8 +219,8 @@
                                                                 var lTitle = linkContent.Value<string>("title");
                                                                 var lLink = linkContent.Value<Link>("link");
                                                                 
-                                                                var linkClass = GetItemClass(linkItem);
-                                                                var linkStyle = GetItemStyle(linkItem);
+                                                                var linkClass = ElementStyleHelper.GetItemClass(linkItem);
+                                                                var linkStyle = ElementStyleHelper.GetItemStyle(linkItem);
 
                                                                 <li>
                                                                     <a href="@(lLink?.Url ?? "#")" 
@@ -247,128 +247,4 @@
     </div>
 }
 
-@functions {
-    public string GetItemStyle(BlockListItem item)
-    {
-        var settings = item.Settings;
-        if (settings == null) return string.Empty;
 
-        var width = settings.Value<string>("width");
-        var customStyle = settings.Value<string>("style");
-
-        var styleList = new List<string>();
-        if (!string.IsNullOrWhiteSpace(width)) styleList.Add($"width: {width}");
-        
-        var paddingStyle = GetSpacingStyle(settings.Value("padding"), "padding");
-        if (!string.IsNullOrWhiteSpace(paddingStyle)) styleList.Add(paddingStyle);
-
-        var marginStyle = GetSpacingStyle(settings.Value("margin"), "margin");
-        if (!string.IsNullOrWhiteSpace(marginStyle)) styleList.Add(marginStyle);
-
-        if (!string.IsNullOrWhiteSpace(customStyle)) styleList.Add(customStyle);
-
-        return styleList.Any() ? string.Join("; ", styleList) : string.Empty;
-    }
-
-    public string GetItemClass(BlockListItem item)
-    {
-        var settings = item.Settings;
-        if (settings == null) return string.Empty;
-
-        var cssClass = settings.Value<string>("cssClass");
-        var isBold = settings.Value<bool>("isBold");
-
-        var classes = new List<string>();
-        if (isBold) classes.Add("fw-bold");
-        if (!string.IsNullOrWhiteSpace(cssClass)) classes.Add(cssClass);
-
-        return classes.Any() ? string.Join(" ", classes) : "";
-    }
-
-    /* 
-       Helper to parse our Custom Spacing Editor JSON 
-       Format: { "top": "10", "right": "20", "bottom": "10", "left": "20", "unit": "px" }
-    */
-    public string GetSpacingStyle(object input, string prefix)
-    {
-        if (input == null) return null;
-
-        try 
-        {
-            SpacingModel spacing = null;
-
-            if (input is string jsonStr)
-            {
-                 if (string.IsNullOrWhiteSpace(jsonStr)) return null;
-                 if (jsonStr.Trim().StartsWith("{"))
-                 {
-                     spacing = System.Text.Json.JsonSerializer.Deserialize<SpacingModel>(jsonStr);
-                 }
-                 else
-                 {
-                     return $"{prefix}: {jsonStr} !important"; // Fallback with important
-                 }
-            }
-            else if (input is System.Text.Json.JsonDocument doc)
-            {
-                spacing = System.Text.Json.JsonSerializer.Deserialize<SpacingModel>(doc);
-            }
-            else
-            {
-                // Fallback attempt
-                var str = input.ToString();
-                if (str.Trim().StartsWith("{")) {
-                     spacing = System.Text.Json.JsonSerializer.Deserialize<SpacingModel>(str);
-                } else {
-                     return $"{prefix}: {str} !important";
-                }
-            }
-
-            if (spacing == null) return null;
-
-            var t = spacing.top;
-            var r = spacing.right;
-            var b = spacing.bottom;
-            var l = spacing.left;
-
-            bool hasT = !string.IsNullOrWhiteSpace(t);
-            bool hasR = !string.IsNullOrWhiteSpace(r);
-            bool hasB = !string.IsNullOrWhiteSpace(b);
-            bool hasL = !string.IsNullOrWhiteSpace(l);
-
-            // 1. All Empty -> Return null
-            if (!hasT && !hasR && !hasB && !hasL) return null;
-
-            var unit = spacing.unit;
-            if (string.IsNullOrEmpty(unit)) unit = "px";
-
-            // 2. All Filled -> Shorthand Optimization
-            if (hasT && hasR && hasB && hasL)
-            {
-                return $"{prefix}: {t}{unit} {r}{unit} {b}{unit} {l}{unit} !important";
-            }
-
-            // 3. Partial -> Longhand (Skip empty)
-            var styles = new List<string>();
-            if (hasT) styles.Add($"{prefix}-top: {t}{unit} !important");
-            if (hasR) styles.Add($"{prefix}-right: {r}{unit} !important");
-            if (hasB) styles.Add($"{prefix}-bottom: {b}{unit} !important");
-            if (hasL) styles.Add($"{prefix}-left: {l}{unit} !important");
-
-            return string.Join("; ", styles);
-        }
-        catch 
-        {
-            return null;
-        }
-    }
-
-    public class SpacingModel 
-    {
-        public string top { get; set; }
-        public string right { get; set; }
-        public string bottom { get; set; }
-        public string left { get; set; }
-        public string unit { get; set; }
-    }
-}
