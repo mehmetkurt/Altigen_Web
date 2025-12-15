@@ -3,9 +3,61 @@
 @if (!string.IsNullOrWhiteSpace(Model.Title))
 {
     <title>@Model.Title</title>
+    <meta property="og:title" content="@Model.OgTitle" />
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.TwitterTitle))
+{
+    <meta name="twitter:title" content="@Model.TwitterTitle" />
 }
 
 @if (!string.IsNullOrWhiteSpace(Model.Description))
 {
     <meta name="description" content="@Model.Description" />
+    <meta property="og:description" content="@Model.OgDescription" />
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.TwitterDescription))
+{
+    <meta name="twitter:description" content="@Model.TwitterDescription" />
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.OgUrl))
+{
+    <meta property="og:url" content="@Model.OgUrl" />
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.OgType))
+{
+    <meta property="og:type" content="@Model.OgType" />
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.OgSiteName))
+{
+    <meta property="og:site_name" content="@Model.OgSiteName" />
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.OgImage))
+{
+    <meta property="og:image" content="@Model.OgImage" />
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.TwitterImage))
+{
+    <meta name="twitter:image" content="@Model.TwitterImage" />
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.TwitterCardType))
+{
+    <meta name="twitter:card" content="@Model.TwitterCardType" />
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.TwitterSite))
+{
+    <meta name="twitter:site" content="@Model.TwitterSite" />
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.TwitterCreator))
+{
+    <meta name="twitter:creator" content="@Model.TwitterCreator" />
 }

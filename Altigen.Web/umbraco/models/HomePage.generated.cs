@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Home Page</summary>
 	[PublishedModel("homePage")]
-	public partial class HomePage : PublishedContentModel, ISeo, ISitemap, ISlider
+	public partial class HomePage : PublishedContentModel, ISeo, ISharing, ISitemap, ISlider
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -88,6 +88,78 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("umbracoUrlAlias")]
 		public virtual string UmbracoUrlAlias => global::Umbraco.Cms.Web.Common.PublishedModels.Seo.GetUmbracoUrlAlias(this, _publishedValueFallback);
+
+		///<summary>
+		/// Facebook Description: Description for Facebook content (defaults to Page Description)
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.0+da502e0")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("ogDescription")]
+		public virtual string OgDescription => global::Umbraco.Cms.Web.Common.PublishedModels.Sharing.GetOgDescription(this, _publishedValueFallback);
+
+		///<summary>
+		/// Facebook Image: Image for Facebook content (1200x630 recommended)
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.0+da502e0")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("ogImage")]
+		public virtual global::Umbraco.Cms.Core.Models.MediaWithCrops OgImage => global::Umbraco.Cms.Web.Common.PublishedModels.Sharing.GetOgImage(this, _publishedValueFallback);
+
+		///<summary>
+		/// Facebook Title: Title for Facebook content (defaults to Page Title)
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.0+da502e0")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("ogTitle")]
+		public virtual string OgTitle => global::Umbraco.Cms.Web.Common.PublishedModels.Sharing.GetOgTitle(this, _publishedValueFallback);
+
+		///<summary>
+		/// Twitter Card Type: Type of Twitter card
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.0+da502e0")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("twitterCardType")]
+		public virtual string TwitterCardType => global::Umbraco.Cms.Web.Common.PublishedModels.Sharing.GetTwitterCardType(this, _publishedValueFallback);
+
+		///<summary>
+		/// Twitter Creator: @username for the content creator
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.0+da502e0")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("twitterCreator")]
+		public virtual string TwitterCreator => global::Umbraco.Cms.Web.Common.PublishedModels.Sharing.GetTwitterCreator(this, _publishedValueFallback);
+
+		///<summary>
+		/// Twitter Description: Description for Twitter card (defaults to Facebook Description)
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.0+da502e0")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("twitterDescription")]
+		public virtual string TwitterDescription => global::Umbraco.Cms.Web.Common.PublishedModels.Sharing.GetTwitterDescription(this, _publishedValueFallback);
+
+		///<summary>
+		/// Twitter Image: Image for Twitter card (1024x512 recommended)
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.0+da502e0")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("twitterImage")]
+		public virtual global::Umbraco.Cms.Core.Models.MediaWithCrops TwitterImage => global::Umbraco.Cms.Web.Common.PublishedModels.Sharing.GetTwitterImage(this, _publishedValueFallback);
+
+		///<summary>
+		/// Twitter Site: @username for the website
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.0+da502e0")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("twitterSite")]
+		public virtual string TwitterSite => global::Umbraco.Cms.Web.Common.PublishedModels.Sharing.GetTwitterSite(this, _publishedValueFallback);
+
+		///<summary>
+		/// Twitter Title: Title for Twitter card (defaults to Facebook Title)
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.0+da502e0")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("twitterTitle")]
+		public virtual string TwitterTitle => global::Umbraco.Cms.Web.Common.PublishedModels.Sharing.GetTwitterTitle(this, _publishedValueFallback);
 
 		///<summary>
 		/// Change Frequency: How frequently the page is likely to change
