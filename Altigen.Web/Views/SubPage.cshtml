@@ -1,11 +1,19 @@
-﻿@model SubPage
+﻿@model Umbraco.Cms.Web.Common.PublishedModels.SubPage
 @{
     Layout = "SubLayout.cshtml";
 }
 
-<div class="block">
-     <div class="container">
-        @* Content will be added later via Block Grid or Compositions *@
-        @Model.Name
-     </div>
+<div class="subpage-content">
+    @try
+    {
+        @await Html.GetBlockGridHtmlAsync(Model.SubPageContent)
+    }
+    catch (InvalidOperationException ex)
+    {
+        <div class="alert alert-danger">
+            <h4>Block Grid Error</h4>
+            <p>@ex.Message</p>
+            <p><strong>Hint:</strong> Check the Block Grid Data Type configuration. Ensure "Number of Columns" is set in Layout Parameters.</p>
+        </div>
+    }
 </div>

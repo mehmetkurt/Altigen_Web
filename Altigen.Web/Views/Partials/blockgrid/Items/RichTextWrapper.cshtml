@@ -1,0 +1,7 @@
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockGridItem>
+@{
+    var text = Model.Content.Value<string>("text");
+}
+<div class="content-block">
+    @Html.Raw(text)
+</div>
