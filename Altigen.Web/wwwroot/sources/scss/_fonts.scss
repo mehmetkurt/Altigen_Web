@@ -17,26 +17,24 @@
 
 
 
-@mixin science-gothic($weight: 400) {
-  font-family: "Science Gothic", sans-serif;
+@mixin google-sans($weight: 400) {
+  font-family: "Google Sans", sans-serif;
   font-optical-sizing: auto;
   font-weight: $weight;
   font-style: normal;
   font-variation-settings:
-    "slnt" 0,
-    "wdth" 100,
-    "CTRS" 0;
+    "GRAD" 0;
 }
 
-.science-gothic-100 { @include science-gothic(100); }
-.science-gothic-200 { @include science-gothic(200); }
-.science-gothic-300 { @include science-gothic(300); }
-.science-gothic-400 { @include science-gothic(400); }
-.science-gothic-500 { @include science-gothic(500); }
-.science-gothic-600 { @include science-gothic(600); }
-.science-gothic-700 { @include science-gothic(700); }
-.science-gothic-800 { @include science-gothic(800); }
-.science-gothic-900 { @include science-gothic(900); }
+.google-sans-100 { @include google-sans(100); }
+.google-sans-200 { @include google-sans(200); }
+.google-sans-300 { @include google-sans(300); }
+.google-sans-400 { @include google-sans(400); }
+.google-sans-500 { @include google-sans(500); }
+.google-sans-600 { @include google-sans(600); }
+.google-sans-700 { @include google-sans(700); }
+.google-sans-800 { @include google-sans(800); }
+.google-sans-900 { @include google-sans(900); }
 
 
 

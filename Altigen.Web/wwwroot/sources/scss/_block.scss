@@ -1,0 +1,11 @@
+
+.block {
+    position: relative;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+
+    @include media-breakpoint-up(lg) {
+        padding-top: 6rem;
+        padding-bottom: 6rem;
+    }
+}

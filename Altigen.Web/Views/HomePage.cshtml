@@ -1,10 +1,41 @@
 ﻿@model HomePage
+
+@{
+	Layout = "Root.cshtml";
+}
+
 @section Head {
     <link rel="preload" as="image" href="https://rimparusa.com/yukleme/product/1-carpet-washing-machines-4.jpg">
 }
 
 
 @await Component.InvokeAsync("MainSlider", Model)
+
+@{
+    var services = Model.Children<SubPage>();
+}
+
+@if (services != null && services.Any())
+{
+    <section class="block services-block">
+        <div class="container">
+             <div class="row">
+                @foreach(var service in services)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                           @* Image property removed from SubPage, using placeholder or checking for composition properties if available *@
+                           <div class="card-body">
+                               <h3 class="h5 card-title">@service.Name</h3>
+                               <a href="@service.Url()" class="btn btn-outline-primary stretched-link">İncele</a>
+                           </div>
+                        </div>
+                    </div>
+                }
+             </div>
+        </div>
+    </section>
+}
 
 @section Scripts {
     <script src="~/assets/scripts/main-slider.js"></script>

@@ -1,0 +1,41 @@
+.page-header {
+    position: relative;
+    height: 400px;
+    background: linear-gradient(135deg, $altigen-blue 0%, darken($altigen-blue, 10%) 100%);
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 3rem;
+    color: $white;
+    margin-bottom: 3rem;
+
+    .breadcrumb {
+        margin-bottom: 0.5rem;
+        --bs-breadcrumb-divider-color: rgba($white, 0.5);
+        --bs-breadcrumb-item-active-color: $white;
+        
+        &-item {
+            a {
+                color: rgba($white, 0.7);
+                text-decoration: none;
+                transition: color 0.3s ease;
+
+                &:hover {
+                    color: $white;
+                }
+            }
+        }
+    }
+
+    h1 {
+        color: $white;
+        margin-bottom: 0;
+        font-weight: 700;
+        font-size: 3rem; 
+    }
+
+    .lead {
+        font-size: 1.1rem;
+        font-weight: 400;
+    }
+}
+ 

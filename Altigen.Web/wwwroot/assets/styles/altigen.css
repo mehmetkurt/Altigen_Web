@@ -5021,6 +5021,38 @@ textarea.form-control-lg {
   --bs-btn-close-filter: invert(1) grayscale(100%) brightness(200%);
 }
 
+.breadcrumb {
+  --bs-breadcrumb-padding-x: 0;
+  --bs-breadcrumb-padding-y: 0;
+  --bs-breadcrumb-margin-bottom: 1rem;
+  --bs-breadcrumb-bg: ;
+  --bs-breadcrumb-border-radius: ;
+  --bs-breadcrumb-divider-color: var(--bs-secondary-color);
+  --bs-breadcrumb-item-padding-x: 0.5rem;
+  --bs-breadcrumb-item-active-color: var(--bs-secondary-color);
+  display: flex;
+  flex-wrap: wrap;
+  padding: var(--bs-breadcrumb-padding-y) var(--bs-breadcrumb-padding-x);
+  margin-bottom: var(--bs-breadcrumb-margin-bottom);
+  font-size: var(--bs-breadcrumb-font-size);
+  list-style: none;
+  background-color: var(--bs-breadcrumb-bg);
+  border-radius: var(--bs-breadcrumb-border-radius);
+}
+
+.breadcrumb-item + .breadcrumb-item {
+  padding-left: var(--bs-breadcrumb-item-padding-x);
+}
+.breadcrumb-item + .breadcrumb-item::before {
+  float: left;
+  padding-right: var(--bs-breadcrumb-item-padding-x);
+  color: var(--bs-breadcrumb-divider-color);
+  content: var(--bs-breadcrumb-divider, "/") /* rtl: var(--bs-breadcrumb-divider, "/") */;
+}
+.breadcrumb-item.active {
+  color: var(--bs-breadcrumb-item-active-color);
+}
+
 .fade {
   transition: opacity 0.15s linear;
 }
@@ -9878,76 +9910,76 @@ textarea.form-control-lg {
   font-style: normal;
 }
 
-.science-gothic-100 {
-  font-family: "Science Gothic", sans-serif;
+.google-sans-100 {
+  font-family: "Google Sans", sans-serif;
   font-optical-sizing: auto;
   font-weight: 100;
   font-style: normal;
-  font-variation-settings: "slnt" 0, "wdth" 100, "CTRS" 0;
+  font-variation-settings: "GRAD" 0;
 }
 
-.science-gothic-200 {
-  font-family: "Science Gothic", sans-serif;
+.google-sans-200 {
+  font-family: "Google Sans", sans-serif;
   font-optical-sizing: auto;
   font-weight: 200;
   font-style: normal;
-  font-variation-settings: "slnt" 0, "wdth" 100, "CTRS" 0;
+  font-variation-settings: "GRAD" 0;
 }
 
-.science-gothic-300 {
-  font-family: "Science Gothic", sans-serif;
+.google-sans-300 {
+  font-family: "Google Sans", sans-serif;
   font-optical-sizing: auto;
   font-weight: 300;
   font-style: normal;
-  font-variation-settings: "slnt" 0, "wdth" 100, "CTRS" 0;
+  font-variation-settings: "GRAD" 0;
 }
 
-.science-gothic-400 {
-  font-family: "Science Gothic", sans-serif;
+.google-sans-400 {
+  font-family: "Google Sans", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
-  font-variation-settings: "slnt" 0, "wdth" 100, "CTRS" 0;
+  font-variation-settings: "GRAD" 0;
 }
 
-.science-gothic-500 {
-  font-family: "Science Gothic", sans-serif;
+.google-sans-500 {
+  font-family: "Google Sans", sans-serif;
   font-optical-sizing: auto;
   font-weight: 500;
   font-style: normal;
-  font-variation-settings: "slnt" 0, "wdth" 100, "CTRS" 0;
+  font-variation-settings: "GRAD" 0;
 }
 
-.science-gothic-600 {
-  font-family: "Science Gothic", sans-serif;
+.google-sans-600 {
+  font-family: "Google Sans", sans-serif;
   font-optical-sizing: auto;
   font-weight: 600;
   font-style: normal;
-  font-variation-settings: "slnt" 0, "wdth" 100, "CTRS" 0;
+  font-variation-settings: "GRAD" 0;
 }
 
-.science-gothic-700 {
-  font-family: "Science Gothic", sans-serif;
+.google-sans-700 {
+  font-family: "Google Sans", sans-serif;
   font-optical-sizing: auto;
   font-weight: 700;
   font-style: normal;
-  font-variation-settings: "slnt" 0, "wdth" 100, "CTRS" 0;
+  font-variation-settings: "GRAD" 0;
 }
 
-.science-gothic-800 {
-  font-family: "Science Gothic", sans-serif;
+.google-sans-800 {
+  font-family: "Google Sans", sans-serif;
   font-optical-sizing: auto;
   font-weight: 800;
   font-style: normal;
-  font-variation-settings: "slnt" 0, "wdth" 100, "CTRS" 0;
+  font-variation-settings: "GRAD" 0;
 }
 
-.science-gothic-900 {
-  font-family: "Science Gothic", sans-serif;
+.google-sans-900 {
+  font-family: "Google Sans", sans-serif;
   font-optical-sizing: auto;
   font-weight: 900;
   font-style: normal;
-  font-variation-settings: "slnt" 0, "wdth" 100, "CTRS" 0;
+  font-variation-settings: "GRAD" 0;
 }
 
 .open-sans-300 {
@@ -10004,11 +10036,11 @@ html {
 }
 
 h1, .h1, h2, .h2, h3, .h3 {
-  font-family: "Science Gothic", sans-serif;
+  font-family: "Google Sans", sans-serif;
   font-optical-sizing: auto;
   font-weight: 700;
   font-style: normal;
-  font-variation-settings: "slnt" 0, "wdth" 100, "CTRS" 0;
+  font-variation-settings: "GRAD" 0;
 }
 
 h4, .h4, h5, .h5, h6, .h6 {
@@ -10649,4 +10681,50 @@ body, p {
 .swiper-pagination .swiper-pagination-bullet-active {
   background-color: rgba(0, 0, 0, 0.5);
   transform: scale(1.2);
+}
+
+.block {
+  position: relative;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+@media (min-width: 992px) {
+  .block {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+
+.page-header {
+  position: relative;
+  height: 400px;
+  background: linear-gradient(135deg, #20486d 0%, rgb(20.4255319149, 45.9574468085, 69.5744680851) 100%);
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 3rem;
+  color: #ffffff;
+  margin-bottom: 3rem;
+}
+.page-header .breadcrumb {
+  margin-bottom: 0.5rem;
+  --bs-breadcrumb-divider-color: rgba($white, 0.5);
+  --bs-breadcrumb-item-active-color: $white;
+}
+.page-header .breadcrumb-item a {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.page-header .breadcrumb-item a:hover {
+  color: #ffffff;
+}
+.page-header h1, .page-header .h1 {
+  color: #ffffff;
+  margin-bottom: 0;
+  font-weight: 700;
+  font-size: 3rem;
+}
+.page-header .lead {
+  font-size: 1.1rem;
+  font-weight: 400;
 }
