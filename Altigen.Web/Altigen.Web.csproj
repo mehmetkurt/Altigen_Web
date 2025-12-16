@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="umbraco\" />
     <Folder Include="wwwroot\assets\styles\" />
     <Folder Include="wwwroot\assets\media\" />
   </ItemGroup>
@@ -32,6 +33,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Altigen.Web.Core\Altigen.Web.Core.csproj" />
     <ProjectReference Include="..\Packages\CodeIsLife.Elements\src\CodeIsLife.Elements\CodeIsLife.Elements.csproj" />
+    <ProjectReference Include="..\Altigen.Web.Models\Altigen.Web.Models.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

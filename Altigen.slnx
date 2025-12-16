@@ -26,4 +26,5 @@
   </Folder>
   <Project Path="Altigen.Web.Core/Altigen.Web.Core.csproj" Id="08a6fa78-c046-4f0b-9c83-5252696d5a3e" />
   <Project Path="Altigen.Web/Altigen.Web.csproj" />
+  <Project Path="Altigen.Web.Models/Altigen.Web.Models.csproj" />
 </Solution>

@@ -1,7 +1,6 @@
+using Altigen.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Umbraco.Cms.Web.Common;
-using Umbraco.Cms.Web.Common.PublishedModels;
-using Umbraco.Extensions;
 
 namespace Altigen.Web.ViewComponents;
 

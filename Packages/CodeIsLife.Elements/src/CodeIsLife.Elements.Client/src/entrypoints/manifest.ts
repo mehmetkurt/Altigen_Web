@@ -5,14 +5,14 @@ import { UmbEntryPointOnInit } from '@umbraco-cms/backoffice/extension-api';
 const manifests: Array<ManifestPropertyEditorUi> = [
     {
         type: 'propertyEditorUi',
-        alias: 'CodeIsLife.Buttons.Spacing',
-        name: 'Spacing Property Editor UI',
-        element: () => import('../property-editor/spacing/spacing.element.js'),
+        alias: 'CodeIsLife.Buttons.SizeDimension',
+        name: 'Size Dimension Property Editor UI',
+        element: () => import('../property-editor/size-dimension/size-dimension.element.js'),
         meta: {
-            label: 'Spacing',
+            label: 'Size Dimension',
             icon: 'icon-autofill',
             group: 'code is life',
-            propertyEditorSchemaAlias: 'CodeIsLife.Spacing'
+            propertyEditorSchemaAlias: 'CodeIsLife.SizeDimension'
         }
     },
     {
