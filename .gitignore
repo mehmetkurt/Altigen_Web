@@ -545,3 +545,4 @@ umbraco-package-schema.json
 
 # Media files
 /wwwroot/media/
+Altigen.Web.Models/Generated/ood.flag

@@ -52,9 +52,9 @@ namespace Altigen.Web.Extensions
         /// </summary>
         public static string GetBlockAlignmentClass(this BlockSettingsModel? settings)
         {
-             if (settings?.Alignment != null)
+             if (settings?.FontAlignment != null)
              {
-                 var align = ElementStyleHelper.GetAlignmentContent(settings.Alignment);
+                 var align = ElementStyleHelper.GetAlignmentContent(settings.FontAlignment);
                  if (string.IsNullOrEmpty(align)) return string.Empty;
 
                  return align.ToLowerInvariant() switch 
@@ -98,8 +98,6 @@ namespace Altigen.Web.Extensions
                          }
 
                          string[] sides = { "top", "right", "bottom", "left" };
-                         bool allSidesEqual = true;
-                         string? firstSideVal = null;
 
                          // Optimization: Check if all sides are equal for shorthand? 
                          // For now, explicit definitions are safer.

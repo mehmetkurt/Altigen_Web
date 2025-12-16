@@ -16,5 +16,5 @@ public class RobotsMetaDataEditor : DataEditor
     }
 
     protected override IDataValueEditor CreateValueEditor() =>
-        DataValueEditorFactory.Create<DataValueEditor>(Attribute);
+        DataValueEditorFactory.Create<DataValueEditor>(Attribute!);
 }

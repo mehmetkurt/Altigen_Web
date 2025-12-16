@@ -50,6 +50,14 @@ namespace Altigen.Web.Models
 		// properties
 
 		///<summary>
+		/// Tag Type
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("titleBlockTagType")]
+		public virtual string TitleBlockTagType => this.Value<string>(_publishedValueFallback, "titleBlockTagType");
+
+		///<summary>
 		/// Text
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]

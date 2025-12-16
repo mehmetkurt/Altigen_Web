@@ -4,12 +4,27 @@
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockGridItem<TitleBlock>>
 @{
     var title = Model.Content.TitleBlockText;
+    var tag = Model.Content.TitleBlockTagType;
+
     var settings = Model.Settings as BlockSettingsModel;
 }
 
 @if (!string.IsNullOrEmpty(title))
 {
     <div class="title-block @settings.GetBlockAlignmentClass()" style="@settings.GetBlockStyles()">
-        <h2>@title</h2>
+      @CreateHeading(tag ?? "h2", title)
     </div>
+}
+
+@functions{
+    public IHtmlContent CreateHeading(string? tag, string title)
+    {
+        var tagName = string.IsNullOrEmpty(tag) ? "h2" : tag;
+
+        var builder = new TagBuilder(tagName);
+
+        builder.InnerHtml.Append(title);
+
+        return builder;
+    }
 }

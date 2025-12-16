@@ -86,6 +86,40 @@ const manifests: Array<ManifestPropertyEditorUi> = [
                 ]
             }
         }
+    },
+    {
+        type: 'propertyEditorUi',
+        alias: 'CodeIsLife.PropertyEditorUi.AdvancedDropdown',
+        name: 'Advanced Dropdown Property Editor UI',
+        element: () => import('../property-editor/advanced-dropdown/advanced-dropdown.element.js'),
+        meta: {
+            label: 'Advanced Dropdown',
+            icon: 'icon-list',
+            group: 'code is life',
+            propertyEditorSchemaAlias: 'CodeIsLife.AdvancedDropdown',
+            settings: {
+                properties: [
+                    {
+                        alias: "options",
+                        label: "Options",
+                        description: "Add options. Format: 'Value | Label' or just 'Value'",
+                        propertyEditorUiAlias: "Umb.PropertyEditorUi.MultipleTextString"
+                    },
+                    {
+                        alias: "defaultValue",
+                        label: "Default Value",
+                        description: "The default value to select",
+                        propertyEditorUiAlias: "Umb.PropertyEditorUi.TextBox"
+                    },
+                    {
+                        alias: "enableFiltering",
+                        label: "Enable Filtering",
+                        description: "Enable search/filtering within the dropdown",
+                        propertyEditorUiAlias: "Umb.PropertyEditorUi.Toggle"
+                    }
+                ]
+            }
+        }
     }
 ];
 
