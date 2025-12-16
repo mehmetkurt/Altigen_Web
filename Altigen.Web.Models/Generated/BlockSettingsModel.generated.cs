@@ -72,5 +72,29 @@ namespace Altigen.Web.Models
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("alignment")]
 		public virtual global::System.Text.Json.JsonDocument Alignment => global::Altigen.Web.Models.Style.GetAlignment(this, _publishedValueFallback);
+
+		///<summary>
+		/// Border Color
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("borderColor")]
+		public virtual string BorderColor => global::Altigen.Web.Models.Style.GetBorderColor(this, _publishedValueFallback);
+
+		///<summary>
+		/// Border Size
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("borderSize")]
+		public virtual global::System.Text.Json.JsonDocument BorderSize => global::Altigen.Web.Models.Style.GetBorderSize(this, _publishedValueFallback);
+
+		///<summary>
+		/// Border Style
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("borderStyle")]
+		public virtual string BorderStyle => global::Altigen.Web.Models.Style.GetBorderStyle(this, _publishedValueFallback);
 	}
 }

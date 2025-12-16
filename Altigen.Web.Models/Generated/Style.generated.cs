@@ -26,6 +26,21 @@ namespace Altigen.Web.Models
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		global::System.Text.Json.JsonDocument Alignment { get; }
+
+		/// <summary>Border Color</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		string BorderColor { get; }
+
+		/// <summary>Border Size</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		global::System.Text.Json.JsonDocument BorderSize { get; }
+
+		/// <summary>Border Style</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		string BorderStyle { get; }
 	}
 
 	/// <summary>Style</summary>
@@ -71,5 +86,44 @@ namespace Altigen.Web.Models
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		public static global::System.Text.Json.JsonDocument GetAlignment(IStyle that, IPublishedValueFallback publishedValueFallback) => that.Value<global::System.Text.Json.JsonDocument>(publishedValueFallback, "alignment");
+
+		///<summary>
+		/// Border Color
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("borderColor")]
+		public virtual string BorderColor => GetBorderColor(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Border Color</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static string GetBorderColor(IStyle that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "borderColor");
+
+		///<summary>
+		/// Border Size
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("borderSize")]
+		public virtual global::System.Text.Json.JsonDocument BorderSize => GetBorderSize(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Border Size</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static global::System.Text.Json.JsonDocument GetBorderSize(IStyle that, IPublishedValueFallback publishedValueFallback) => that.Value<global::System.Text.Json.JsonDocument>(publishedValueFallback, "borderSize");
+
+		///<summary>
+		/// Border Style
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("borderStyle")]
+		public virtual string BorderStyle => GetBorderStyle(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Border Style</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static string GetBorderStyle(IStyle that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "borderStyle");
 	}
 }

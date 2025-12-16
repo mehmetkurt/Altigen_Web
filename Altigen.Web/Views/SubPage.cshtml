@@ -4,7 +4,6 @@
 }
 
 <div class="subpage-content">
-    <div class="container">
         @try
         {
             @await Html.GetBlockGridHtmlAsync(Model.SubPageContent)
@@ -17,5 +16,4 @@
                 <p><strong>Hint:</strong> Check the Block Grid Data Type configuration. Ensure "Number of Columns" is set in Layout Parameters.</p>
             </div>
         }
-    </div>
 </div>

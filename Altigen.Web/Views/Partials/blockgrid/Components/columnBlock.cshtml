@@ -2,7 +2,7 @@
 @{
 	if (Model?.Areas.Any() != true) { return; }
 }
+<div class="col-12 col-md-@Model.ColumnSpan">
 
-<div class="umb-block-grid__area-container">
     @await Html.GetBlockGridItemAreasHtmlAsync(Model)
 </div>
