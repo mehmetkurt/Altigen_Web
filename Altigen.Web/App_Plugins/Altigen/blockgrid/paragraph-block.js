@@ -1,31 +1,33 @@
 import { LitElement, html, css, customElement, property } from "@umbraco-cms/backoffice/external/lit";
 import { UmbElementMixin } from "@umbraco-cms/backoffice/element-api";
+import { unsafeHTML } from "@umbraco-cms/backoffice/external/lit";
 
-export default class AltigenTitleBlock extends UmbElementMixin(LitElement) {
+export default class AltigenParagraphBlock extends UmbElementMixin(LitElement) {
     
     static get properties() {
         return {
             content: { attribute: false },
-            settings: { attribute: false } // This contains the formatted values
+            settings: { attribute: false }
         };
     }
 
     render() {
-        const title = this.content?.titleBlockText || "No Title Set";
+        const contentVal = this.content?.paragraphBlockContent;
+        const content = contentVal?.markup || contentVal || "<p>No Content Set</p>";
         const styles = this._getStyles();
         const classes = this._getClasses();
 
         return html`
             <link rel="stylesheet" href="/assets/styles/altigen.css">
-            <div class="title-block-preview ${classes}" style="${styles}">
-               <h2>${title}</h2>
+            <div class="paragraph-block-preview ${classes}" style="${styles}">
+               ${unsafeHTML(content)}
             </div>
         `;
     }
 
     _getClasses() {
-        const classes = ["title-block"];
-        const alignment = this.settings?.Alignment || this.settings?.alignment; // accessing the property alias directly
+        const classes = ["paragraph-block"];
+        const alignment = this.settings?.Alignment || this.settings?.alignment;
         
         if (alignment) {
             const alignObj = this._parseJson(alignment);
@@ -44,7 +46,6 @@ export default class AltigenTitleBlock extends UmbElementMixin(LitElement) {
         const alignment = this.settings?.Alignment || this.settings?.alignment;
         if (alignment) {
             const alignObj = this._parseJson(alignment);
-            // Check for loose equality or specific string match for type
             if (alignObj && (!alignObj.type || alignObj.type === "Default (Inline Style)") && alignObj.value) {
                 styles.push(`text-align: ${alignObj.value} !important`);
             }
@@ -76,12 +77,10 @@ export default class AltigenTitleBlock extends UmbElementMixin(LitElement) {
 
         if (!hasT && !hasR && !hasB && !hasL) return null;
 
-        // Shorthand
         if (hasT && hasR && hasB && hasL) {
             return `${prefix}: ${top}${unit} ${right}${unit} ${bottom}${unit} ${left}${unit} !important`;
         }
 
-        // Individual
         const styles = [];
         if (hasT) styles.push(`${prefix}-top: ${top}${unit} !important`);
         if (hasR) styles.push(`${prefix}-right: ${right}${unit} !important`);
@@ -106,8 +105,13 @@ export default class AltigenTitleBlock extends UmbElementMixin(LitElement) {
                 display: block;
                 width: 100%;
             }
+            .paragraph-block-preview {
+                font-family: var(--bs-body-font-family);
+                line-height: var(--bs-body-line-height);
+                color: var(--bs-body-color);
+            }
         `
     ];
 }
 
-customElements.define('altigen-title-block', AltigenTitleBlock);
+customElements.define('altigen-paragraph-block', AltigenParagraphBlock);

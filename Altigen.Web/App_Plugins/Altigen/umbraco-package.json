@@ -11,6 +11,14 @@
       "element": "/App_Plugins/Altigen/blockgrid/title-block.js",
       "forContentTypeAlias": "titleBlock",
       "forBlockEditor": "block-grid"
+    },
+    {
+      "type": "blockEditorCustomView",
+      "alias": "Local.blockEditorCustomView.paragraphBlock",
+      "name": "Block Editor Custom View for Paragraph",
+      "element": "/App_Plugins/Altigen/blockgrid/paragraph-block.js",
+      "forContentTypeAlias": "paragraphBlock",
+      "forBlockEditor": "block-grid"
     }
   ]
 }

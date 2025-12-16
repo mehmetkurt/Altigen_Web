@@ -1,0 +1,44 @@
+@using Umbraco.Cms.Web.Common.PublishedModels
+@using Umbraco.Cms.Core.Models.Blocks
+@using CodeIsLife.Elements.Helpers
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockGridItem<ParagraphBlock>>
+@{
+    var content = Model.Content.ParagraphBlockContent;
+    var settings = Model.Settings as BlockSettingsModel;
+    
+    var styleAttribute = "";
+    var alignClass = "";
+    if (settings != null)
+    {
+        var styles = new List<string>();
+        
+        // Alignment
+        var alignStyle = ElementStyleHelper.GetAlignmentStyle(settings.Value("alignment"));
+        if (!string.IsNullOrWhiteSpace(alignStyle))
+        {
+            styles.Add(alignStyle);
+        }
+        
+        alignClass = ElementStyleHelper.GetAlignmentClass(settings.Value("alignment"));
+        
+        // Margin
+        var margin = ElementStyleHelper.GetSpacingStyle(settings.Margin, "margin");
+        if (!string.IsNullOrWhiteSpace(margin)) styles.Add(margin);
+
+        // Padding
+        var padding = ElementStyleHelper.GetSpacingStyle(settings.Padding, "padding");
+        if (!string.IsNullOrWhiteSpace(padding)) styles.Add(padding);
+
+        if (styles.Any())
+        {
+            styleAttribute = $" style=\"{string.Join("; ", styles)}\"";
+        }
+    }
+}
+
+@if (content != null && !string.IsNullOrWhiteSpace(content.ToString()))
+{
+    <div class="paragraph-block @alignClass"@Html.Raw(styleAttribute)>
+        @content
+    </div>
+}

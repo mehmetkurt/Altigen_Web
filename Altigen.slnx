@@ -1,5 +1,29 @@
 <Solution>
+  <Folder Name="/Packages/" />
+  <Folder Name="/Packages/Elements/">
+    <Project Path="Packages/CodeIsLife.Elements/src/CodeIsLife.Elements.Client/" Type="Website" DisplayName="CodeIsLife.Elements.Client">
+      <BuildType Project="Debug" />
+      <Properties Name="WebsiteProperties">
+        <Property Name="Debug.AspNetCompiler.Debug" Value="&quot;True&quot;" />
+        <Property Name="Debug.AspNetCompiler.FixedNames" Value="&quot;false&quot;" />
+        <Property Name="Debug.AspNetCompiler.ForceOverwrite" Value="&quot;true&quot;" />
+        <Property Name="Debug.AspNetCompiler.PhysicalPath" Value="&quot;Packages\CodeIsLife.Elements\src\CodeIsLife.Elements.Client\&quot;" />
+        <Property Name="Debug.AspNetCompiler.TargetPath" Value="&quot;PrecompiledWeb\localhost_62535\&quot;" />
+        <Property Name="Debug.AspNetCompiler.Updateable" Value="&quot;true&quot;" />
+        <Property Name="Debug.AspNetCompiler.VirtualPath" Value="&quot;/localhost_62535&quot;" />
+        <Property Name="Release.AspNetCompiler.Debug" Value="&quot;False&quot;" />
+        <Property Name="Release.AspNetCompiler.FixedNames" Value="&quot;false&quot;" />
+        <Property Name="Release.AspNetCompiler.ForceOverwrite" Value="&quot;true&quot;" />
+        <Property Name="Release.AspNetCompiler.PhysicalPath" Value="&quot;Packages\CodeIsLife.Elements\src\CodeIsLife.Elements.Client\&quot;" />
+        <Property Name="Release.AspNetCompiler.TargetPath" Value="&quot;PrecompiledWeb\localhost_62535\&quot;" />
+        <Property Name="Release.AspNetCompiler.Updateable" Value="&quot;true&quot;" />
+        <Property Name="Release.AspNetCompiler.VirtualPath" Value="&quot;/localhost_62535&quot;" />
+        <Property Name="TargetFrameworkMoniker" Value="&quot;.NETFramework,Version%3Dv4.0&quot;" />
+        <Property Name="VWDPort" Value="&quot;62535&quot;" />
+      </Properties>
+    </Project>
+    <Project Path="Packages/CodeIsLife.Elements/src/CodeIsLife.Elements/CodeIsLife.Elements.csproj" />
+  </Folder>
   <Project Path="Altigen.Web.Core/Altigen.Web.Core.csproj" Id="08a6fa78-c046-4f0b-9c83-5252696d5a3e" />
   <Project Path="Altigen.Web/Altigen.Web.csproj" />
-  <Project Path="Packages/CodeIsLife.Elements/src/CodeIsLife.Elements/CodeIsLife.Elements.csproj" />
 </Solution>
