@@ -25,7 +25,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		/// <summary>Alignment</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		string Alignment { get; }
+		global::System.Text.Json.JsonDocument Alignment { get; }
 	}
 
 	/// <summary>Style</summary>
@@ -65,11 +65,11 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("Alignment")]
-		public virtual string Alignment => GetAlignment(this, _publishedValueFallback);
+		public virtual global::System.Text.Json.JsonDocument Alignment => GetAlignment(this, _publishedValueFallback);
 
 		/// <summary>Static getter for Alignment</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static string GetAlignment(IStyle that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "Alignment");
+		public static global::System.Text.Json.JsonDocument GetAlignment(IStyle that, IPublishedValueFallback publishedValueFallback) => that.Value<global::System.Text.Json.JsonDocument>(publishedValueFallback, "Alignment");
 	}
 }

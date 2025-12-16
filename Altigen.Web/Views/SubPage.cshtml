@@ -4,16 +4,18 @@
 }
 
 <div class="subpage-content">
-    @try
-    {
-        @await Html.GetBlockGridHtmlAsync(Model.SubPageContent)
-    }
-    catch (InvalidOperationException ex)
-    {
-        <div class="alert alert-danger">
-            <h4>Block Grid Error</h4>
-            <p>@ex.Message</p>
-            <p><strong>Hint:</strong> Check the Block Grid Data Type configuration. Ensure "Number of Columns" is set in Layout Parameters.</p>
-        </div>
-    }
+    <div class="container">
+        @try
+        {
+            @await Html.GetBlockGridHtmlAsync(Model.SubPageContent)
+        }
+        catch (InvalidOperationException ex)
+        {
+            <div class="alert alert-danger">
+                <h4>Block Grid Error</h4>
+                <p>@ex.Message</p>
+                <p><strong>Hint:</strong> Check the Block Grid Data Type configuration. Ensure "Number of Columns" is set in Layout Parameters.</p>
+            </div>
+        }
+    </div>
 </div>

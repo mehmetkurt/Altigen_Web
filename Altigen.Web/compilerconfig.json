@@ -1,5 +1,9 @@
 ﻿[
   {
+    "outputFile": "wwwroot/assets/styles/umbraco-blockgrid-layout.css",
+    "inputFile": "wwwroot/sources/scss/Umbraco/umbracoBlockGridLayout.scss"
+  },
+  {
     "outputFile": "wwwroot/assets/styles/altigen.css",
     "inputFile": "wwwroot/sources/scss/altigen.scss"
   }

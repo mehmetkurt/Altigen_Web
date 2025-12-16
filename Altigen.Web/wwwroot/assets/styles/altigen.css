@@ -6338,6 +6338,10 @@ textarea.form-control-lg {
   text-align: center !important;
 }
 
+.text-justify {
+  text-align: justify !important;
+}
+
 .text-decoration-none {
   text-decoration: none !important;
 }
@@ -7611,6 +7615,9 @@ textarea.form-control-lg {
   .text-sm-center {
     text-align: center !important;
   }
+  .text-sm-justify {
+    text-align: justify !important;
+  }
 }
 @media (min-width: 768px) {
   .float-md-start {
@@ -8160,6 +8167,9 @@ textarea.form-control-lg {
   }
   .text-md-center {
     text-align: center !important;
+  }
+  .text-md-justify {
+    text-align: justify !important;
   }
 }
 @media (min-width: 992px) {
@@ -8711,6 +8721,9 @@ textarea.form-control-lg {
   .text-lg-center {
     text-align: center !important;
   }
+  .text-lg-justify {
+    text-align: justify !important;
+  }
 }
 @media (min-width: 1200px) {
   .float-xl-start {
@@ -9261,6 +9274,9 @@ textarea.form-control-lg {
   .text-xl-center {
     text-align: center !important;
   }
+  .text-xl-justify {
+    text-align: justify !important;
+  }
 }
 @media (min-width: 1400px) {
   .float-xxl-start {
@@ -9810,6 +9826,9 @@ textarea.form-control-lg {
   }
   .text-xxl-center {
     text-align: center !important;
+  }
+  .text-xxl-justify {
+    text-align: justify !important;
   }
 }
 @media (min-width: 1200px) {

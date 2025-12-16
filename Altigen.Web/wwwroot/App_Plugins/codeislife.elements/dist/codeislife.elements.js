@@ -27,7 +27,7 @@ const t = [
     type: "propertyEditorUi",
     alias: "CodeIsLife.TextAlignment",
     name: "Text Alignment Property Editor UI",
-    element: () => import("./text-alignment.element-DDOvwkws.js"),
+    element: () => import("./text-alignment.element-CB8gExCJ.js"),
     meta: {
       label: "Text Alignment",
       icon: "icon-autofill",
@@ -49,11 +49,7 @@ const t = [
                 alias: "defaultValue",
                 value: "Default (Inline Style)"
               }
-            ],
-            // @ts-ignore
-            validation: {
-              mandatory: !0
-            }
+            ]
           },
           {
             alias: "leftValue",

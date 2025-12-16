@@ -71,6 +71,6 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("Alignment")]
-		public virtual string Alignment => global::Umbraco.Cms.Web.Common.PublishedModels.Style.GetAlignment(this, _publishedValueFallback);
+		public virtual global::System.Text.Json.JsonDocument Alignment => global::Umbraco.Cms.Web.Common.PublishedModels.Style.GetAlignment(this, _publishedValueFallback);
 	}
 }

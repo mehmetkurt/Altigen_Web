@@ -1,0 +1,8 @@
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockGridItem>
+@{
+	if (Model?.Areas.Any() != true) { return; }
+}
+
+<div class="umb-block-grid__area-container">
+    @await Html.GetBlockGridItemAreasHtmlAsync(Model)
+</div>
