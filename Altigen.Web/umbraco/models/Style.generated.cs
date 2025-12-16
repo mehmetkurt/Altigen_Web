@@ -18,14 +18,24 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-	/// <summary>Block Settings Model</summary>
-	[PublishedModel("blockSettingsModel")]
-	public partial class BlockSettingsModel : PublishedElementModel, IAdvanced, IStyle
+	// Mixin Content Type with alias "style"
+	/// <summary>Style</summary>
+	public partial interface IStyle : IPublishedElement
+	{
+		/// <summary>Alignment</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		string Alignment { get; }
+	}
+
+	/// <summary>Style</summary>
+	[PublishedModel("style")]
+	public partial class Style : PublishedElementModel, IStyle
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
-		public new const string ModelTypeAlias = "blockSettingsModel";
+		public new const string ModelTypeAlias = "style";
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
 		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
@@ -34,14 +44,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 			=> PublishedModelUtility.GetModelContentType(contentTypeCache, ModelItemType, ModelTypeAlias);
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedContentTypeCache contentTypeCache, Expression<Func<BlockSettingsModel, TValue>> selector)
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedContentTypeCache contentTypeCache, Expression<Func<Style, TValue>> selector)
 			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(contentTypeCache), selector);
 #pragma warning restore 0109
 
 		private IPublishedValueFallback _publishedValueFallback;
 
 		// ctor
-		public BlockSettingsModel(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
+		public Style(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
 			: base(content, publishedValueFallback)
 		{
 			_publishedValueFallback = publishedValueFallback;
@@ -50,27 +60,16 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
-		/// Margin
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("margin")]
-		public virtual global::System.Text.Json.JsonDocument Margin => global::Umbraco.Cms.Web.Common.PublishedModels.Advanced.GetMargin(this, _publishedValueFallback);
-
-		///<summary>
-		/// Padding
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("padding")]
-		public virtual global::System.Text.Json.JsonDocument Padding => global::Umbraco.Cms.Web.Common.PublishedModels.Advanced.GetPadding(this, _publishedValueFallback);
-
-		///<summary>
 		/// Alignment
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("Alignment")]
-		public virtual string Alignment => global::Umbraco.Cms.Web.Common.PublishedModels.Style.GetAlignment(this, _publishedValueFallback);
+		public virtual string Alignment => GetAlignment(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Alignment</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static string GetAlignment(IStyle that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "Alignment");
 	}
 }

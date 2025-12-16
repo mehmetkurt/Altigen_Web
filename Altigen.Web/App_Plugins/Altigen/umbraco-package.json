@@ -1,0 +1,16 @@
+{
+  "$schema": "../../umbraco-package-schema.json",
+  "name": "Altigen.Web",
+  "version": "1.0.0",
+  "extensions": [
+
+    {
+      "type": "blockEditorCustomView",
+      "alias": "Local.blockEditorCustomView.titleBlock",
+      "name": "Block Editor Custom View for Title",
+      "element": "/App_Plugins/Altigen/blockgrid/title-block.js",
+      "forContentTypeAlias": "titleBlock",
+      "forBlockEditor": "block-grid"
+    }
+  ]
+}

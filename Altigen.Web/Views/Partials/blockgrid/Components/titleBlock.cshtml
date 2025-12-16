@@ -1,0 +1,11 @@
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Web.Common.PublishedModels.TitleBlock>
+@{
+    var title = Model.TitleBlockText;
+}
+
+@if (!string.IsNullOrEmpty(title))
+{
+    <div class="title-block mb-3">
+        <h2>@title</h2>
+    </div>
+}
