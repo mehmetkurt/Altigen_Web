@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json.schemastore.org/umbraco-package.schema.json",
+  "name": "Code Is Life Elements",
+  "version": "1.0.2",
+  "extensions": [
+    {
+      "type": "bundle",
+      "alias": "CodeIsLife.Elements.Bundle",
+      "name": "Code Is Life Elements Bundle",
+      "js": "/App_Plugins/codeislife.elements/dist/codeislife.elements.js"
+    }
+  ],
+  "meta": {
+      "dictionary": {
+          "codeIsLife": {
+            "group": "Code Is Life",
+            "spacing": "Spacing",
+            "robotsMeta": "Robots Meta"
+          }
+      }
+  }
+}

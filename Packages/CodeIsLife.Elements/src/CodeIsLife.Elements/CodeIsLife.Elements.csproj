@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>codeislife</Authors>
+    <Description>Code Is Life Elements for Umbraco</Description>
+    <PackageId>CodeIsLife.Elements</PackageId>
+    <PackageTags>umbraco plugin codeislife</PackageTags>
+    <RazorCompileOnBuild>true</RazorCompileOnBuild>
+    <RazorCompileOnPublish>true</RazorCompileOnPublish>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Umbraco.Cms" Version="17.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="build\**" PackagePath="buildTransitive" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <ClientProjectDirectory>$(MSBuildProjectDirectory)\..\CodeIsLife.Elements.Client</ClientProjectDirectory>
+  </PropertyGroup>
+
+  <Target Name="BuildClient" BeforeTargets="Build">
+    <Message Text="Building Client Project..." Importance="high" />
+    <Exec Command="npm install" WorkingDirectory="$(ClientProjectDirectory)" Condition="!Exists('$(ClientProjectDirectory)\node_modules')" />
+    <Exec Command="npm run build" WorkingDirectory="$(ClientProjectDirectory)" />
+  </Target>
+
+  <Target Name="CopyPluginsToWeb" AfterTargets="Build">
+    <ItemGroup>
+      <PluginAssets Include="$(MSBuildProjectDirectory)\wwwroot\App_Plugins\codeislife.elements\**\*.*" />
+    </ItemGroup>
+    <Message Text="Copying assets to Altigen.Web..." Importance="high" />
+    <!-- Adjust this path if Altigen.Web location changes -->
+    <Copy SourceFiles="@(PluginAssets)" DestinationFolder="$(MSBuildProjectDirectory)\..\..\..\..\Altigen.Web\wwwroot\App_Plugins\codeislife.elements\%(RecursiveDir)" SkipUnchangedFiles="true" />
+  </Target>
+
+</Project>
