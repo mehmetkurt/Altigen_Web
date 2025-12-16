@@ -18,14 +18,24 @@ using Umbraco.Extensions;
 
 namespace Altigen.Web.Models
 {
-	/// <summary>Navigation Item Settings</summary>
-	[PublishedModel("navigationItemSettings")]
-	public partial class NavigationItemSettings : PublishedElementModel
+	// Mixin Content Type with alias "fontSettingsModel"
+	/// <summary>Font Model</summary>
+	public partial interface IFontSettingsModel : IPublishedElement
+	{
+		/// <summary>Alignment</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		global::System.Text.Json.JsonDocument FontAlignment { get; }
+	}
+
+	/// <summary>Font Model</summary>
+	[PublishedModel("fontSettingsModel")]
+	public partial class FontSettingsModel : PublishedElementModel, IFontSettingsModel
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
-		public new const string ModelTypeAlias = "navigationItemSettings";
+		public new const string ModelTypeAlias = "fontSettingsModel";
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
 		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
@@ -34,14 +44,14 @@ namespace Altigen.Web.Models
 			=> PublishedModelUtility.GetModelContentType(contentTypeCache, ModelItemType, ModelTypeAlias);
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedContentTypeCache contentTypeCache, Expression<Func<NavigationItemSettings, TValue>> selector)
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedContentTypeCache contentTypeCache, Expression<Func<FontSettingsModel, TValue>> selector)
 			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(contentTypeCache), selector);
 #pragma warning restore 0109
 
 		private IPublishedValueFallback _publishedValueFallback;
 
 		// ctor
-		public NavigationItemSettings(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
+		public FontSettingsModel(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
 			: base(content, publishedValueFallback)
 		{
 			_publishedValueFallback = publishedValueFallback;
@@ -50,34 +60,16 @@ namespace Altigen.Web.Models
 		// properties
 
 		///<summary>
-		/// Extra CSS Class
+		/// Alignment
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("cssClass")]
-		public virtual string CssClass => this.Value<string>(_publishedValueFallback, "cssClass");
+		[ImplementPropertyType("fontAlignment")]
+		public virtual global::System.Text.Json.JsonDocument FontAlignment => GetFontAlignment(this, _publishedValueFallback);
 
-		///<summary>
-		/// Bold Item: Makes the navigation item bold.
-		///</summary>
+		/// <summary>Static getter for Alignment</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
-		[ImplementPropertyType("isBold")]
-		public virtual bool IsBold => this.Value<bool>(_publishedValueFallback, "isBold");
-
-		///<summary>
-		/// Inline Style
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("style")]
-		public virtual string Style => this.Value<string>(_publishedValueFallback, "style");
-
-		///<summary>
-		/// Width
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("width")]
-		public virtual string Width => this.Value<string>(_publishedValueFallback, "width");
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static global::System.Text.Json.JsonDocument GetFontAlignment(IFontSettingsModel that, IPublishedValueFallback publishedValueFallback) => that.Value<global::System.Text.Json.JsonDocument>(publishedValueFallback, "fontAlignment");
 	}
 }

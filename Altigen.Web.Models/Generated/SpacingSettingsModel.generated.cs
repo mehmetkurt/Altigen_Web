@@ -18,9 +18,9 @@ using Umbraco.Extensions;
 
 namespace Altigen.Web.Models
 {
-	// Mixin Content Type with alias "advanced"
-	/// <summary>Advanced</summary>
-	public partial interface IAdvanced : IPublishedElement
+	// Mixin Content Type with alias "spacingSettingsModel"
+	/// <summary>Spacing Model</summary>
+	public partial interface ISpacingSettingsModel : IPublishedElement
 	{
 		/// <summary>Margin</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
@@ -33,14 +33,14 @@ namespace Altigen.Web.Models
 		global::System.Text.Json.JsonDocument Padding { get; }
 	}
 
-	/// <summary>Advanced</summary>
-	[PublishedModel("advanced")]
-	public partial class Advanced : PublishedElementModel, IAdvanced
+	/// <summary>Spacing Model</summary>
+	[PublishedModel("spacingSettingsModel")]
+	public partial class SpacingSettingsModel : PublishedElementModel, ISpacingSettingsModel
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
-		public new const string ModelTypeAlias = "advanced";
+		public new const string ModelTypeAlias = "spacingSettingsModel";
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
 		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
@@ -49,14 +49,14 @@ namespace Altigen.Web.Models
 			=> PublishedModelUtility.GetModelContentType(contentTypeCache, ModelItemType, ModelTypeAlias);
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedContentTypeCache contentTypeCache, Expression<Func<Advanced, TValue>> selector)
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedContentTypeCache contentTypeCache, Expression<Func<SpacingSettingsModel, TValue>> selector)
 			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(contentTypeCache), selector);
 #pragma warning restore 0109
 
 		private IPublishedValueFallback _publishedValueFallback;
 
 		// ctor
-		public Advanced(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
+		public SpacingSettingsModel(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
 			: base(content, publishedValueFallback)
 		{
 			_publishedValueFallback = publishedValueFallback;
@@ -75,7 +75,7 @@ namespace Altigen.Web.Models
 		/// <summary>Static getter for Margin</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static global::System.Text.Json.JsonDocument GetMargin(IAdvanced that, IPublishedValueFallback publishedValueFallback) => that.Value<global::System.Text.Json.JsonDocument>(publishedValueFallback, "margin");
+		public static global::System.Text.Json.JsonDocument GetMargin(ISpacingSettingsModel that, IPublishedValueFallback publishedValueFallback) => that.Value<global::System.Text.Json.JsonDocument>(publishedValueFallback, "margin");
 
 		///<summary>
 		/// Padding
@@ -88,6 +88,6 @@ namespace Altigen.Web.Models
 		/// <summary>Static getter for Padding</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static global::System.Text.Json.JsonDocument GetPadding(IAdvanced that, IPublishedValueFallback publishedValueFallback) => that.Value<global::System.Text.Json.JsonDocument>(publishedValueFallback, "padding");
+		public static global::System.Text.Json.JsonDocument GetPadding(ISpacingSettingsModel that, IPublishedValueFallback publishedValueFallback) => that.Value<global::System.Text.Json.JsonDocument>(publishedValueFallback, "padding");
 	}
 }

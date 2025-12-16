@@ -1,8 +1,11 @@
+@using Altigen.Web.Models
+@using Altigen.Web.Extensions
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockGridItem>
 @{
-	if (Model?.Areas.Any() != true) { return; }
+    if (Model?.Areas.Any() != true) { return; }
+    var settings = Model.Settings as BlockSettingsModel;
 }
-<div class="col-12 col-md-@Model.ColumnSpan">
+<div class="col-12 col-md-@Model.ColumnSpan @settings.GetBlockAlignmentClass()" style="@settings.GetBlockStyles()">
 
     @await Html.GetBlockGridItemAreasHtmlAsync(Model)
 </div>

@@ -154,6 +154,14 @@ namespace CodeIsLife.Elements.Helpers
             return string.Empty;
         }
 
+        public static string GetAlignmentContent(object? input)
+        {
+            var alignment = ParseAlignment(input);
+            if (alignment == null || string.IsNullOrWhiteSpace(alignment.value)) return string.Empty;
+
+            return alignment.value;
+        }
+
         private static AlignmentValue? ParseAlignment(object? input)
         {
             if (input == null) return null;

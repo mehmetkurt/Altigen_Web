@@ -1,7 +1,12 @@
+@using Altigen.Web.Models
+@using Altigen.Web.Extensions
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockGridItem>
 @{
-	if (Model?.Areas.Any() != true) { return; }
+    if (Model?.Areas.Any() != true) { return; }
+    var settings = Model.Settings as BlockSettingsModel;
 }
-<div class="row">
-    @await Html.GetBlockGridItemAreasHtmlAsync(Model)
+<div class="row-block-wrapper @settings.GetBlockAlignmentClass()" style="@settings.GetBlockStyles()">
+    <div class="row">
+        @await Html.GetBlockGridItemAreasHtmlAsync(Model)
+    </div>
 </div>
