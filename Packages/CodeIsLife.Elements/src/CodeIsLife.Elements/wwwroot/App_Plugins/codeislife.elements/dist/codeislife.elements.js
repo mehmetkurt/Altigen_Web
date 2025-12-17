@@ -87,7 +87,7 @@ const t = [
     type: "propertyEditorUi",
     alias: "CodeIsLife.PropertyEditorUi.AdvancedDropdown",
     name: "Advanced Dropdown Property Editor UI",
-    element: () => import("./advanced-dropdown.element-BOQlFwX0.js"),
+    element: () => import("./advanced-dropdown.element-C5K3ddoo.js"),
     meta: {
       label: "Advanced Dropdown",
       icon: "icon-list",

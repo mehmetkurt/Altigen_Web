@@ -88,7 +88,7 @@ export class AdvancedDropdownEditorElement extends UmbFormControlMixin<string | 
         }
     }
 
-    private _onInput(e: any) {
+    private _onSearch(e: any) {
         this._filterTerm = e.target.search || "";
         this._filterOptions();
     }
@@ -110,7 +110,7 @@ export class AdvancedDropdownEditorElement extends UmbFormControlMixin<string | 
                 <uui-combobox 
                     .value="${this.#value}"
                     @change="${this._onChange}"
-                    @input="${this._onInput}"
+                    @search="${this._onSearch}"
                     style="width: 100%;">
                     <uui-combobox-list>
                         ${this._filteredOptions.map(opt => html`
