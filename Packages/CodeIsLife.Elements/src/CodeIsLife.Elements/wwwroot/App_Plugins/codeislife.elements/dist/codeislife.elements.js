@@ -1,9 +1,9 @@
-const t = [
+const i = [
   {
     type: "propertyEditorUi",
     alias: "CodeIsLife.Buttons.SizeDimension",
     name: "Size Dimension Property Editor UI",
-    element: () => import("./size-dimension.element-yHGSfWiO.js"),
+    element: () => import("./size-dimension.element-hG5nvZUV.js"),
     meta: {
       label: "Size Dimension",
       icon: "icon-autofill",
@@ -116,11 +116,71 @@ const t = [
         ]
       }
     }
+  },
+  {
+    type: "propertyEditorUi",
+    alias: "CodeIsLife.PropertyEditorUi.Size",
+    name: "Size Property Editor UI",
+    element: () => import("./size.element-ACL3m0r_.js"),
+    meta: {
+      label: "Size",
+      icon: "icon-font",
+      group: "code is life",
+      propertyEditorSchemaAlias: "CodeIsLife.Size",
+      settings: {
+        properties: [
+          {
+            alias: "min",
+            label: "Minimum Value",
+            description: "Minimum value for the slider",
+            propertyEditorUiAlias: "Umb.PropertyEditorUi.Integer",
+            config: [{ alias: "defaultValue", value: 0 }]
+          },
+          {
+            alias: "max",
+            label: "Maximum Value",
+            description: "Maximum value for the slider",
+            propertyEditorUiAlias: "Umb.PropertyEditorUi.Integer",
+            config: [{ alias: "defaultValue", value: 100 }]
+          },
+          {
+            alias: "step",
+            label: "Step",
+            description: "Step value for the slider",
+            propertyEditorUiAlias: "Umb.PropertyEditorUi.Integer",
+            config: [{ alias: "defaultValue", value: 1 }]
+          },
+          {
+            alias: "showToggle",
+            label: "Show Toggle",
+            description: "Show enable/disable toggle for this property",
+            propertyEditorUiAlias: "Umb.PropertyEditorUi.Toggle",
+            config: [{ alias: "defaultValue", value: !1 }]
+          }
+        ]
+      }
+    }
+  },
+  {
+    type: "propertyEditorSchema",
+    alias: "CodeIsLife.Size",
+    name: "Size Property Editor Schema",
+    meta: {
+      defaultPropertyEditorUiAlias: "CodeIsLife.PropertyEditorUi.Size"
+    }
+  },
+  {
+    type: "propertyEditorSchema",
+    alias: "CodeIsLife.AdvancedDropdown",
+    name: "Advanced Dropdown Property Editor Schema",
+    meta: {
+      defaultPropertyEditorUiAlias: "CodeIsLife.PropertyEditorUi.AdvancedDropdown"
+    }
   }
-], o = (i, e) => {
-  e.registerMany(t);
+], o = (t, e) => {
+  e.registerMany(i);
 };
 export {
-  t as default,
+  i as default,
   o as onInit
 };

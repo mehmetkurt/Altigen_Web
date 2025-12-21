@@ -7,26 +7,39 @@ using Umbraco.Cms.Web.Common;
 using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Extensions;
 
-
 namespace Altigen.Web.Core.Controllers
 {
+    /// <summary>
+    /// Controller responsible for generating the XML Sitemap for the website.
+    /// </summary>
     public class SitemapController : UmbracoController
     {
         private readonly UmbracoHelper _umbracoHelper;
         private readonly IUmbracoContextFactory _umbracoContextFactory;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SitemapController"/> class.
+        /// </summary>
+        /// <param name="umbracoHelper">Helper for querying published content.</param>
+        /// <param name="umbracoContextFactory">Factory to ensure an Umbraco context exists.</param>
         public SitemapController(UmbracoHelper umbracoHelper, IUmbracoContextFactory umbracoContextFactory)
         {
             _umbracoHelper = umbracoHelper;
             _umbracoContextFactory = umbracoContextFactory;
         }
 
+        /// <summary>
+        /// Generates and returns the Sitemap XML.
+        /// </summary>
+        /// <returns>An XML Action Result containing the sitemap.</returns>
         [HttpGet]
         public IActionResult Index()
         {
             using (var contextReference = _umbracoContextFactory.EnsureUmbracoContext())
             {
-                var rootNodes = _umbracoHelper.ContentAtRoot().Where(x => x.IsVisible()).ToList();
+                // Get all visible root nodes (ContentAtRoot returns Published content only)
+                // We remove .Where(x => x.IsVisible()) to ensure we traverse roots even if hidden from nav
+                var rootNodes = _umbracoHelper.ContentAtRoot().ToList();
 
                 if (rootNodes == null || !rootNodes.Any())
                 {
@@ -42,13 +55,7 @@ namespace Altigen.Web.Core.Controllers
 
                 foreach (var rootNode in rootNodes)
                 {
-                    AddNodeToSitemap(rootNode, urlSet, xmlns, xhtml);
-
-                    // Recursive lookup
-                    foreach (var descendant in rootNode.Descendants())
-                    {
-                        AddNodeToSitemap(descendant, urlSet, xmlns, xhtml);
-                    }
+                    Traverse(rootNode, urlSet, xmlns, xhtml);
                 }
 
                 var xml = new XDocument(
@@ -60,17 +67,48 @@ namespace Altigen.Web.Core.Controllers
             }
         }
 
+        /// <summary>
+        /// Recursively traverses the content tree starting from the given node.
+        /// </summary>
+        /// <param name="node">The current content node.</param>
+        /// <param name="urlSet">The XML element (urlset) to append nodes to.</param>
+        /// <param name="xmlns">The Sitemap XML namespace.</param>
+        /// <param name="xhtml">The XHTML namespace for alternate links.</param>
+        private void Traverse(IPublishedContent node, XElement urlSet, XNamespace xmlns, XNamespace xhtml)
+        {
+            // Add current node
+            AddNodeToSitemap(node, urlSet, xmlns, xhtml);
+
+            // Recursively traverse visible children
+            // We iterate ALL children here to filter them inside AddNodeToSitemap based on composition/properties
+            // This ensures pages hidden from Nav (umbracoNaviHide) can still appear if they have the sitemap composition
+            if (node.Children != null)
+            {
+                foreach (var child in node.Children)
+                {
+                    Traverse(child, urlSet, xmlns, xhtml);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Validates and adds a single content node to the sitemap XML.
+        /// </summary>
+        /// <param name="node">The content node to add.</param>
+        /// <param name="urlSet">The XML element (urlset) to append to.</param>
+        /// <param name="xmlns">The Sitemap XML namespace.</param>
+        /// <param name="xhtml">The XHTML namespace for alternate links.</param>
         private void AddNodeToSitemap(IPublishedContent node, XElement urlSet, XNamespace xmlns, XNamespace xhtml)
         {
-            // Only add if it uses the Sitemap composition
-            // Only add if it uses the Sitemap composition
-            // Use alias check to avoid circular dependency with generated models
-            if (!node.ContentType.CompositionAliases.Contains("sitemap") && !node.ContentType.Alias.Equals("sitemap", StringComparison.OrdinalIgnoreCase)) return;
+            // 1. Strict Requirement: Must have 'Sitemap' composition or be the 'Sitemap' doc type
+            // Using InvariantCultureIgnoreCase for robustness
+            var hasComposition = node.ContentType.CompositionAliases.Any(a => a.Equals("sitemap", StringComparison.InvariantCultureIgnoreCase));
+            var isSitemapDoc = node.ContentType.Alias.Equals("sitemap", StringComparison.InvariantCultureIgnoreCase);
 
-            // Standard visibility check (Umbraco 'umbracoNaviHide' etc handled by Visible check usually, 
-            // but for composition we might want explicit check if we had properties)
-            // Explicitly check for sitemapHide property
-            if (node.Value<bool>("sitemapHide")) return;
+            if (!hasComposition && !isSitemapDoc) return;
+
+            // 2. Explicit Hide Check: If sitemapHide is true, skip
+            if (node.HasProperty("sitemapHide") && node.Value<bool>("sitemapHide")) return;
 
             var url = node.Url(mode: UrlMode.Absolute);
 

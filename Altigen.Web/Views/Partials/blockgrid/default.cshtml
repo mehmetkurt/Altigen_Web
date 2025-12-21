@@ -5,6 +5,4 @@
     var gridColumns = Model.GridColumns?.ToString() ?? "12";
 }
 
-<div class="container">
-    @await Html.GetBlockGridItemsHtmlAsync(Model)
-</div>
+@await Html.GetBlockGridItemsHtmlAsync(Model)

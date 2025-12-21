@@ -10,7 +10,11 @@ export class CodeIsLifeUnitSelectorElement extends UmbElementMixin(LitElement) {
     @property({ type: Array })
     public units: string[] = ['px', '%', 'em', 'rem', 'vw', 'vh', 'custom'];
 
+    @property({ type: Boolean, reflect: true })
+    public disabled: boolean = false;
+
     private _selectUnit(unit: string) {
+        if (this.disabled) return;
         this.value = unit;
         this.dispatchEvent(new CustomEvent('change', { 
             detail: { value: unit },
@@ -27,6 +31,7 @@ export class CodeIsLifeUnitSelectorElement extends UmbElementMixin(LitElement) {
                         type="button"
                         class="unit-btn ${this.value === unit ? 'selected' : ''}"
                         @click=${() => this._selectUnit(unit)}
+                        ?disabled=${this.disabled}
                         title="${unit === 'custom' ? 'Custom' : unit}">
                         ${unit === 'custom' 
                             ? html`<uui-icon name="icon-edit" style="font-size: 12px;"></uui-icon>` 
@@ -40,6 +45,12 @@ export class CodeIsLifeUnitSelectorElement extends UmbElementMixin(LitElement) {
     static styles = css`
         :host {
             display: inline-block;
+        }
+
+        :host([disabled]) {
+            pointer-events: none;
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         .unit-group {
@@ -64,7 +75,12 @@ export class CodeIsLifeUnitSelectorElement extends UmbElementMixin(LitElement) {
             transition: all 0.2s ease;
         }
 
-        .unit-btn:hover {
+        .unit-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .unit-btn:hover:not(:disabled) {
             color: var(--uui-color-text);
             background: var(--uui-color-surface-emphasis);
             opacity: 0.7;

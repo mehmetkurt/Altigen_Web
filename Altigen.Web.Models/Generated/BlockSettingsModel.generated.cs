@@ -82,6 +82,22 @@ namespace Altigen.Web.Models
 		public virtual global::System.Text.Json.JsonDocument FontAlignment => global::Altigen.Web.Models.FontSettingsModel.GetFontAlignment(this, _publishedValueFallback);
 
 		///<summary>
+		/// Color
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("fontColor")]
+		public virtual global::Umbraco.Cms.Core.PropertyEditors.ValueConverters.ColorPickerValueConverter.PickedColor FontColor => global::Altigen.Web.Models.FontSettingsModel.GetFontColor(this, _publishedValueFallback);
+
+		///<summary>
+		/// Size
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("fontSize")]
+		public virtual global::System.Text.Json.JsonDocument FontSize => global::Altigen.Web.Models.FontSettingsModel.GetFontSize(this, _publishedValueFallback);
+
+		///<summary>
 		/// Margin
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]

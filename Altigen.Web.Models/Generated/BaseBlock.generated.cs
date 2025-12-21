@@ -18,14 +18,14 @@ using Umbraco.Extensions;
 
 namespace Altigen.Web.Models
 {
-	/// <summary>Title</summary>
-	[PublishedModel("titleBlock")]
-	public partial class TitleBlock : PublishedElementModel
+	/// <summary>BaseBlock</summary>
+	[PublishedModel("baseBlock")]
+	public partial class BaseBlock : PublishedElementModel
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
-		public new const string ModelTypeAlias = "titleBlock";
+		public new const string ModelTypeAlias = "baseBlock";
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
 		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
@@ -34,14 +34,14 @@ namespace Altigen.Web.Models
 			=> PublishedModelUtility.GetModelContentType(contentTypeCache, ModelItemType, ModelTypeAlias);
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedContentTypeCache contentTypeCache, Expression<Func<TitleBlock, TValue>> selector)
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedContentTypeCache contentTypeCache, Expression<Func<BaseBlock, TValue>> selector)
 			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(contentTypeCache), selector);
 #pragma warning restore 0109
 
 		private IPublishedValueFallback _publishedValueFallback;
 
 		// ctor
-		public TitleBlock(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
+		public BaseBlock(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
 			: base(content, publishedValueFallback)
 		{
 			_publishedValueFallback = publishedValueFallback;
@@ -50,19 +50,11 @@ namespace Altigen.Web.Models
 		// properties
 
 		///<summary>
-		/// Tag Type
+		/// Url
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("titleBlockTagType")]
-		public virtual global::System.Text.Json.JsonDocument TitleBlockTagType => this.Value<global::System.Text.Json.JsonDocument>(_publishedValueFallback, "titleBlockTagType");
-
-		///<summary>
-		/// Text
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("titleBlockText")]
-		public virtual string TitleBlockText => this.Value<string>(_publishedValueFallback, "titleBlockText");
+		[ImplementPropertyType("baseBlockUrl")]
+		public virtual global::Umbraco.Cms.Core.Models.Link BaseBlockUrl => this.Value<global::Umbraco.Cms.Core.Models.Link>(_publishedValueFallback, "baseBlockUrl");
 	}
 }

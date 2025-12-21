@@ -1,8 +1,8 @@
-import { ManifestPropertyEditorUi } from "@umbraco-cms/backoffice/property-editor";
+import { ManifestPropertyEditorUi, ManifestPropertyEditorSchema } from "@umbraco-cms/backoffice/property-editor";
 
 import { UmbEntryPointOnInit } from '@umbraco-cms/backoffice/extension-api';
 
-const manifests: Array<ManifestPropertyEditorUi> = [
+const manifests: Array<ManifestPropertyEditorUi | ManifestPropertyEditorSchema> = [
     {
         type: 'propertyEditorUi',
         alias: 'CodeIsLife.Buttons.SizeDimension',
@@ -119,6 +119,66 @@ const manifests: Array<ManifestPropertyEditorUi> = [
                     }
                 ]
             }
+        }
+    },
+    {
+        type: 'propertyEditorUi',
+        alias: 'CodeIsLife.PropertyEditorUi.Size',
+        name: 'Size Property Editor UI',
+        element: () => import('../property-editor/size/size.element.js'),
+        meta: {
+            label: 'Size',
+            icon: 'icon-font',
+            group: 'code is life',
+            propertyEditorSchemaAlias: 'CodeIsLife.Size',
+            settings: {
+                properties: [
+                    {
+                        alias: "min",
+                        label: "Minimum Value",
+                        description: "Minimum value for the slider",
+                        propertyEditorUiAlias: "Umb.PropertyEditorUi.Integer",
+                        config: [{ alias: "defaultValue", value: 0 }]
+                    },
+                    {
+                        alias: "max",
+                        label: "Maximum Value",
+                        description: "Maximum value for the slider",
+                        propertyEditorUiAlias: "Umb.PropertyEditorUi.Integer",
+                        config: [{ alias: "defaultValue", value: 100 }]
+                    },
+                    {
+                        alias: "step",
+                        label: "Step",
+                        description: "Step value for the slider",
+                        propertyEditorUiAlias: "Umb.PropertyEditorUi.Integer",
+                        config: [{ alias: "defaultValue", value: 1 }]
+                    },
+                    {
+                        alias: "showToggle",
+                        label: "Show Toggle",
+                        description: "Show enable/disable toggle for this property",
+                        propertyEditorUiAlias: "Umb.PropertyEditorUi.Toggle",
+                        config: [{ alias: "defaultValue", value: false }]
+                    }
+                ]
+            }
+        }
+    },
+    {
+        type: 'propertyEditorSchema',
+        alias: 'CodeIsLife.Size',
+        name: 'Size Property Editor Schema',
+        meta: {
+            defaultPropertyEditorUiAlias: 'CodeIsLife.PropertyEditorUi.Size'
+        }
+    },
+    {
+        type: 'propertyEditorSchema',
+        alias: 'CodeIsLife.AdvancedDropdown',
+        name: 'Advanced Dropdown Property Editor Schema',
+        meta: {
+             defaultPropertyEditorUiAlias: 'CodeIsLife.PropertyEditorUi.AdvancedDropdown'
         }
     }
 ];

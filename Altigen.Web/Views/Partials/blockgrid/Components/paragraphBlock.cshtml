@@ -1,7 +1,5 @@
-@using Umbraco.Cms.Web.Common.PublishedModels
 @using Umbraco.Cms.Core.Models.Blocks
-@using Altigen.Web.Extensions
-@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockGridItem<ParagraphBlock>>
+@model BlockGridItem<ParagraphBlock>
 @{
     var content = Model.Content.ParagraphBlockContent;
     var settings = Model.Settings as BlockSettingsModel;
@@ -9,7 +7,7 @@
 
 @if (content != null && !string.IsNullOrWhiteSpace(content.ToString()))
 {
-    <div class="paragraph-block @settings.GetBlockAlignmentClass()" style="@settings.GetBlockStyles()">
+    <div class="paragraph-block @settings.GetBlockAlignmentClass()" @(settings.GetBlockStyles(true))>
         @content
     </div>
 }

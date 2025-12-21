@@ -4,7 +4,6 @@
     if (Model?.Areas.Any() != true) { return; }
     var settings = Model.Settings as BlockSettingsModel;
 }
-<div class="col-12 col-md-@Model.ColumnSpan @settings.GetBlockAlignmentClass()" @(settings.GetBlockStyles(true))>
-
+<div class="container @settings.GetBlockAlignmentClass()" @(settings.GetBlockStyles(true))>
     @await Html.GetBlockGridItemAreasHtmlAsync(Model)
 </div>
