@@ -85,6 +85,10 @@ export default class AltigenTitleBlock extends UmbElementMixin(LitElement) {
         const fontSize = AltigenStylizer.getFontSizeStyle(this.settings);
         if (fontSize) styles.push(fontSize);
 
+        // Font Color
+        const fontColor = AltigenStylizer.getFontColorStyle(this.settings);
+        if (fontColor) styles.push(fontColor);
+
         // Border
         const border = AltigenStylizer.getBorderStyles(this.settings);
         if (border) styles.push(border);

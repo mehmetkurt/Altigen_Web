@@ -55,6 +55,22 @@ namespace Altigen.Web.Extensions
                 sb.Append($"font-size: {fontSize} !important; ");
             }
 
+            // Font Color Logic
+            var colorValue = settings.Value("fontColor");
+            // If it's a PickedColor object, .Value might return the object. ElementStyleHelper.GetColorStyle handles string extraction.
+            // But usually .Value<string> returns the string representation.
+            // Let's pass the raw object if possible, or string.
+            if (colorValue != null)
+            {
+                var colorStyle = ElementStyleHelper.GetColorStyle(colorValue);
+                if (!string.IsNullOrEmpty(colorStyle))
+                {
+                     sb.Append(colorStyle);
+                     if (!colorStyle.TrimEnd().EndsWith(";")) sb.Append("; ");
+                     else sb.Append(" ");
+                }
+            }
+
             // Border Radius Logic
             var radiusValue = settings.Value("borderRadius"); 
             var borderRadius = ElementStyleHelper.GetBorderRadiusStyle(radiusValue);

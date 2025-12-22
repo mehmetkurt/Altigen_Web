@@ -284,6 +284,46 @@ namespace CodeIsLife.Elements.Helpers
             return str;
         }
 
+        /// <summary>
+        /// Parses input to generate color styles.
+        /// </summary>
+        /// <param name="input">The raw input value.</param>
+        /// <returns>CSS color style string.</returns>
+        public static string? GetColorStyle(object? input)
+        {
+            if (input == null) return null;
+            
+            // Check for PickedColor object (Umbraco native)
+            // serialized as JSON, usually has "value" or just the hex string
+            // but strongly typed model returns PickedColor object.
+            // If input is the customized PickedColor wrapping, we might need value.
+            
+            // Try to extract string first
+            var val = GetString(input);
+            if (!string.IsNullOrWhiteSpace(val))
+            {
+                // If it looks like a JSON object, try to parse it
+                 if (val!.TrimStart().StartsWith("{"))
+                 {
+                      try
+                      {
+                          using var doc = JsonDocument.Parse(val);
+                          if (doc.RootElement.TryGetProperty("value", out var v))
+                              val = v.GetString();
+                          else if (doc.RootElement.TryGetProperty("color", out var c))
+                              val = c.GetString();
+                      }
+                      catch { /* ignore */ }
+                 }
+            }
+
+            if (!string.IsNullOrWhiteSpace(val) && !val!.StartsWith("{"))
+            {
+                return $"color: {val} !important";
+            }
+            return null;
+        }
+
         // --- Private Helpers ---
 
         private static AlignmentValue? ParseAlignment(object? input)

@@ -188,6 +188,30 @@ export class AltigenStylizer {
     }
 
     /**
+     * Get Font Color Style
+     * @param {object} settings 
+     * @returns {string|null}
+     */
+    static getFontColorStyle(settings) {
+        const colorRaw = settings?.fontColor || settings?.FontColor || settings?.color || settings?.Color;
+        if (!colorRaw) return null;
+
+        const colorObj = this.parseJson(colorRaw);
+        let colorVal = null;
+
+        if (typeof colorObj === 'string') {
+            colorVal = colorObj;
+        } else if (colorObj && typeof colorObj === 'object') {
+            colorVal = colorObj.value || colorObj.Color || colorObj.color; 
+        }
+
+        if (colorVal && typeof colorVal === 'string' && !colorVal.startsWith('{')) {
+             return `color: ${colorVal} !important`;
+        }
+        return null;
+    }
+
+    /**
      * Get Spacing Style (Margin/Padding)
      * @param {string|object} input 
      * @param {string} prefix 

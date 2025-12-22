@@ -56,6 +56,14 @@ export default class AltigenParagraphBlock extends UmbElementMixin(LitElement) {
         const borderRadius = AltigenStylizer.getBorderRadiusStyles(this.settings);
         if (borderRadius) styles.push(borderRadius);
 
+        // Font Size
+        const fontSize = AltigenStylizer.getFontSizeStyle(this.settings);
+        if (fontSize) styles.push(fontSize);
+
+        // Font Color
+        const fontColor = AltigenStylizer.getFontColorStyle(this.settings);
+        if (fontColor) styles.push(fontColor);
+
         return styles.join("; ");
     }
 
