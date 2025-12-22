@@ -3,7 +3,7 @@ const i = [
     type: "propertyEditorUi",
     alias: "CodeIsLife.Buttons.SizeDimension",
     name: "Size Dimension Property Editor UI",
-    element: () => import("./size-dimension.element-hG5nvZUV.js"),
+    element: () => import("./size-dimension.element-BM_E0VaQ.js"),
     meta: {
       label: "Size Dimension",
       icon: "icon-autofill",
@@ -87,7 +87,7 @@ const i = [
     type: "propertyEditorUi",
     alias: "CodeIsLife.PropertyEditorUi.AdvancedDropdown",
     name: "Advanced Dropdown Property Editor UI",
-    element: () => import("./advanced-dropdown.element-C5K3ddoo.js"),
+    element: () => import("./advanced-dropdown.element-D7N0D9U5.js"),
     meta: {
       label: "Advanced Dropdown",
       icon: "icon-list",
@@ -106,12 +106,6 @@ const i = [
             label: "Default Value",
             description: "The default value to select",
             propertyEditorUiAlias: "Umb.PropertyEditorUi.TextBox"
-          },
-          {
-            alias: "enableFiltering",
-            label: "Enable Filtering",
-            description: "Enable search/filtering within the dropdown",
-            propertyEditorUiAlias: "Umb.PropertyEditorUi.Toggle"
           }
         ]
       }
@@ -121,7 +115,7 @@ const i = [
     type: "propertyEditorUi",
     alias: "CodeIsLife.PropertyEditorUi.Size",
     name: "Size Property Editor UI",
-    element: () => import("./size.element-ACL3m0r_.js"),
+    element: () => import("./size.element-CS-VPNOH.js"),
     meta: {
       label: "Size",
       icon: "icon-font",
@@ -159,6 +153,26 @@ const i = [
           }
         ]
       }
+    }
+  },
+  {
+    type: "propertyEditorUi",
+    alias: "CodeIsLife.PropertyEditorUi.BorderRadius",
+    name: "Border Radius Property Editor UI",
+    element: () => import("./border-radius.element-zkD7X2xw.js"),
+    meta: {
+      label: "Border Radius",
+      icon: "icon-corners",
+      group: "code is life",
+      propertyEditorSchemaAlias: "CodeIsLife.BorderRadius"
+    }
+  },
+  {
+    type: "propertyEditorSchema",
+    alias: "CodeIsLife.BorderRadius",
+    name: "Border Radius Property Editor Schema",
+    meta: {
+      defaultPropertyEditorUiAlias: "CodeIsLife.PropertyEditorUi.BorderRadius"
     }
   },
   {

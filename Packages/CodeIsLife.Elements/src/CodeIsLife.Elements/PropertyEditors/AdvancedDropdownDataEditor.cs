@@ -5,7 +5,7 @@ namespace CodeIsLife.Elements.PropertyEditors;
 
 [DataEditor(
     "CodeIsLife.AdvancedDropdown",
-    ValueType = "JSON",
+    ValueType = "STRING",
     ValueEditorIsReusable = true)]
 public class AdvancedDropdownDataEditor : DataEditor
 {
@@ -37,6 +37,5 @@ public class AdvancedDropdownConfiguration
     [ConfigurationField("defaultValue")]
     public string DefaultValue { get; set; } = string.Empty;
 
-    [ConfigurationField("enableFiltering")]
-    public bool EnableFiltering { get; set; } = false;
+
 }

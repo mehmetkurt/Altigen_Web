@@ -1,5 +1,6 @@
 import { LitElement, html, css, customElement, property } from "@umbraco-cms/backoffice/external/lit";
 import { UmbElementMixin } from "@umbraco-cms/backoffice/element-api";
+import { AltigenStylizer } from "../utils/stylizer.js";
 
 export default class AltigenTitleBlock extends UmbElementMixin(LitElement) {
     
@@ -60,97 +61,39 @@ export default class AltigenTitleBlock extends UmbElementMixin(LitElement) {
 
     _getClasses() {
         const classes = ["title-block"];
-        // Check for FontAlignment or fontAlignment
-        const alignment = this.settings?.FontAlignment || this.settings?.fontAlignment || this.settings?.Alignment || this.settings?.alignment; 
-        
-        if (alignment) {
-            const alignObj = this._parseJson(alignment);
-            if (alignObj && alignObj.type === "Css Class" && alignObj.value) {
-                classes.push(alignObj.value);
-            }
-        }
-
+        const alignmentClass = AltigenStylizer.getAlignmentClass(this.settings);
+        if (alignmentClass) classes.push(alignmentClass);
         return classes.join(" ");
     }
 
     _getStyles() {
         const styles = [];
         
-        // Alignment
-        const alignment = this.settings?.FontAlignment || this.settings?.fontAlignment || this.settings?.Alignment || this.settings?.alignment;
-        if (alignment) {
-            const alignObj = this._parseJson(alignment);
-            // Check for loose equality or specific string match for type
-            if (alignObj && (!alignObj.type || alignObj.type === "Default (Inline Style)") && alignObj.value) {
-                styles.push(`text-align: ${alignObj.value} !important`);
-            }
-        }
+        // Alignment Style (if not class)
+        const alignmentStyle = AltigenStylizer.getAlignmentStyle(this.settings);
+        if (alignmentStyle) styles.push(alignmentStyle);
 
         // Margin
-        const margin = this._getSpacingStyle(this.settings?.margin || this.settings?.Margin, "margin");
+        const margin = AltigenStylizer.getSpacingStyle(this.settings?.margin || this.settings?.Margin, "margin");
         if (margin) styles.push(margin);
 
         // Padding
-        const padding = this._getSpacingStyle(this.settings?.padding || this.settings?.Padding, "padding");
+        const padding = AltigenStylizer.getSpacingStyle(this.settings?.padding || this.settings?.Padding, "padding");
         if (padding) styles.push(padding);
 
         // Font Size
-        const fontSizeRaw = this.settings?.size || this.settings?.fontSize || this.settings?.Size;
-        if (fontSizeRaw) {
-             const fontSizeObj = this._parseJson(fontSizeRaw);
-             let fontSizeVal = fontSizeRaw; // Default to raw if not JSON
-             let enabled = true;
+        const fontSize = AltigenStylizer.getFontSizeStyle(this.settings);
+        if (fontSize) styles.push(fontSize);
 
-             if (fontSizeObj && typeof fontSizeObj === 'object' && fontSizeObj.value !== undefined) {
-                 fontSizeVal = fontSizeObj.value;
-                 enabled = fontSizeObj.enabled !== false;
-             }
+        // Border
+        const border = AltigenStylizer.getBorderStyles(this.settings);
+        if (border) styles.push(border);
 
-             if (enabled && fontSizeVal && fontSizeVal !== "0" && !fontSizeVal.startsWith("0")) {
-                 styles.push(`font-size: ${fontSizeVal} !important`);
-             }
-        }
+        // Border Radius
+        const borderRadius = AltigenStylizer.getBorderRadiusStyles(this.settings);
+        if (borderRadius) styles.push(borderRadius);
 
         return styles.join("; ");
-    }
-
-    _getSpacingStyle(input, prefix) {
-        if (!input) return null;
-        
-        const spacing = this._parseJson(input);
-        if (!spacing) return null;
-
-        const { top, right, bottom, left, unit = "px" } = spacing;
-        
-        const hasT = !!top;
-        const hasR = !!right;
-        const hasB = !!bottom;
-        const hasL = !!left;
-
-        if (!hasT && !hasR && !hasB && !hasL) return null;
-
-        // Shorthand
-        if (hasT && hasR && hasB && hasL) {
-            return `${prefix}: ${top}${unit} ${right}${unit} ${bottom}${unit} ${left}${unit} !important`;
-        }
-
-        // Individual
-        const styles = [];
-        if (hasT) styles.push(`${prefix}-top: ${top}${unit} !important`);
-        if (hasR) styles.push(`${prefix}-right: ${right}${unit} !important`);
-        if (hasB) styles.push(`${prefix}-bottom: ${bottom}${unit} !important`);
-        if (hasL) styles.push(`${prefix}-left: ${left}${unit} !important`);
-
-        return styles.join("; ");
-    }
-
-    _parseJson(input) {
-        if (typeof input === 'object') return input;
-        try {
-            return JSON.parse(input);
-        } catch {
-            return null;
-        }
     }
 
     static styles = [

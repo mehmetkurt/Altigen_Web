@@ -20,7 +20,7 @@ namespace Altigen.Web.Models
 {
 	/// <summary>Paragraph</summary>
 	[PublishedModel("paragraphBlock")]
-	public partial class ParagraphBlock : PublishedElementModel
+	public partial class ParagraphBlock : BaseBlock
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant

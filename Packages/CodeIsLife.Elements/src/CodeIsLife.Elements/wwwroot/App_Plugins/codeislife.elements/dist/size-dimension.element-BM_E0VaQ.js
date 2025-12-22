@@ -1,12 +1,12 @@
-import { LitElement as r, html as h, css as c, state as d, property as o, customElement as v } from "@umbraco-cms/backoffice/external/lit";
+import { LitElement as r, html as h, css as c, state as d, property as p, customElement as v } from "@umbraco-cms/backoffice/external/lit";
 import { UmbElementMixin as g } from "@umbraco-cms/backoffice/element-api";
 import "./unit-selector.element-D_mw4tCZ.js";
-var f = Object.defineProperty, _ = Object.getOwnPropertyDescriptor, l = (e, t, i, n) => {
-  for (var u = n > 1 ? void 0 : n ? _(t, i) : t, a = e.length - 1, p; a >= 0; a--)
-    (p = e[a]) && (u = (n ? p(t, i, u) : p(u)) || u);
-  return n && u && f(t, i, u), u;
+var f = Object.defineProperty, m = Object.getOwnPropertyDescriptor, u = (e, t, i, s) => {
+  for (var n = s > 1 ? void 0 : s ? m(t, i) : t, a = e.length - 1, o; a >= 0; a--)
+    (o = e[a]) && (n = (s ? o(t, i, n) : o(n)) || n);
+  return s && n && f(t, i, n), n;
 };
-let s = class extends g(r) {
+let l = class extends g(r) {
   constructor() {
     super(...arguments), this._value = { unit: "px", isLinked: !0 };
   }
@@ -79,7 +79,8 @@ let s = class extends g(r) {
                         <uui-input 
                             .value=${this._value.top ?? ""} 
                             @input=${(t) => this._update("top", t.target.value)}
-                            type="${e}">
+                            type="${e}"
+                            label="Top dimension">
                         </uui-input>
                         <label>Top</label>
                     </div>
@@ -88,7 +89,8 @@ let s = class extends g(r) {
                         <uui-input 
                             .value=${this._value.right ?? ""} 
                             @input=${(t) => this._update("right", t.target.value)}
-                            type="${e}">
+                            type="${e}"
+                            label="Right dimension">
                         </uui-input>
                         <label>Right</label>
                     </div>
@@ -97,7 +99,8 @@ let s = class extends g(r) {
                         <uui-input 
                             .value=${this._value.bottom ?? ""} 
                             @input=${(t) => this._update("bottom", t.target.value)}
-                            type="${e}">
+                            type="${e}"
+                            label="Bottom dimension">
                         </uui-input>
                         <label>Bottom</label>
                     </div>
@@ -106,7 +109,8 @@ let s = class extends g(r) {
                         <uui-input 
                             .value=${this._value.left ?? ""} 
                             @input=${(t) => this._update("left", t.target.value)}
-                            type="${e}">
+                            type="${e}"
+                            label="Left dimension">
                         </uui-input>
                         <label>Left</label>
                     </div>
@@ -116,6 +120,7 @@ let s = class extends g(r) {
                             compact 
                             look="${this._value.isLinked ? "primary" : "secondary"}" 
                             @click=${this._toggleLink}
+                            label="Toggle link"
                             title="${this._value.isLinked ? "Unlink values" : "Link values"}">
                             <span class="link-icon">
                                 ${this._value.isLinked ? "🔗" : "🔓"}
@@ -128,7 +133,7 @@ let s = class extends g(r) {
         `;
   }
 };
-s.styles = c`
+l.styles = c`
         :host {
             display: block;
             font-family: inherit;
@@ -212,20 +217,20 @@ s.styles = c`
              opacity: 0.5;
         }
     `;
-l([
+u([
   d()
-], s.prototype, "_value", 2);
-l([
-  o({ attribute: !1 })
-], s.prototype, "config", 2);
-l([
-  o({ attribute: !1 })
-], s.prototype, "value", 1);
-s = l([
+], l.prototype, "_value", 2);
+u([
+  p({ attribute: !1 })
+], l.prototype, "config", 2);
+u([
+  p({ attribute: !1 })
+], l.prototype, "value", 1);
+l = u([
   v("codeislife-size-dimension")
-], s);
-const b = s;
+], l);
+const y = l;
 export {
-  s as CodeIsLifeSizeDimensionElement,
-  b as default
+  l as CodeIsLifeSizeDimensionElement,
+  y as default
 };

@@ -1,4 +1,5 @@
 using Altigen.Web.Models;
+using Umbraco.Extensions;
 using CodeIsLife.Elements.Helpers;
 using Microsoft.AspNetCore.Html;
 using System.Text;
@@ -54,6 +55,16 @@ namespace Altigen.Web.Extensions
                 sb.Append($"font-size: {fontSize} !important; ");
             }
 
+            // Border Radius Logic
+            var radiusValue = settings.Value("borderRadius"); 
+            var borderRadius = ElementStyleHelper.GetBorderRadiusStyle(radiusValue);
+            if (!string.IsNullOrEmpty(borderRadius))
+            {
+                sb.Append(borderRadius);
+                if (!borderRadius.TrimEnd().EndsWith(";")) sb.Append("; ");
+                else sb.Append(" ");
+            }
+
             var styles = sb.ToString().Trim();
 
             if (renderAttribute)
@@ -106,20 +117,16 @@ namespace Altigen.Web.Extensions
 
         private static void GetBorderStyles(BlockSettingsModel settings, StringBuilder sb)
         {
-            var borderStyle = settings.BorderStyle;
+            // Use generic .Value to avoid JsonDocument casting issues if the underlying storage is simple string
+            var borderStyleValue = settings.Value("borderStyle");
+            var borderStyle = ElementStyleHelper.GetString(borderStyleValue);
 
             // Only render border styles if a style (Solid, Dashed, etc.) is selected
             if (!string.IsNullOrEmpty(borderStyle) && !borderStyle.Equals("none", StringComparison.OrdinalIgnoreCase))
             {
-                sb.Append($"border-style: {borderStyle};");
-
                 var borderColor = settings.BorderColor;
-                if (!string.IsNullOrEmpty(borderColor))
-                {
-                    // Assuming valid CSS color
-                    sb.Append($"border-color: {borderColor};");
-                }
-
+                var colorPart = !string.IsNullOrEmpty(borderColor) ? $" {borderColor}" : "";
+                
                 var borderSize = settings.BorderSize;
                 if (borderSize != null)
                 {
@@ -132,23 +139,43 @@ namespace Altigen.Web.Extensions
                             unit = unitProp.GetString() ?? "px";
                         }
 
-                        string[] sides = { "top", "right", "bottom", "left" };
+                        // Get individual values
+                        string? top = null, right = null, bottom = null, left = null;
+                        
+                        if (root.TryGetProperty("top", out var tProp)) top = tProp.GetString();
+                        if (root.TryGetProperty("right", out var rProp)) right = rProp.GetString();
+                        if (root.TryGetProperty("bottom", out var bProp)) bottom = bProp.GetString();
+                        if (root.TryGetProperty("left", out var lProp)) left = lProp.GetString();
 
-                        // Optimization: Check if all sides are equal for shorthand? 
-                        // For now, explicit definitions are safer.
-                        foreach (var side in sides)
+                        bool hasTop = !string.IsNullOrEmpty(top);
+                        bool hasRight = !string.IsNullOrEmpty(right);
+                        bool hasBottom = !string.IsNullOrEmpty(bottom);
+                        bool hasLeft = !string.IsNullOrEmpty(left);
+
+                        // Optimization: If all sides are present and equal, use 'border' shorthand
+                        if (hasTop && hasRight && hasBottom && hasLeft && 
+                            top == right && top == bottom && top == left)
                         {
-                            if (root.TryGetProperty(side, out var sideProp))
-                            {
-                                var val = sideProp.GetString();
-                                if (!string.IsNullOrEmpty(val))
-                                {
-                                    sb.Append($"border-{side}-width: {val}{unit};");
-                                }
-                            }
+                            sb.Append($"border: {top}{unit} {borderStyle}{colorPart};");
+                            return;
                         }
+
+                        // Otherwise applied per side with shorthand 'border-{side}'
+                        if (hasTop) sb.Append($"border-top: {top}{unit} {borderStyle}{colorPart};");
+                        if (hasRight) sb.Append($"border-right: {right}{unit} {borderStyle}{colorPart};");
+                        if (hasBottom) sb.Append($"border-bottom: {bottom}{unit} {borderStyle}{colorPart};");
+                        if (hasLeft) sb.Append($"border-left: {left}{unit} {borderStyle}{colorPart};");
+
+                        return;
                     }
-                    catch { /* Ignore parsing errors */ }
+                    catch { /* Ignore parsing errors, fall back to default behavior */ }
+                }
+
+                // Fallback: Style and Color without specific widths (defaults to medium width in browser)
+                sb.Append($"border-style: {borderStyle};");
+                if (!string.IsNullOrEmpty(borderColor))
+                {
+                    sb.Append($"border-color: {borderColor};");
                 }
             }
         }

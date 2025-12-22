@@ -10,8 +10,6 @@ export class AdvancedDropdownEditorElement extends UmbFormControlMixin<string | 
     @state()
     private _options: Array<{ name: string, value: string, selected: boolean }> = [];
 
-    @state()
-    private _enableFiltering: boolean = false;
 
     #value: string = "";
 
@@ -37,7 +35,6 @@ export class AdvancedDropdownEditorElement extends UmbFormControlMixin<string | 
         if (!config) return;
 
         const items = config.getValueByAlias('options');
-        this._enableFiltering = config.getValueByAlias<boolean>('enableFiltering') ?? false;
 
         let options: Array<{ name: string, value: string }> = [];
 
@@ -78,7 +75,7 @@ export class AdvancedDropdownEditorElement extends UmbFormControlMixin<string | 
     }
 
     private _filterOptions() {
-        if (!this._enableFiltering || !this._filterTerm) {
+        if (!this._filterTerm) {
             this._filteredOptions = this._options;
         } else {
             const term = this._filterTerm.toLowerCase();
@@ -105,36 +102,22 @@ export class AdvancedDropdownEditorElement extends UmbFormControlMixin<string | 
             return html`<div>${this.#value}</div>`;
         }
 
-        if (this._enableFiltering) {
-             return html`
-                <uui-combobox 
-                    .value="${this.#value}"
-                    @change="${this._onChange}"
-                    @search="${this._onSearch}"
-                    style="width: 100%;">
-                    <uui-combobox-list>
-                        ${this._filteredOptions.map(opt => html`
-                            <uui-combobox-list-option .value="${opt.value}" .displayValue="${opt.name}">
-                                ${opt.name}
-                            </uui-combobox-list-option>
-                        `)}
-                    </uui-combobox-list>
-                </uui-combobox>
-            `;
-        } else {
-             return html`
-                <uui-select
-                    .value="${this.#value}"
-                    @change="${this._onChange}"
-                    style="width: 100%;">
-                    ${this._options.map(opt => html`
-                        <uui-select-option .value="${opt.value}" .label="${opt.name}" ?selected="${opt.selected}">
+        return html`
+            <uui-combobox 
+                .value="${this.#value}"
+                @change="${this._onChange}"
+                @search="${this._onSearch}"
+                style="width: 100%;"
+                label="Select option">
+                <uui-combobox-list>
+                    ${this._filteredOptions.map(opt => html`
+                        <uui-combobox-list-option .value="${opt.value}" .displayValue="${opt.name}">
                             ${opt.name}
-                        </uui-select-option>
+                        </uui-combobox-list-option>
                     `)}
-                </uui-select>
-            `;
-        }
+                </uui-combobox-list>
+            </uui-combobox>
+        `;
     }
     
      static styles = css`

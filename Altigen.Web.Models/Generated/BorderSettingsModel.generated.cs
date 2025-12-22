@@ -27,6 +27,11 @@ namespace Altigen.Web.Models
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		string BorderColor { get; }
 
+		/// <summary>Radius</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		global::System.Text.Json.JsonDocument BorderRadius { get; }
+
 		/// <summary>Size</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
@@ -81,6 +86,19 @@ namespace Altigen.Web.Models
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		public static string GetBorderColor(IBorderSettingsModel that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "borderColor");
+
+		///<summary>
+		/// Radius
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("borderRadius")]
+		public virtual global::System.Text.Json.JsonDocument BorderRadius => GetBorderRadius(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Radius</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static global::System.Text.Json.JsonDocument GetBorderRadius(IBorderSettingsModel that, IPublishedValueFallback publishedValueFallback) => that.Value<global::System.Text.Json.JsonDocument>(publishedValueFallback, "borderRadius");
 
 		///<summary>
 		/// Size

@@ -2,26 +2,26 @@ import { LitElement, css, html, customElement, property, state } from "@umbraco-
 import { UmbElementMixin } from "@umbraco-cms/backoffice/element-api";
 import '../../elements/unit-selector.element.js';
 
-interface SizeDimensionValue {
-    top?: string;
-    right?: string;
-    bottom?: string;
-    left?: string;
+interface BorderRadiusValue {
+    topLeft?: string;
+    topRight?: string;
+    bottomRight?: string;
+    bottomLeft?: string;
     unit?: string;
     isLinked?: boolean;
 }
 
-@customElement('codeislife-size-dimension')
-export class CodeIsLifeSizeDimensionElement extends UmbElementMixin(LitElement) {
+@customElement('codeislife-border-radius')
+export class CodeIsLifeBorderRadiusElement extends UmbElementMixin(LitElement) {
 
     @state()
-    private _value: SizeDimensionValue = { unit: 'px', isLinked: true };
+    private _value: BorderRadiusValue = { unit: 'px', isLinked: true };
 
     @property({ attribute: false })
     public config: any;
 
     @property({ attribute: false })
-    public set value(value: string | SizeDimensionValue | undefined) {
+    public set value(value: string | BorderRadiusValue | undefined) {
         if (!value) {
             this._value = { unit: 'px', isLinked: true };
             return;
@@ -44,11 +44,11 @@ export class CodeIsLifeSizeDimensionElement extends UmbElementMixin(LitElement) 
         }
     }
 
-    public get value(): SizeDimensionValue {
+    public get value(): BorderRadiusValue {
         return this._value;
     }
 
-    private _update(side: 'top' | 'right' | 'bottom' | 'left', val: string) {
+    private _update(corner: 'topLeft' | 'topRight' | 'bottomRight' | 'bottomLeft', val: string) {
         let cleanVal = val;
 
         // If not custom, only allow numeric values
@@ -62,17 +62,17 @@ export class CodeIsLifeSizeDimensionElement extends UmbElementMixin(LitElement) 
         }
 
         if (this._value.isLinked) {
-            // Update all sides if linked
+            // Update all corners if linked
             this._value = { 
                 ...this._value, 
-                top: cleanVal, 
-                right: cleanVal, 
-                bottom: cleanVal, 
-                left: cleanVal 
+                topLeft: cleanVal, 
+                topRight: cleanVal, 
+                bottomRight: cleanVal, 
+                bottomLeft: cleanVal 
             };
         } else {
-            // Update only specific side
-            this._value = { ...this._value, [side]: cleanVal };
+            // Update only specific corner
+            this._value = { ...this._value, [corner]: cleanVal };
         }
         this._dispatchChange();
         this.requestUpdate(); 
@@ -81,15 +81,15 @@ export class CodeIsLifeSizeDimensionElement extends UmbElementMixin(LitElement) 
     private _toggleLink() {
         this._value = { ...this._value, isLinked: !this._value.isLinked };
         
-        // If we just linked, sync all values to the top value (or first available)
+        // If we just linked, sync all values to the top-left value (or first available)
         if (this._value.isLinked) {
-            const syncVal = this._value.top || this._value.right || this._value.bottom || this._value.left || "";
+            const syncVal = this._value.topLeft || this._value.topRight || this._value.bottomRight || this._value.bottomLeft || "";
             this._value = {
                 ...this._value,
-                top: syncVal,
-                right: syncVal,
-                bottom: syncVal,
-                left: syncVal
+                topLeft: syncVal,
+                topRight: syncVal,
+                bottomRight: syncVal,
+                bottomLeft: syncVal
             };
             this._dispatchChange();
         } else {
@@ -106,12 +106,13 @@ export class CodeIsLifeSizeDimensionElement extends UmbElementMixin(LitElement) 
         const inputType = this._value.unit === 'custom' ? 'text' : 'number';
 
         return html`
-            <div class="size-dimension-wrapper">
+            <div class="border-radius-wrapper">
                 
                 <div class="header-controls">
                     <codeislife-unit-selector
                         .value=${this._value.unit || 'px'}
                         @change=${(e: CustomEvent) => {
+                            e.stopPropagation();
                             this._value = { ...this._value, unit: e.detail.value };
                             this._dispatchChange();
                         }}>
@@ -122,42 +123,42 @@ export class CodeIsLifeSizeDimensionElement extends UmbElementMixin(LitElement) 
                     
                     <div class="input-group">
                         <uui-input 
-                            .value=${this._value.top ?? ''} 
-                            @input=${(e: any) => this._update('top', e.target.value)}
+                            .value=${this._value.topLeft ?? ''} 
+                            @input=${(e: any) => this._update('topLeft', e.target.value)}
                             type="${inputType}"
-                            label="Top dimension">
+                            label="Top-Left radius">
                         </uui-input>
-                        <label>Top</label>
+                        <label>Top-Left</label>
                     </div>
 
                     <div class="input-group">
                         <uui-input 
-                            .value=${this._value.right ?? ''} 
-                            @input=${(e: any) => this._update('right', e.target.value)}
+                            .value=${this._value.topRight ?? ''} 
+                            @input=${(e: any) => this._update('topRight', e.target.value)}
                             type="${inputType}"
-                            label="Right dimension">
+                            label="Top-Right radius">
                         </uui-input>
-                        <label>Right</label>
+                        <label>Top-Right</label>
                     </div>
 
                     <div class="input-group">
                         <uui-input 
-                            .value=${this._value.bottom ?? ''} 
-                            @input=${(e: any) => this._update('bottom', e.target.value)}
+                            .value=${this._value.bottomRight ?? ''} 
+                            @input=${(e: any) => this._update('bottomRight', e.target.value)}
                             type="${inputType}"
-                            label="Bottom dimension">
+                            label="Bottom-Right radius">
                         </uui-input>
-                        <label>Bottom</label>
+                        <label>Btm-Right</label>
                     </div>
 
                     <div class="input-group">
                         <uui-input 
-                            .value=${this._value.left ?? ''} 
-                            @input=${(e: any) => this._update('left', e.target.value)}
+                            .value=${this._value.bottomLeft ?? ''} 
+                            @input=${(e: any) => this._update('bottomLeft', e.target.value)}
                             type="${inputType}"
-                            label="Left dimension">
+                            label="Bottom-Left radius">
                         </uui-input>
-                        <label>Left</label>
+                        <label>Btm-Left</label>
                     </div>
 
                     <div class="link-control">
@@ -184,7 +185,7 @@ export class CodeIsLifeSizeDimensionElement extends UmbElementMixin(LitElement) 
             font-family: inherit;
         }
         
-        .size-dimension-wrapper {
+        .border-radius-wrapper {
             display: flex;
             flex-direction: column;
             gap: 4px;
@@ -198,10 +199,6 @@ export class CodeIsLifeSizeDimensionElement extends UmbElementMixin(LitElement) 
             height: 24px;
             margin-bottom: 2px;
             padding-right: 2px;
-        }
-
-        .unit-selector, .unit-arrow {
-            display: none;
         }
 
         .inputs-container {
@@ -235,6 +232,7 @@ export class CodeIsLifeSizeDimensionElement extends UmbElementMixin(LitElement) 
             margin-top: 2px;
             opacity: 0.8;
             transition: opacity 0.2s;
+            white-space: nowrap;
         }
         
         .input-group:hover label {
@@ -264,10 +262,10 @@ export class CodeIsLifeSizeDimensionElement extends UmbElementMixin(LitElement) 
     `;
 }
 
-export default CodeIsLifeSizeDimensionElement;
+export default CodeIsLifeBorderRadiusElement;
 
 declare global {
     interface HTMLElementTagNameMap {
-        'codeislife-size-dimension': CodeIsLifeSizeDimensionElement;
+        'codeislife-border-radius': CodeIsLifeBorderRadiusElement;
     }
 }

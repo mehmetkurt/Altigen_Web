@@ -119,6 +119,59 @@ namespace CodeIsLife.Elements.Helpers
         }
 
         /// <summary>
+        /// Parses input to generate border-radius styles with support for individual corners and shorthand.
+        /// </summary>
+        /// <param name="input">The raw input value (JSON object or string).</param>
+        /// <returns>A formatted CSS style string or null if invalid.</returns>
+        public static string? GetBorderRadiusStyle(object? input)
+        {
+            if (input == null) return null;
+
+            // Attempt to parse structured JSON
+            var radius = TryParseJson<BorderRadiusValue>(input);
+
+            // Fallback for raw strings
+            if (radius == null)
+            {
+                var strVal = input.ToString();
+                if (!string.IsNullOrWhiteSpace(strVal) && !strVal!.TrimStart().StartsWith("{"))
+                {
+                    return $"border-radius: {strVal} !important";
+                }
+                return null;
+            }
+
+            var tl = radius.TopLeft;
+            var tr = radius.TopRight;
+            var br = radius.BottomRight;
+            var bl = radius.BottomLeft;
+
+            bool hasTL = !string.IsNullOrWhiteSpace(tl);
+            bool hasTR = !string.IsNullOrWhiteSpace(tr);
+            bool hasBR = !string.IsNullOrWhiteSpace(br);
+            bool hasBL = !string.IsNullOrWhiteSpace(bl);
+
+            if (!hasTL && !hasTR && !hasBR && !hasBL) return null;
+
+            var unit = string.IsNullOrEmpty(radius.Unit) ? "px" : radius.Unit;
+
+            // Optimization: Shorthand if all corners are present
+            if (hasTL && hasTR && hasBR && hasBL)
+            {
+                return $"border-radius: {tl}{unit} {tr}{unit} {br}{unit} {bl}{unit} !important";
+            }
+
+            // Individual corners
+            var styles = new List<string>();
+            if (hasTL) styles.Add($"border-top-left-radius: {tl}{unit} !important");
+            if (hasTR) styles.Add($"border-top-right-radius: {tr}{unit} !important");
+            if (hasBR) styles.Add($"border-bottom-right-radius: {br}{unit} !important");
+            if (hasBL) styles.Add($"border-bottom-left-radius: {bl}{unit} !important");
+
+            return string.Join("; ", styles);
+        }
+
+        /// <summary>
         /// Parses input to generate text-alignment styles.
         /// </summary>
         /// <param name="input">The raw input value.</param>
@@ -320,6 +373,15 @@ namespace CodeIsLife.Elements.Helpers
             public string? Right { get; set; }
             public string? Bottom { get; set; }
             public string? Left { get; set; }
+            public string? Unit { get; set; }
+        }
+
+        private class BorderRadiusValue
+        {
+            public string? TopLeft { get; set; }
+            public string? TopRight { get; set; }
+            public string? BottomRight { get; set; }
+            public string? BottomLeft { get; set; }
             public string? Unit { get; set; }
         }
 

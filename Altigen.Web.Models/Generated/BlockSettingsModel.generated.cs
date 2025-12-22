@@ -58,6 +58,14 @@ namespace Altigen.Web.Models
 		public virtual string BorderColor => global::Altigen.Web.Models.BorderSettingsModel.GetBorderColor(this, _publishedValueFallback);
 
 		///<summary>
+		/// Radius
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("borderRadius")]
+		public virtual global::System.Text.Json.JsonDocument BorderRadius => global::Altigen.Web.Models.BorderSettingsModel.GetBorderRadius(this, _publishedValueFallback);
+
+		///<summary>
 		/// Size
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]

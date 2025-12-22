@@ -20,7 +20,7 @@ namespace Altigen.Web.Models
 {
 	/// <summary>Title</summary>
 	[PublishedModel("titleBlock")]
-	public partial class TitleBlock : PublishedElementModel
+	public partial class TitleBlock : BaseBlock
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -55,7 +55,7 @@ namespace Altigen.Web.Models
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("titleBlockTagType")]
-		public virtual global::System.Text.Json.JsonDocument TitleBlockTagType => this.Value<global::System.Text.Json.JsonDocument>(_publishedValueFallback, "titleBlockTagType");
+		public virtual string TitleBlockTagType => this.Value<string>(_publishedValueFallback, "titleBlockTagType");
 
 		///<summary>
 		/// Text

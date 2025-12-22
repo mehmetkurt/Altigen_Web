@@ -236,6 +236,7 @@ export class SizeEditorElement extends UmbFormControlMixin<string | undefined, t
                                 .step=${this._step}
                                 .value=${this._numericValue}
                                 @input=${this._onSliderChange}
+                                label="Size value"
                                 ?disabled=${this.readonly || !this._enabled}>
                             </uui-slider>
                             <uui-input
@@ -244,6 +245,7 @@ export class SizeEditorElement extends UmbFormControlMixin<string | undefined, t
                                 @change=${this._onNumericInputChange}
                                 ?readonly=${this.readonly}
                                 ?disabled=${!this._enabled}
+                                label="Size value"
                                 style="width: 80px;">
                             </uui-input>
                         `
@@ -255,6 +257,7 @@ export class SizeEditorElement extends UmbFormControlMixin<string | undefined, t
                                 ?readonly=${this.readonly}
                                 ?disabled=${!this._enabled}
                                 placeholder="Enter value (e.g. clamp(1rem, 2vw, 3rem))"
+                                label="Custom size value"
                                 style="width: 100%;">
                             </uui-input>
                         `

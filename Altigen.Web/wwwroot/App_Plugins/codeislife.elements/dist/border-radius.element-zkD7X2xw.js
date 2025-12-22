@@ -1,12 +1,12 @@
-import { LitElement as r, html as h, css as c, state as d, property as o, customElement as v } from "@umbraco-cms/backoffice/external/lit";
-import { UmbElementMixin as g } from "@umbraco-cms/backoffice/element-api";
+import { LitElement as r, html as h, css as d, state as c, property as p, customElement as g } from "@umbraco-cms/backoffice/external/lit";
+import { UmbElementMixin as v } from "@umbraco-cms/backoffice/element-api";
 import "./unit-selector.element-D_mw4tCZ.js";
-var f = Object.defineProperty, _ = Object.getOwnPropertyDescriptor, l = (e, t, i, n) => {
-  for (var u = n > 1 ? void 0 : n ? _(t, i) : t, a = e.length - 1, p; a >= 0; a--)
-    (p = e[a]) && (u = (n ? p(t, i, u) : p(u)) || u);
-  return n && u && f(t, i, u), u;
+var f = Object.defineProperty, _ = Object.getOwnPropertyDescriptor, l = (e, t, i, s) => {
+  for (var u = s > 1 ? void 0 : s ? _(t, i) : t, n = e.length - 1, o; n >= 0; n--)
+    (o = e[n]) && (u = (s ? o(t, i, u) : o(u)) || u);
+  return s && u && f(t, i, u), u;
 };
-let s = class extends g(r) {
+let a = class extends v(r) {
   constructor() {
     super(...arguments), this._value = { unit: "px", isLinked: !0 };
   }
@@ -37,21 +37,21 @@ let s = class extends g(r) {
     let i = t;
     this._value.unit !== "custom" && !/^-?[0-9]*[.,]?[0-9]*$/.test(t) && t !== "" && (i = t.replace(/[^0-9.,-]/g, "")), this._value.isLinked ? this._value = {
       ...this._value,
-      top: i,
-      right: i,
-      bottom: i,
-      left: i
+      topLeft: i,
+      topRight: i,
+      bottomRight: i,
+      bottomLeft: i
     } : this._value = { ...this._value, [e]: i }, this._dispatchChange(), this.requestUpdate();
   }
   _toggleLink() {
     if (this._value = { ...this._value, isLinked: !this._value.isLinked }, this._value.isLinked) {
-      const e = this._value.top || this._value.right || this._value.bottom || this._value.left || "";
+      const e = this._value.topLeft || this._value.topRight || this._value.bottomRight || this._value.bottomLeft || "";
       this._value = {
         ...this._value,
-        top: e,
-        right: e,
-        bottom: e,
-        left: e
+        topLeft: e,
+        topRight: e,
+        bottomRight: e,
+        bottomLeft: e
       }, this._dispatchChange();
     } else
       this.requestUpdate();
@@ -62,13 +62,13 @@ let s = class extends g(r) {
   render() {
     const e = this._value.unit === "custom" ? "text" : "number";
     return h`
-            <div class="size-dimension-wrapper">
+            <div class="border-radius-wrapper">
                 
                 <div class="header-controls">
                     <codeislife-unit-selector
                         .value=${this._value.unit || "px"}
                         @change=${(t) => {
-      this._value = { ...this._value, unit: t.detail.value }, this._dispatchChange();
+      t.stopPropagation(), this._value = { ...this._value, unit: t.detail.value }, this._dispatchChange();
     }}>
                      </codeislife-unit-selector>
                 </div>
@@ -77,38 +77,42 @@ let s = class extends g(r) {
                     
                     <div class="input-group">
                         <uui-input 
-                            .value=${this._value.top ?? ""} 
-                            @input=${(t) => this._update("top", t.target.value)}
-                            type="${e}">
+                            .value=${this._value.topLeft ?? ""} 
+                            @input=${(t) => this._update("topLeft", t.target.value)}
+                            type="${e}"
+                            label="Top-Left radius">
                         </uui-input>
-                        <label>Top</label>
+                        <label>Top-Left</label>
                     </div>
 
                     <div class="input-group">
                         <uui-input 
-                            .value=${this._value.right ?? ""} 
-                            @input=${(t) => this._update("right", t.target.value)}
-                            type="${e}">
+                            .value=${this._value.topRight ?? ""} 
+                            @input=${(t) => this._update("topRight", t.target.value)}
+                            type="${e}"
+                            label="Top-Right radius">
                         </uui-input>
-                        <label>Right</label>
+                        <label>Top-Right</label>
                     </div>
 
                     <div class="input-group">
                         <uui-input 
-                            .value=${this._value.bottom ?? ""} 
-                            @input=${(t) => this._update("bottom", t.target.value)}
-                            type="${e}">
+                            .value=${this._value.bottomRight ?? ""} 
+                            @input=${(t) => this._update("bottomRight", t.target.value)}
+                            type="${e}"
+                            label="Bottom-Right radius">
                         </uui-input>
-                        <label>Bottom</label>
+                        <label>Btm-Right</label>
                     </div>
 
                     <div class="input-group">
                         <uui-input 
-                            .value=${this._value.left ?? ""} 
-                            @input=${(t) => this._update("left", t.target.value)}
-                            type="${e}">
+                            .value=${this._value.bottomLeft ?? ""} 
+                            @input=${(t) => this._update("bottomLeft", t.target.value)}
+                            type="${e}"
+                            label="Bottom-Left radius">
                         </uui-input>
-                        <label>Left</label>
+                        <label>Btm-Left</label>
                     </div>
 
                     <div class="link-control">
@@ -116,6 +120,7 @@ let s = class extends g(r) {
                             compact 
                             look="${this._value.isLinked ? "primary" : "secondary"}" 
                             @click=${this._toggleLink}
+                            label="Toggle link"
                             title="${this._value.isLinked ? "Unlink values" : "Link values"}">
                             <span class="link-icon">
                                 ${this._value.isLinked ? "🔗" : "🔓"}
@@ -128,13 +133,13 @@ let s = class extends g(r) {
         `;
   }
 };
-s.styles = c`
+a.styles = d`
         :host {
             display: block;
             font-family: inherit;
         }
         
-        .size-dimension-wrapper {
+        .border-radius-wrapper {
             display: flex;
             flex-direction: column;
             gap: 4px;
@@ -148,10 +153,6 @@ s.styles = c`
             height: 24px;
             margin-bottom: 2px;
             padding-right: 2px;
-        }
-
-        .unit-selector, .unit-arrow {
-            display: none;
         }
 
         .inputs-container {
@@ -185,6 +186,7 @@ s.styles = c`
             margin-top: 2px;
             opacity: 0.8;
             transition: opacity 0.2s;
+            white-space: nowrap;
         }
         
         .input-group:hover label {
@@ -213,19 +215,19 @@ s.styles = c`
         }
     `;
 l([
-  d()
-], s.prototype, "_value", 2);
+  c()
+], a.prototype, "_value", 2);
 l([
-  o({ attribute: !1 })
-], s.prototype, "config", 2);
+  p({ attribute: !1 })
+], a.prototype, "config", 2);
 l([
-  o({ attribute: !1 })
-], s.prototype, "value", 1);
-s = l([
-  v("codeislife-size-dimension")
-], s);
-const b = s;
+  p({ attribute: !1 })
+], a.prototype, "value", 1);
+a = l([
+  g("codeislife-border-radius")
+], a);
+const y = a;
 export {
-  s as CodeIsLifeSizeDimensionElement,
-  b as default
+  a as CodeIsLifeBorderRadiusElement,
+  y as default
 };

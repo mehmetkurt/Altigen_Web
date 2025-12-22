@@ -82,9 +82,9 @@ namespace Altigen.Web.Core.Controllers
             // Recursively traverse visible children
             // We iterate ALL children here to filter them inside AddNodeToSitemap based on composition/properties
             // This ensures pages hidden from Nav (umbracoNaviHide) can still appear if they have the sitemap composition
-            if (node.Children != null)
+            if (node.Children() != null)
             {
-                foreach (var child in node.Children)
+                foreach (var child in node.Children())
                 {
                     Traverse(child, urlSet, xmlns, xhtml);
                 }
@@ -98,7 +98,10 @@ namespace Altigen.Web.Core.Controllers
         /// <param name="urlSet">The XML element (urlset) to append to.</param>
         /// <param name="xmlns">The Sitemap XML namespace.</param>
         /// <param name="xhtml">The XHTML namespace for alternate links.</param>
-        private void AddNodeToSitemap(IPublishedContent node, XElement urlSet, XNamespace xmlns, XNamespace xhtml)
+        private void AddNodeToSitemap(IPublishedContent node,
+                                      XElement urlSet,
+                                      XNamespace xmlns,
+                                      XNamespace xhtml)
         {
             // 1. Strict Requirement: Must have 'Sitemap' composition or be the 'Sitemap' doc type
             // Using InvariantCultureIgnoreCase for robustness

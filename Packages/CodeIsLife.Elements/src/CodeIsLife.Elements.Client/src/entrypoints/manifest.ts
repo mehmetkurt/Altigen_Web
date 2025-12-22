@@ -111,12 +111,7 @@ const manifests: Array<ManifestPropertyEditorUi | ManifestPropertyEditorSchema> 
                         description: "The default value to select",
                         propertyEditorUiAlias: "Umb.PropertyEditorUi.TextBox"
                     },
-                    {
-                        alias: "enableFiltering",
-                        label: "Enable Filtering",
-                        description: "Enable search/filtering within the dropdown",
-                        propertyEditorUiAlias: "Umb.PropertyEditorUi.Toggle"
-                    }
+
                 ]
             }
         }
@@ -163,6 +158,26 @@ const manifests: Array<ManifestPropertyEditorUi | ManifestPropertyEditorSchema> 
                     }
                 ]
             }
+        }
+    },
+    {
+        type: 'propertyEditorUi',
+        alias: 'CodeIsLife.PropertyEditorUi.BorderRadius',
+        name: 'Border Radius Property Editor UI',
+        element: () => import('../property-editor/border-radius/border-radius.element.js'),
+        meta: {
+            label: 'Border Radius',
+            icon: 'icon-corners',
+            group: 'code is life',
+            propertyEditorSchemaAlias: 'CodeIsLife.BorderRadius'
+        }
+    },
+    {
+        type: 'propertyEditorSchema',
+        alias: 'CodeIsLife.BorderRadius',
+        name: 'Border Radius Property Editor Schema',
+        meta: {
+             defaultPropertyEditorUiAlias: 'CodeIsLife.PropertyEditorUi.BorderRadius'
         }
     },
     {
