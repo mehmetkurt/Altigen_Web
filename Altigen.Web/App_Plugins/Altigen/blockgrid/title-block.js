@@ -102,6 +102,17 @@ export default class AltigenTitleBlock extends UmbElementMixin(LitElement) {
                 display: block;
                 width: 100%;
             }
+            .title-block-preview {
+                line-height: 1.2;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            h1, h2, h3, h4, h5, h6 {
+                font-size: inherit;
+                line-height: inherit;
+                color: inherit;
+                margin: 0;
+            }
         `
     ];
 }

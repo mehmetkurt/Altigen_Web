@@ -95,7 +95,7 @@ namespace Altigen.Web.Models
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("fontColor")]
-		public virtual global::Umbraco.Cms.Core.PropertyEditors.ValueConverters.ColorPickerValueConverter.PickedColor FontColor => global::Altigen.Web.Models.FontSettingsModel.GetFontColor(this, _publishedValueFallback);
+		public virtual string FontColor => global::Altigen.Web.Models.FontSettingsModel.GetFontColor(this, _publishedValueFallback);
 
 		///<summary>
 		/// Size
