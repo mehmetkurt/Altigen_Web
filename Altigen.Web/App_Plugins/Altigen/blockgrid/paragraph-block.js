@@ -1,7 +1,7 @@
 import { LitElement, html, css, customElement, property } from "@umbraco-cms/backoffice/external/lit";
 import { UmbElementMixin } from "@umbraco-cms/backoffice/element-api";
 import { unsafeHTML } from "@umbraco-cms/backoffice/external/lit";
-import { AltigenStylizer } from "../utils/stylizer.js";
+import { AltigenStylizer } from "../utils/altigen-style-helper.js";
 
 export default class AltigenParagraphBlock extends UmbElementMixin(LitElement) {
     
@@ -63,6 +63,14 @@ export default class AltigenParagraphBlock extends UmbElementMixin(LitElement) {
         // Font Color
         const fontColor = AltigenStylizer.getFontColorStyle(this.settings);
         if (fontColor) styles.push(fontColor);
+
+        // Width
+        const width = AltigenStylizer.getDimensionStyle(this.settings?.width || this.settings?.Width, "width");
+        if (width) styles.push(width);
+
+        // Height
+        const height = AltigenStylizer.getDimensionStyle(this.settings?.height || this.settings?.Height, "height");
+        if (height) styles.push(height);
 
         return styles.join("; ");
     }

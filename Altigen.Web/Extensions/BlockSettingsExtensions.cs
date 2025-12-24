@@ -3,6 +3,7 @@ using Umbraco.Extensions;
 using CodeIsLife.Elements.Helpers;
 using Microsoft.AspNetCore.Html;
 using System.Text;
+using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace Altigen.Web.Extensions
 {
@@ -11,33 +12,35 @@ namespace Altigen.Web.Extensions
         /// <summary>
         /// Generates inline styles for Margin, Padding, and Border.
         /// </summary>
-        public static IHtmlContent GetBlockStyles(this BlockSettingsModel? settings, bool renderAttribute = false)
+        public static IHtmlContent GetBlockStyles(this IPublishedElement? settings, bool renderAttribute = false)
         {
             if (settings == null) return HtmlString.Empty;
 
             var sb = new StringBuilder();
 
             // Margin
-            if (settings.Margin != null)
+            var marginVal = settings.Value("margin");
+            if (marginVal != null)
             {
-                var margin = ElementStyleHelper.GetSpacingStyle(settings.Margin, "margin");
+                var margin = ElementStyleHelper.GetSpacingStyle(marginVal, "margin");
                 if (!string.IsNullOrEmpty(margin))
                 {
                     sb.Append(margin);
-                    if (!margin.TrimEnd().EndsWith(";")) sb.Append("; ");
-                    else sb.Append(" ");
+                    if (!margin.TrimEnd().EndsWith(';')) sb.Append(';').Append(' ');
+                    else sb.Append(' ');
                 }
             }
 
             // Padding
-            if (settings.Padding != null)
+            var paddingVal = settings.Value("padding");
+            if (paddingVal != null)
             {
-                var padding = ElementStyleHelper.GetSpacingStyle(settings.Padding, "padding");
+                var padding = ElementStyleHelper.GetSpacingStyle(paddingVal, "padding");
                 if (!string.IsNullOrEmpty(padding))
                 {
                     sb.Append(padding);
-                    if (!padding.TrimEnd().EndsWith(";")) sb.Append("; ");
-                    else sb.Append(" ");
+                    if (!padding.TrimEnd().EndsWith(';')) sb.Append(';').Append(' ');
+                    else sb.Append(' ');
                 }
             }
 
@@ -45,8 +48,6 @@ namespace Altigen.Web.Extensions
             GetBorderStyles(settings, sb);
 
             // Font Size Logic
-            // We use .Value("fontSize") instead of .FontSize to get the raw object (JsonDocument)
-            // The strongly typed .FontSize property currently returns string, which causes serialization issues (returns "System.Text.Json...")
             var sizeValue = settings.Value("fontSize");
             var fontSize = ElementStyleHelper.GetEnabledValue(sizeValue);
 
@@ -57,28 +58,40 @@ namespace Altigen.Web.Extensions
 
             // Font Color Logic
             var colorValue = settings.Value("fontColor");
-            // If it's a PickedColor object, .Value might return the object. ElementStyleHelper.GetColorStyle handles string extraction.
-            // But usually .Value<string> returns the string representation.
-            // Let's pass the raw object if possible, or string.
             if (colorValue != null)
             {
                 var colorStyle = ElementStyleHelper.GetColorStyle(colorValue);
                 if (!string.IsNullOrEmpty(colorStyle))
                 {
-                     sb.Append(colorStyle);
-                     if (!colorStyle.TrimEnd().EndsWith(";")) sb.Append("; ");
-                     else sb.Append(" ");
+                    sb.Append(colorStyle);
+                    if (!colorStyle.TrimEnd().EndsWith(';')) sb.Append(';').Append(' ');
+                    else sb.Append(' ');
                 }
             }
 
             // Border Radius Logic
-            var radiusValue = settings.Value("borderRadius"); 
+            var radiusValue = settings.Value("borderRadius");
             var borderRadius = ElementStyleHelper.GetBorderRadiusStyle(radiusValue);
             if (!string.IsNullOrEmpty(borderRadius))
             {
                 sb.Append(borderRadius);
-                if (!borderRadius.TrimEnd().EndsWith(";")) sb.Append("; ");
-                else sb.Append(" ");
+                if (!borderRadius.TrimEnd().EndsWith(';')) sb.Append(';').Append(' ');
+                else sb.Append(' ');
+            }
+
+            // Width & Height Logic
+            var widthVal = settings.Value("width");
+            var width = ElementStyleHelper.GetEnabledValue(widthVal);
+            if (!string.IsNullOrEmpty(width))
+            {
+                sb.Append($"width: {width} !important; ");
+            }
+
+            var heightVal = settings.Value("height");
+            var height = ElementStyleHelper.GetEnabledValue(heightVal);
+            if (!string.IsNullOrEmpty(height))
+            {
+                sb.Append($"height: {height} !important; ");
             }
 
             var styles = sb.ToString().Trim();
@@ -112,11 +125,12 @@ namespace Altigen.Web.Extensions
         /// <summary>
         /// Generates Bootstrap alignment classes.
         /// </summary>
-        public static string GetBlockAlignmentClass(this BlockSettingsModel? settings)
+        public static string GetBlockAlignmentClass(this IPublishedElement? settings)
         {
-            if (settings?.FontAlignment != null)
+            var fontAlignment = settings?.Value("fontAlignment");
+            if (fontAlignment != null)
             {
-                var align = ElementStyleHelper.GetAlignmentContent(settings.FontAlignment);
+                var align = ElementStyleHelper.GetAlignmentContent(fontAlignment);
                 if (string.IsNullOrEmpty(align)) return string.Empty;
 
                 return align.ToLowerInvariant() switch
@@ -131,8 +145,10 @@ namespace Altigen.Web.Extensions
             return string.Empty;
         }
 
-        private static void GetBorderStyles(BlockSettingsModel settings, StringBuilder sb)
+        private static void GetBorderStyles(IPublishedElement? settings, StringBuilder sb)
         {
+            if (settings == null) return;
+
             // Use generic .Value to avoid JsonDocument casting issues if the underlying storage is simple string
             var borderStyleValue = settings.Value("borderStyle");
             var borderStyle = ElementStyleHelper.GetString(borderStyleValue);
@@ -140,10 +156,10 @@ namespace Altigen.Web.Extensions
             // Only render border styles if a style (Solid, Dashed, etc.) is selected
             if (!string.IsNullOrEmpty(borderStyle) && !borderStyle.Equals("none", StringComparison.OrdinalIgnoreCase))
             {
-                var borderColor = settings.BorderColor;
+                var borderColor = settings.Value<string>("borderColor");
                 var colorPart = !string.IsNullOrEmpty(borderColor) ? $" {borderColor}" : "";
-                
-                var borderSize = settings.BorderSize;
+
+                var borderSize = settings.Value<System.Text.Json.JsonDocument>("borderSize");
                 if (borderSize != null)
                 {
                     try
@@ -157,7 +173,7 @@ namespace Altigen.Web.Extensions
 
                         // Get individual values
                         string? top = null, right = null, bottom = null, left = null;
-                        
+
                         if (root.TryGetProperty("top", out var tProp)) top = tProp.GetString();
                         if (root.TryGetProperty("right", out var rProp)) right = rProp.GetString();
                         if (root.TryGetProperty("bottom", out var bProp)) bottom = bProp.GetString();
@@ -169,7 +185,7 @@ namespace Altigen.Web.Extensions
                         bool hasLeft = !string.IsNullOrEmpty(left);
 
                         // Optimization: If all sides are present and equal, use 'border' shorthand
-                        if (hasTop && hasRight && hasBottom && hasLeft && 
+                        if (hasTop && hasRight && hasBottom && hasLeft &&
                             top == right && top == bottom && top == left)
                         {
                             sb.Append($"border: {top}{unit} {borderStyle}{colorPart};");

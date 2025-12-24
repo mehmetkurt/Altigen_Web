@@ -113,6 +113,18 @@ const i = [
   },
   {
     type: "propertyEditorUi",
+    alias: "CodeIsLife.PropertyEditorUi.Length",
+    name: "Length Property Editor UI",
+    element: () => import("./length.element-BfHpNBLM.js"),
+    meta: {
+      label: "Length",
+      icon: "icon-ruler",
+      group: "code is life",
+      propertyEditorSchemaAlias: "CodeIsLife.Length"
+    }
+  },
+  {
+    type: "propertyEditorUi",
     alias: "CodeIsLife.PropertyEditorUi.Size",
     name: "Size Property Editor UI",
     element: () => import("./size.element-CS-VPNOH.js"),
@@ -189,6 +201,14 @@ const i = [
     name: "Advanced Dropdown Property Editor Schema",
     meta: {
       defaultPropertyEditorUiAlias: "CodeIsLife.PropertyEditorUi.AdvancedDropdown"
+    }
+  },
+  {
+    type: "propertyEditorSchema",
+    alias: "CodeIsLife.Length",
+    name: "Length Property Editor Schema",
+    meta: {
+      defaultPropertyEditorUiAlias: "CodeIsLife.PropertyEditorUi.Length"
     }
   }
 ], o = (t, e) => {

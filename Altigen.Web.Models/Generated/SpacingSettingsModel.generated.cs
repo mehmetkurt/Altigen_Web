@@ -22,6 +22,11 @@ namespace Altigen.Web.Models
 	/// <summary>Spacing Model</summary>
 	public partial interface ISpacingSettingsModel : IPublishedElement
 	{
+		/// <summary>Height</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		global::System.Text.Json.JsonDocument Height { get; }
+
 		/// <summary>Margin</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
@@ -31,6 +36,11 @@ namespace Altigen.Web.Models
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		global::System.Text.Json.JsonDocument Padding { get; }
+
+		/// <summary>Width</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		global::System.Text.Json.JsonDocument Width { get; }
 	}
 
 	/// <summary>Spacing Model</summary>
@@ -65,6 +75,19 @@ namespace Altigen.Web.Models
 		// properties
 
 		///<summary>
+		/// Height
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("height")]
+		public virtual global::System.Text.Json.JsonDocument Height => GetHeight(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Height</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static global::System.Text.Json.JsonDocument GetHeight(ISpacingSettingsModel that, IPublishedValueFallback publishedValueFallback) => that.Value<global::System.Text.Json.JsonDocument>(publishedValueFallback, "height");
+
+		///<summary>
 		/// Margin
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
@@ -89,5 +112,18 @@ namespace Altigen.Web.Models
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		public static global::System.Text.Json.JsonDocument GetPadding(ISpacingSettingsModel that, IPublishedValueFallback publishedValueFallback) => that.Value<global::System.Text.Json.JsonDocument>(publishedValueFallback, "padding");
+
+		///<summary>
+		/// Width
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("width")]
+		public virtual global::System.Text.Json.JsonDocument Width => GetWidth(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Width</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static global::System.Text.Json.JsonDocument GetWidth(ISpacingSettingsModel that, IPublishedValueFallback publishedValueFallback) => that.Value<global::System.Text.Json.JsonDocument>(publishedValueFallback, "width");
 	}
 }

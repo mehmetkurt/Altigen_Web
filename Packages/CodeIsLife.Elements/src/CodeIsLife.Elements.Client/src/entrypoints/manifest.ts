@@ -118,6 +118,18 @@ const manifests: Array<ManifestPropertyEditorUi | ManifestPropertyEditorSchema> 
     },
     {
         type: 'propertyEditorUi',
+        alias: 'CodeIsLife.PropertyEditorUi.Length',
+        name: 'Length Property Editor UI',
+        element: () => import('../property-editor/length/length.element.js'),
+        meta: {
+            label: 'Length',
+            icon: 'icon-ruler',
+            group: 'code is life',
+            propertyEditorSchemaAlias: 'CodeIsLife.Length'
+        }
+    },
+    {
+        type: 'propertyEditorUi',
         alias: 'CodeIsLife.PropertyEditorUi.Size',
         name: 'Size Property Editor UI',
         element: () => import('../property-editor/size/size.element.js'),
@@ -194,6 +206,14 @@ const manifests: Array<ManifestPropertyEditorUi | ManifestPropertyEditorSchema> 
         name: 'Advanced Dropdown Property Editor Schema',
         meta: {
              defaultPropertyEditorUiAlias: 'CodeIsLife.PropertyEditorUi.AdvancedDropdown'
+        }
+    },
+    {
+        type: 'propertyEditorSchema',
+        alias: 'CodeIsLife.Length',
+        name: 'Length Property Editor Schema',
+        meta: {
+             defaultPropertyEditorUiAlias: 'CodeIsLife.PropertyEditorUi.Length'
         }
     }
 ];

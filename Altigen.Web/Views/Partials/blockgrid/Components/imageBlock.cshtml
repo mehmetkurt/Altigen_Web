@@ -1,0 +1,51 @@
+@using Umbraco.Cms.Core.Models.Blocks
+@using Altigen.Web.Extensions
+@using CodeIsLife.Elements.Helpers
+@model BlockGridItem<ImageBlock>
+@{
+    var image = Model.Content.ImageBlockImage;
+    var altText = Model.Content.ImageBlockAltText;
+    var title = Model.Content.ImageBlockTitle;
+    
+    // Loading Strategy
+    var loadingStrategy = "lazy";
+    var loadingVal = Model.Content.ImageBlockLoading;
+    if (!string.IsNullOrEmpty(loadingVal))
+    {
+        // Value might be "none", "lazy", "eager" from AdvancedDropdown
+        // Or "lazy|Lazy Load" format if value access is raw (but generated model should return value only)
+        // Advanced Dropdown in frontend usually saves just the value "lazy".
+        if (loadingVal.Equals("none", StringComparison.OrdinalIgnoreCase)) 
+        {
+            loadingStrategy = null; // Don't render attribute
+        }
+        else if (loadingVal.Equals("eager", StringComparison.OrdinalIgnoreCase))
+        {
+            loadingStrategy = "eager";
+        }
+    }
+
+    var settings = Model.Settings;
+    var alignmentClass = settings?.GetBlockAlignmentClass();
+    var styleAttribute = settings?.GetBlockStyles();
+
+    // GetBlockStyles now handles Width and Height automatically
+
+}
+
+@if (image != null)
+{
+    var attrs = new Dictionary<string, object>
+    {
+        { "alt", altText ?? "" },
+        { "class", "altigen-image " + alignmentClass }
+    };
+    
+    if (!string.IsNullOrEmpty(title)) attrs.Add("title", title);
+    if (loadingStrategy != null) attrs.Add("loading", loadingStrategy);
+    if (styleAttribute != null && !HtmlString.Empty.Equals(styleAttribute)) attrs.Add("style", styleAttribute);
+
+    // Render using standard GetHtml via media extension or manual img tag
+
+    <img src="@image.Url()" @foreach(var attr in attrs){ <text>@attr.Key="@attr.Value" </text> } />
+}

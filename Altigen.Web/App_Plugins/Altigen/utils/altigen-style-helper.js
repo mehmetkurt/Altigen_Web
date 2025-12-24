@@ -1,6 +1,11 @@
 
 export class AltigenStylizer {
 
+    static {
+        console.log("AltigenStylizer v1.2 loaded");
+    }
+
+
     /**
      * Parsing JSON input helper
      * @param {string|object} input 
@@ -243,5 +248,33 @@ export class AltigenStylizer {
         if (hasL) styles.push(`${prefix}-left: ${left}${unit} !important`);
 
         return styles.join("; ");
+    }
+    /**
+     * Get Dimension Style (Width/Height)
+     * @param {string|object} input 
+     * @param {string} property 'width' or 'height'
+     * @returns {string|null}
+     */
+    static getDimensionStyle(input, property) {
+        if (!input) return null;
+        
+        let value = input;
+        const obj = this.parseJson(input);
+        
+        if (obj && typeof obj === 'object') {
+             if (obj.enabled === false) return null;
+             value = obj.value;
+        }
+
+        if (value) {
+             const stringVal = String(value).trim();
+             // Prevent "0" or "0px" from adding !important if that creates issues, 
+             // but usually explicit 0 width is valid. 
+             // Following pattern:
+             if (stringVal && !stringVal.startsWith("{")) {
+                 return `${property}: ${stringVal} !important`;
+             }
+        }
+        return null;
     }
 }

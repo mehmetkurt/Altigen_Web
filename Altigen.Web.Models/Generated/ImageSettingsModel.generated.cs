@@ -18,14 +18,14 @@ using Umbraco.Extensions;
 
 namespace Altigen.Web.Models
 {
-	/// <summary>Block Model</summary>
-	[PublishedModel("blockSettingsModel")]
-	public partial class BlockSettingsModel : PublishedElementModel, IBorderSettingsModel, IFontSettingsModel, ISpacingSettingsModel
+	/// <summary>Image Model</summary>
+	[PublishedModel("imageSettingsModel")]
+	public partial class ImageSettingsModel : PublishedElementModel, IBorderSettingsModel, ISpacingSettingsModel
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
-		public new const string ModelTypeAlias = "blockSettingsModel";
+		public new const string ModelTypeAlias = "imageSettingsModel";
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
 		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
@@ -34,14 +34,14 @@ namespace Altigen.Web.Models
 			=> PublishedModelUtility.GetModelContentType(contentTypeCache, ModelItemType, ModelTypeAlias);
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedContentTypeCache contentTypeCache, Expression<Func<BlockSettingsModel, TValue>> selector)
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedContentTypeCache contentTypeCache, Expression<Func<ImageSettingsModel, TValue>> selector)
 			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(contentTypeCache), selector);
 #pragma warning restore 0109
 
 		private IPublishedValueFallback _publishedValueFallback;
 
 		// ctor
-		public BlockSettingsModel(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
+		public ImageSettingsModel(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
 			: base(content, publishedValueFallback)
 		{
 			_publishedValueFallback = publishedValueFallback;
@@ -80,30 +80,6 @@ namespace Altigen.Web.Models
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("borderStyle")]
 		public virtual string BorderStyle => global::Altigen.Web.Models.BorderSettingsModel.GetBorderStyle(this, _publishedValueFallback);
-
-		///<summary>
-		/// Alignment
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("fontAlignment")]
-		public virtual global::System.Text.Json.JsonDocument FontAlignment => global::Altigen.Web.Models.FontSettingsModel.GetFontAlignment(this, _publishedValueFallback);
-
-		///<summary>
-		/// Color
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("fontColor")]
-		public virtual string FontColor => global::Altigen.Web.Models.FontSettingsModel.GetFontColor(this, _publishedValueFallback);
-
-		///<summary>
-		/// Size
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("fontSize")]
-		public virtual global::System.Text.Json.JsonDocument FontSize => global::Altigen.Web.Models.FontSettingsModel.GetFontSize(this, _publishedValueFallback);
 
 		///<summary>
 		/// Height
