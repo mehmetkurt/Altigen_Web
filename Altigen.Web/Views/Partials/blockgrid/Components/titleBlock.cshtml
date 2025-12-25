@@ -1,19 +1,21 @@
 @using Umbraco.Cms.Core.Models.Blocks
+@using Altigen.Web.Core.HtmlHelpers
 @model BlockGridItem<TitleBlock>
 @{
     var title = Model.Content.TitleBlockText;
     var tag = ElementStyleHelper.GetString(Model.Content.TitleBlockTagType) ?? "h2";
 
     var settings = Model.Settings as BlockSettingsModel;
+    var uniqueClass = Html.GetUniqueBlockClass(Model);
 }
 
 @if (!string.IsNullOrEmpty(title))
 {
-    @CreateHeading(tag ?? "h2", title, "title-block " + settings.GetBlockAlignmentClass(), settings.GetBlockStyles())
+    @CreateHeading(tag ?? "h2", title, "title-block " + settings.GetBlockAlignmentClass() + " " + uniqueClass)
 }
 
 @functions{
-    public IHtmlContent CreateHeading(string? tag, string title, string cssClass, IHtmlContent style)
+    public IHtmlContent CreateHeading(string? tag, string title, string cssClass)
     {
         var tagName = string.IsNullOrEmpty(tag) ? "h2" : tag;
 
@@ -24,19 +26,6 @@
             builder.AddCssClass(cssClass);
         }
         
-        var styleContent = style.ToString(); // IHtmlContent to string might return type name or encoded? 
-                                             // HtmlString.ToString() returns the content. 
-                                             // TagBuilder needs string for attribute.
-                                             // Actually, wait. settings.GetBlockStyles() returns HtmlString of content.
-                                             // But GetBlockStyles(true) returns style="...". 
-                                             // Here we are calling GetBlockStyles() which is false by default -> returns content.
-        
-        // However, HtmlString.ToString() returns the HTML content string. 
-        if (!string.IsNullOrEmpty(styleContent))
-        {
-             builder.Attributes.Add("style", styleContent);
-        }
-
         builder.InnerHtml.Append(title);
 
         return builder;

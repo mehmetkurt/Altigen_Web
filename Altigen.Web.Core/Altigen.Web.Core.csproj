@@ -10,4 +10,9 @@
     <PackageReference Include="Umbraco.Cms.Web.Website" Version="17.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Altigen.Web.Models\Altigen.Web.Models.csproj" />
+    <ProjectReference Include="..\Packages\CodeIsLife.Elements\src\CodeIsLife.Elements\CodeIsLife.Elements.csproj" />
+  </ItemGroup>
+
 </Project>

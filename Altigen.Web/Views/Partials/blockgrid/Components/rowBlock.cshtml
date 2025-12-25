@@ -1,10 +1,11 @@
 @using Umbraco.Cms.Core.Models.Blocks
+@using Altigen.Web.Core.HtmlHelpers
 @model BlockGridItem
 @{
     if (Model?.Areas.Any() != true) { return; }
     var settings = Model.Settings as BlockSettingsModel;
 }
-<div class="row-block-wrapper @settings.GetBlockAlignmentClass()" @(settings.GetBlockStyles(true))>
+<div class="row-block-wrapper @Html.GetUniqueBlockClass(Model) @settings.GetBlockAlignmentClass()">
     <div class="row">
         @await Html.GetBlockGridItemAreasHtmlAsync(Model)
     </div>
