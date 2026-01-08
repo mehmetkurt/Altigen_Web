@@ -22,6 +22,22 @@ export class AltigenStylizer {
     }
 
     /**
+     * Resolves the responsive value (defaults to desktop/base)
+     * @param {object} input 
+     * @returns {object}
+     */
+    static resolveResponsive(input) {
+        if (!input || typeof input !== 'object') return input;
+        
+        // Check for responsive keys
+        if (input.desktop || input.tablet || input.mobile || input.base) {
+             return input.desktop || input.base || input.mobile || input.tablet; // Prefer Desktop for preview
+        }
+        
+        return input;
+    }
+
+    /**
      * Get CSS classes for alignment
      * @param {object} settings 
      * @returns {string} Space separated classes
@@ -30,8 +46,10 @@ export class AltigenStylizer {
         const alignment = settings?.FontAlignment || settings?.fontAlignment || settings?.Alignment || settings?.alignment;
         if (alignment) {
             const alignObj = this.parseJson(alignment);
-            if (alignObj && alignObj.type === "Css Class" && alignObj.value) {
-                return alignObj.value;
+            const resolved = this.resolveResponsive(alignObj);
+            
+            if (resolved && resolved.type === "Css Class" && resolved.value) {
+                return resolved.value;
             }
         }
         return "";
@@ -46,8 +64,10 @@ export class AltigenStylizer {
         const alignment = settings?.FontAlignment || settings?.fontAlignment || settings?.Alignment || settings?.alignment;
         if (alignment) {
             const alignObj = this.parseJson(alignment);
-            if (alignObj && (!alignObj.type || alignObj.type === "Default (Inline Style)") && alignObj.value) {
-                return `text-align: ${alignObj.value} !important`;
+            const resolved = this.resolveResponsive(alignObj);
+            
+            if (resolved && (!resolved.type || resolved.type === "Default (Inline Style)") && resolved.value) {
+                return `text-align: ${resolved.value} !important`;
             }
         }
         return null;
@@ -64,13 +84,15 @@ export class AltigenStylizer {
 
         if (borderStyleRaw) {
              const parsed = this.parseJson(borderStyleRaw);
-             if (typeof parsed === 'string') {
-                 borderStyle = parsed;
-             } else if (parsed && typeof parsed === 'object') {
-                 if (Array.isArray(parsed) && parsed.length > 0) {
-                     borderStyle = parsed[0]?.value || parsed[0];
-                 } else if (parsed.value) {
-                     borderStyle = parsed.value;
+             const resolved = this.resolveResponsive(parsed);
+             
+             if (typeof resolved === 'string') {
+                 borderStyle = resolved;
+             } else if (resolved && typeof resolved === 'object') {
+                 if (Array.isArray(resolved) && resolved.length > 0) {
+                     borderStyle = resolved[0]?.value || resolved[0];
+                 } else if (resolved.value) {
+                     borderStyle = resolved.value;
                  }
              }
         }
@@ -83,8 +105,10 @@ export class AltigenStylizer {
         const borderSizeRaw = settings?.borderSize || settings?.BorderSize;
         if (borderSizeRaw) {
             const borderSize = this.parseJson(borderSizeRaw);
-            if (borderSize && typeof borderSize === 'object') {
-                 const { top, right, bottom, left, unit = "px" } = borderSize;
+            const resolvedSize = this.resolveResponsive(borderSize);
+            
+            if (resolvedSize && typeof resolvedSize === 'object') {
+                 const { top, right, bottom, left, unit = "px" } = resolvedSize;
                  
                  if (top || right || bottom || left) {
                      const t = top || '0';
@@ -124,18 +148,20 @@ export class AltigenStylizer {
         if (!radiusRaw) return null;
 
         const radius = this.parseJson(radiusRaw);
-        if (!radius) {
+        const resolved = this.resolveResponsive(radius);
+        
+        if (!resolved) {
              if (typeof radiusRaw === 'string' && !radiusRaw.trim().startsWith('{')) {
                  return `border-radius: ${radiusRaw} !important`;
              }
              return null;
         }
 
-        if (typeof radius === 'string') {
-            return `border-radius: ${radius} !important`;
+        if (typeof resolved === 'string') {
+            return `border-radius: ${resolved} !important`;
         }
 
-        const { topLeft, topRight, bottomRight, bottomLeft, unit = "px" } = radius;
+        const { topLeft, topRight, bottomRight, bottomLeft, unit = "px" } = resolved;
         const hasTL = !!topLeft;
         const hasTR = !!topRight;
         const hasBR = !!bottomRight;
@@ -175,12 +201,16 @@ export class AltigenStylizer {
         if (!fontSizeRaw) return null;
 
         const fontSizeObj = this.parseJson(fontSizeRaw);
+        const resolved = this.resolveResponsive(fontSizeObj);
+        
         let fontSizeVal = fontSizeRaw;
         let enabled = true;
 
-        if (fontSizeObj && typeof fontSizeObj === 'object' && fontSizeObj.value !== undefined) {
-            fontSizeVal = fontSizeObj.value;
-            enabled = fontSizeObj.enabled !== false;
+        if (resolved && typeof resolved === 'object' && resolved.value !== undefined) {
+            fontSizeVal = resolved.value;
+            enabled = resolved.enabled !== false;
+        } else if (resolved && typeof resolved === 'string') {
+            fontSizeVal = resolved;
         }
 
         if (enabled && fontSizeVal) {
@@ -202,12 +232,14 @@ export class AltigenStylizer {
         if (!colorRaw) return null;
 
         const colorObj = this.parseJson(colorRaw);
+        const resolved = this.resolveResponsive(colorObj);
+        
         let colorVal = null;
 
-        if (typeof colorObj === 'string') {
-            colorVal = colorObj;
-        } else if (colorObj && typeof colorObj === 'object') {
-            colorVal = colorObj.value || colorObj.Color || colorObj.color; 
+        if (typeof resolved === 'string') {
+            colorVal = resolved;
+        } else if (resolved && typeof resolved === 'object') {
+            colorVal = resolved.value || resolved.Color || resolved.color; 
         }
 
         if (colorVal && typeof colorVal === 'string' && !colorVal.startsWith('{')) {
@@ -226,9 +258,11 @@ export class AltigenStylizer {
         if (!input) return null;
         
         const spacing = this.parseJson(input);
-        if (!spacing) return null;
+        const resolved = this.resolveResponsive(spacing);
+        
+        if (!resolved) return null;
 
-        const { top, right, bottom, left, unit = "px" } = spacing;
+        const { top, right, bottom, left, unit = "px" } = resolved;
         
         const hasT = !!top;
         const hasR = !!right;
@@ -260,10 +294,13 @@ export class AltigenStylizer {
         
         let value = input;
         const obj = this.parseJson(input);
+        const resolved = this.resolveResponsive(obj);
         
-        if (obj && typeof obj === 'object') {
-             if (obj.enabled === false) return null;
-             value = obj.value;
+        if (resolved && typeof resolved === 'object') {
+             if (resolved.enabled === false) return null;
+             value = resolved.value;
+        } else if (resolved) {
+            value = resolved;
         }
 
         if (value) {

@@ -1,6 +1,7 @@
 import { LitElement, css, html, customElement, property, state } from "@umbraco-cms/backoffice/external/lit";
 import { UmbElementMixin } from "@umbraco-cms/backoffice/element-api";
-import '../../elements/unit-selector.element.js';
+import { UmbResponsiveMixin } from '../../mixins/responsive.mixin.js';
+
 
 interface SizeDimensionValue {
     top?: string;
@@ -12,94 +13,109 @@ interface SizeDimensionValue {
 }
 
 @customElement('codeislife-size-dimension')
-export class CodeIsLifeSizeDimensionElement extends UmbElementMixin(LitElement) {
+export class CodeIsLifeSizeDimensionElement extends UmbResponsiveMixin<SizeDimensionValue>(UmbElementMixin(LitElement)) {
+
+    // Mixin method declarations
+    // Mixin method declarations
+    public renderDeviceSelector!: () => any;
+    public getCurrentDeviceValue!: () => SizeDimensionValue | undefined;
+    public getResolvedDeviceValue!: () => { value: SizeDimensionValue | undefined, inherited: boolean, source: 'desktop' | 'tablet' | 'mobile' };
+    public setDeviceValue!: (val: SizeDimensionValue) => void;
 
     @state()
     private _value: SizeDimensionValue = { unit: 'px', isLinked: true };
 
+    @state()
+    private _isInherited: boolean = false;
+
     @property({ attribute: false })
     public config: any;
 
-    @property({ attribute: false })
-    public set value(value: string | SizeDimensionValue | undefined) {
-        if (!value) {
-            this._value = { unit: 'px', isLinked: true };
-            return;
-        }
+    // Remove Manual Value Accessor, Mixin handles it via 'value' property
 
-        if (typeof value === 'object') {
-            this._value = { unit: 'px', isLinked: true, ...value };
-            return;
+    protected override updated(changedProperties: Map<string | number | symbol, unknown>): void {
+        super.updated(changedProperties);
+        if (changedProperties.has('_currentDevice') || changedProperties.has('_responsiveData')) {
+            this._loadCurrentState();
         }
+    }
+
+    private _loadCurrentState() {
+        const resolution = this.getResolvedDeviceValue();
+        this._isInherited = resolution.inherited;
+        // console.log('[SizeDimension] Loading:', resolution);
         
-        try {
-            const parsed = JSON.parse(value);
+        if (resolution.value) {
             this._value = { 
                 unit: 'px', 
-                isLinked: true,
-                ...parsed 
+                isLinked: true, 
+                ...resolution.value 
             };
-        } catch {
+        } else {
             this._value = { unit: 'px', isLinked: true };
         }
     }
 
-    public get value(): SizeDimensionValue {
-        return this._value;
+    private _saveCurrentState() {
+        // console.log('[SizeDimension] Saving:', this._value);
+        this.setDeviceValue(this._value);
     }
 
     private _update(side: 'top' | 'right' | 'bottom' | 'left', val: string) {
         let cleanVal = val;
+        this._isInherited = false; // Breaking inheritance on edit
 
         // If not custom, only allow numeric values
         if (this._value.unit !== 'custom') {
-            // Remove any non-numeric characters except dot, comma and minus
             const numericRegex = /^-?[0-9]*[.,]?[0-9]*$/;
-            
             if (!numericRegex.test(val) && val !== '') {
                  cleanVal = val.replace(/[^0-9.,-]/g, '');
             }
         }
 
+        let newValue = { ...this._value };
+
         if (this._value.isLinked) {
-            // Update all sides if linked
-            this._value = { 
-                ...this._value, 
+            newValue = { 
+                ...newValue, 
                 top: cleanVal, 
                 right: cleanVal, 
                 bottom: cleanVal, 
                 left: cleanVal 
             };
         } else {
-            // Update only specific side
-            this._value = { ...this._value, [side]: cleanVal };
+            newValue = { ...newValue, [side]: cleanVal };
         }
-        this._dispatchChange();
-        this.requestUpdate(); 
+        
+        this._value = newValue;
+        this._saveCurrentState();
     }
 
     private _toggleLink() {
-        this._value = { ...this._value, isLinked: !this._value.isLinked };
+        this._isInherited = false;
+        const newLinked = !this._value.isLinked;
+        let newValue = { ...this._value, isLinked: newLinked };
         
-        // If we just linked, sync all values to the top value (or first available)
-        if (this._value.isLinked) {
-            const syncVal = this._value.top || this._value.right || this._value.bottom || this._value.left || "";
-            this._value = {
-                ...this._value,
+        if (newLinked) {
+            const syncVal = newValue.top || newValue.right || newValue.bottom || newValue.left || "";
+            newValue = {
+                ...newValue,
                 top: syncVal,
                 right: syncVal,
                 bottom: syncVal,
                 left: syncVal
             };
-            this._dispatchChange();
-        } else {
-            // Just trigger re-render to update icon state
-            this.requestUpdate();
         }
+        
+        this._value = newValue;
+        this._saveCurrentState();
     }
 
-    private _dispatchChange() {
-        this.dispatchEvent(new CustomEvent('property-value-change', { bubbles: true, composed: true }));
+    private _onUnitChange(e: CustomEvent) {
+        e.stopPropagation();
+        this._isInherited = false;
+        this._value = { ...this._value, unit: e.detail.value };
+        this._saveCurrentState();
     }
 
     render() {
@@ -109,16 +125,14 @@ export class CodeIsLifeSizeDimensionElement extends UmbElementMixin(LitElement) 
             <div class="size-dimension-wrapper">
                 
                 <div class="header-controls">
+
                     <codeislife-unit-selector
                         .value=${this._value.unit || 'px'}
-                        @change=${(e: CustomEvent) => {
-                            this._value = { ...this._value, unit: e.detail.value };
-                            this._dispatchChange();
-                        }}>
+                        @change=${this._onUnitChange}>
                      </codeislife-unit-selector>
                 </div>
 
-                <div class="inputs-container">
+                <div class="inputs-container ${this._isInherited ? 'inherited' : ''}">
                     
                     <div class="input-group">
                         <uui-input 
@@ -260,6 +274,11 @@ export class CodeIsLifeSizeDimensionElement extends UmbElementMixin(LitElement) 
         uui-button[look="secondary"] .link-icon {
              filter: grayscale(100%);
              opacity: 0.5;
+        }
+
+        .inherited uui-input {
+            opacity: 0.6;
+            --uui-input-text-color: var(--uui-color-text-alt);
         }
     `;
 }

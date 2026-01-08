@@ -546,3 +546,6 @@ umbraco-package-schema.json
 # Media files
 /wwwroot/media/
 Altigen.Web.Models/Generated/ood.flag
+
+# CodeIsLife Elements Dist
+Packages/CodeIsLife.Elements/src/CodeIsLife.Elements/wwwroot/App_Plugins/codeislife.elements/dist/

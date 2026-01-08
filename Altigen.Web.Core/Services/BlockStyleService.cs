@@ -31,15 +31,22 @@ namespace Altigen.Web.Core.Services
             return $"codeislife-{key:N}";
         }
 
-        private string GenerateStylesRecursive(IPublishedContent content)
+        private string GenerateStylesRecursive(IPublishedElement content)
         {
             var sb = new StringBuilder();
-            
-            // Iterate over all properties to find Block Grid / Block List content
+            sb.AppendLine($"/* Generated Styles for Content: {content.Key} - {DateTime.Now} */");
+            TraverseProperties(content, sb);
+            return sb.ToString();
+        }
+
+        private void TraverseProperties(IPublishedElement content, StringBuilder sb)
+        {
+            if (content == null) return;
+
             foreach (var property in content.Properties)
             {
-                if (property.PropertyType.EditorAlias.InvariantEquals("Umbraco.BlockGrid") || 
-                    property.PropertyType.EditorAlias.InvariantEquals("Umbraco.BlockList"))
+                if (property.PropertyType.EditorAlias.Contains("BlockGrid", StringComparison.InvariantCultureIgnoreCase) || 
+                    property.PropertyType.EditorAlias.Contains("BlockList", StringComparison.InvariantCultureIgnoreCase))
                 {
                     var value = property.GetValue();
                     if (value is BlockGridModel gridModel)
@@ -58,15 +65,19 @@ namespace Altigen.Web.Core.Services
                     }
                 }
             }
-
-            return sb.ToString();
         }
 
         private void ExtractBlockStyles(BlockGridItem item, StringBuilder sb)
         {
+            if (item?.Content == null) return;
+
+            // 1. Generate styles for this block's settings
             GenerateCssForBlock(item.Settings, item.Content.Key, sb);
 
-            // Recursively process areas
+            // 2. Recurse into this block's content properties (e.g. nested Block Lists)
+            TraverseProperties(item.Content, sb);
+
+            // 3. Recurse into Areas (standard Block Grid nesting)
             foreach (var area in item.Areas)
             {
                 foreach (var child in area)
@@ -78,27 +89,41 @@ namespace Altigen.Web.Core.Services
 
         private void ExtractBlockStyles(BlockListItem item, StringBuilder sb)
         {
+            if (item?.Content == null) return;
+
+            // 1. Generate styles for this block's settings
             GenerateCssForBlock(item.Settings, item.Content.Key, sb);
+            
+            // 2. Recurse into this block's content properties
+            TraverseProperties(item.Content, sb);
         }
 
         private void GenerateCssForBlock(IPublishedElement? settings, Guid key, StringBuilder sb)
         {
             if (settings == null) return;
 
-            // Use the existing extension method to get the style string
-            // Note: GetBlockStyles returns IHtmlContent (HtmlString), so we call ToString()
-            // The extension method (GetBlockStyles) logic needs to be verified to ensure it returns raw styles 
-            // when renderAttribute is false (default). 
-            // Looking at the provided file content: public static IHtmlContent GetBlockStyles(..., bool renderAttribute = false)
-            // It calls `sb.ToString().Trim()` and returns `new HtmlString(styles)` if renderAttribute is false.
-            // So ToString() on HtmlString will return the raw content.
+            var responsiveStyles = settings.GetResponsiveBlockStyles();
             
-            var styles = settings.GetBlockStyles(false).ToString();
-
-            if (!string.IsNullOrWhiteSpace(styles))
+            if (responsiveStyles.TryGetValue("base", out var baseStyle) && baseStyle.Length > 0)
             {
                 var className = GetUniqueBlockClass(key);
-                sb.AppendLine($".{className} {{ {styles} }}");
+                sb.AppendLine($".{className} {{ {baseStyle} }} /* Base Style for {key} */");
+            }
+            else 
+            {
+                 sb.AppendLine($"/* No base style found for {key} - Settings: { (settings != null ? "Present" : "Null") } */");
+            }
+
+            if (responsiveStyles.TryGetValue("tablet", out var tabletStyle) && tabletStyle.Length > 0)
+            {
+                var className = GetUniqueBlockClass(key);
+                sb.AppendLine($"@media (min-width: 768px) {{ .{className} {{ {tabletStyle} }} }}");
+            }
+
+            if (responsiveStyles.TryGetValue("desktop", out var desktopStyle) && desktopStyle.Length > 0)
+            {
+                var className = GetUniqueBlockClass(key);
+                sb.AppendLine($"@media (min-width: 992px) {{ .{className} {{ {desktopStyle} }} }}");
             }
         }
     }

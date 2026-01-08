@@ -5,8 +5,25 @@ import type { UmbPropertyEditorConfigCollection } from '@umbraco-cms/backoffice/
 
 import '../../elements/unit-selector.element.js';
 
+import { UmbResponsiveMixin } from '../../mixins/responsive.mixin.js';
+
+interface SizeValue {
+    value: string;
+    enabled: boolean;
+}
+
 @customElement('size-editor')
-export class SizeEditorElement extends UmbFormControlMixin<string | undefined, typeof UmbLitElement, undefined>(UmbLitElement, undefined) {
+export class SizeEditorElement extends UmbFormControlMixin<string | undefined, typeof UmbLitElement, undefined>(UmbResponsiveMixin<SizeValue>(UmbLitElement) as unknown as typeof UmbLitElement, undefined) {
+    
+    // Mixin method declarations to satisfy TS
+    // Mixin method declarations to satisfy TS
+    public renderDeviceSelector!: () => any;
+    public getCurrentDeviceValue!: () => SizeValue | undefined;
+    public getResolvedDeviceValue!: () => { value: SizeValue | undefined, inherited: boolean, source: string };
+    public setDeviceValue!: (val: SizeValue) => void;
+
+    @state()
+    private _isInherited: boolean = false;
 
     @state()
     private _numericValue: number = 16;
@@ -22,29 +39,6 @@ export class SizeEditorElement extends UmbFormControlMixin<string | undefined, t
 
     @state()
     private _enabled: boolean = false;
-    
-    // Value stored as JSON string: "{ \"value\": \"16px\", \"enabled\": true }"
-    #value: string = "";
-
-    @property({ type: String })
-    @property({ type: String })
-    public override set value(value: string | undefined | unknown) {
-        let newValue = value ?? "";
-        
-        // Handle object input (Umbraco V14+ may pass parsed JSON object)
-        if (typeof newValue === 'object' && newValue !== null) {
-            newValue = JSON.stringify(newValue);
-        }
-
-        const strValue = String(newValue);
-        if (strValue === this.#value && this.#value !== "") return;
-        
-        this.#value = strValue;
-        this._parseValue(this.#value);
-    }
-    public override get value(): string | undefined {
-        return this.#value;
-    }
 
     @property({ type: Boolean, reflect: true })
     public readonly = false;
@@ -59,68 +53,41 @@ export class SizeEditorElement extends UmbFormControlMixin<string | undefined, t
 
         this._min = config.getValueByAlias<number>('min') ?? 0;
         this._max = config.getValueByAlias<number>('max') ?? 100;
-        this._max = config.getValueByAlias<number>('max') ?? 100;
         this._step = config.getValueByAlias<number>('step') ?? 1;
         this._showToggle = config.getValueByAlias<boolean>('showToggle') ?? false;
     }
 
-    private _parseValue(val: unknown) {
-        let stringVal = "";
+    // Override update to react to device changes from Mixin
+    protected override updated(changedProperties: Map<string | number | symbol, unknown>): void {
+        super.updated(changedProperties);
+        if (changedProperties.has('_currentDevice') || changedProperties.has('_responsiveData')) {
+            this._loadCurrentState();
+        }
+    }
+
+    private _loadCurrentState() {
+        const resolution = this.getResolvedDeviceValue();
+        console.log('[SizeEditor] Loading State:', resolution);
+        this._isInherited = resolution.inherited;
+        const data = resolution.value;
         
-        // Ensure input is string
-        if (typeof val === 'string') {
-            stringVal = val;
-        } else if (typeof val === 'object' && val !== null) {
-            stringVal = JSON.stringify(val);
-        } else {
-             stringVal = String(val ?? "");
-        }
-
-        // Self-healing: if value corrupted to "[object Object]", reset it
-        if (stringVal === "[object Object]") {
-            stringVal = "";
-        }
-        
-        let valueToParse = stringVal;
-        let enabled = false;
-
-        // Try to parse as JSON first
-        try {
-            if (stringVal && stringVal.trim().startsWith('{')) {
-                let json = JSON.parse(stringVal);
-                
-                // Handle potential double-serialization
-                if (typeof json === 'string') {
-                    try {
-                         if (json.trim().startsWith('{')) {
-                            json = JSON.parse(json);
-                         }
-                    } catch {
-                        // ignore second parse error
-                    }
-                }
-
-                if (typeof json === 'object' && json !== null) {
-                    valueToParse = json.value ? String(json.value) : "";
-                    enabled = json.enabled ?? true;
-                }
-            } else {
-                // Not JSON, but has value -> Legacy String -> Enabled
-                if (stringVal.trim().length > 0) {
-                    enabled = true;
-                }
-            }
-        } catch {
-            // Fallback to treat as simple string (legacy)
-            if (stringVal.trim().length > 0) {
-                enabled = true;
-            }
-        }
-
-        this._enabled = enabled;
-
-        if (!valueToParse) {
+        if (!data) {
+            // Default empty state for this device
+            console.warn('[SizeEditor] No data found. Disabling UI.');
             this._numericValue = 16;
+            this._unit = 'px';
+            this._customValue = "";
+            this._enabled = false;
+        } else {
+            console.log('[SizeEditor] Data found. Enabled:', data.enabled);
+            this._enabled = data.enabled;
+            this._parseSingleValue(data.value);
+        }
+    }
+
+    private _parseSingleValue(valStr: string) {
+        if (!valStr) {
+            this._numericValue = 0;
             this._unit = 'px';
             this._customValue = "";
             return;
@@ -128,10 +95,10 @@ export class SizeEditorElement extends UmbFormControlMixin<string | undefined, t
 
         // Check if value ends with a known unit
         const units = ['px', '%', 'em', 'rem', 'vw', 'vh'];
-        const foundUnit = units.find(u => valueToParse.endsWith(u));
+        const foundUnit = units.find(u => valStr.endsWith(u));
 
         if (foundUnit) {
-            const numPart = valueToParse.substring(0, valueToParse.length - foundUnit.length);
+            const numPart = valStr.substring(0, valStr.length - foundUnit.length);
             const num = parseFloat(numPart);
             if (!isNaN(num)) {
                 this._numericValue = num;
@@ -143,10 +110,10 @@ export class SizeEditorElement extends UmbFormControlMixin<string | undefined, t
 
         // If no unit found or strict parsing failed, treat as custom
         this._unit = 'custom';
-        this._customValue = valueToParse;
+        this._customValue = valStr;
     }
 
-    private _updateValue() {
+    private _saveCurrentState() {
         let valStr;
         if (this._unit === 'custom') {
             valStr = this._customValue;
@@ -154,18 +121,13 @@ export class SizeEditorElement extends UmbFormControlMixin<string | undefined, t
             valStr = `${this._numericValue}${this._unit}`;
         }
 
-        // Create JSON structure
-        const valueObj = {
+        const currentVal: SizeValue = {
             value: valStr,
             enabled: this._enabled
         };
+        console.log('[SizeEditor] Saving State:', currentVal);
 
-        const newValue = JSON.stringify(valueObj);
-
-        if (this.#value !== newValue) {
-            this.#value = newValue;
-            this.dispatchEvent(new CustomEvent('change', { bubbles: true, composed: true }));
-        }
+        this.setDeviceValue(currentVal);
     }
 
     private _onUnitChange(e: CustomEvent) {
@@ -173,45 +135,42 @@ export class SizeEditorElement extends UmbFormControlMixin<string | undefined, t
         const newUnit = e.detail.value;
 
         if (newUnit === 'custom') {
-            // When switching to custom, preserve current valid value string
             if (!this._customValue) {
                 this._customValue = `${this._numericValue}${this._unit}`;
             }
         } else {
-            // When switching to standard, try to parse current custom value if coming from custom
             if (this._unit === 'custom' && this._customValue) {
                 const num = parseFloat(this._customValue);
                 if (!isNaN(num)) {
                     this._numericValue = num;
                 }
             } 
-            // If checking from another standard unit, _numericValue is already valid, do nothing.
         }
 
         this._unit = newUnit;
-        this._updateValue();
+        this._saveCurrentState();
     }
 
     private _onSliderChange(e: any) {
         this._numericValue = Number(e.target.value);
-        this._updateValue();
+        this._saveCurrentState();
     }
 
     private _onNumericInputChange(e: any) {
         e.stopPropagation();
         this._numericValue = Number(e.target.value);
-        this._updateValue();
+        this._saveCurrentState();
     }
 
     private _onCustomInputChange(e: any) {
         this._customValue = e.target.value;
-        this._updateValue();
+        this._saveCurrentState();
     }
 
     private _onToggleChange(e: any) {
         e.stopPropagation();
         this._enabled = e.target.checked;
-        this._updateValue();
+        this._saveCurrentState();
     }
 
     render() {
@@ -221,13 +180,16 @@ export class SizeEditorElement extends UmbFormControlMixin<string | undefined, t
                     ${this._showToggle
                         ? html`<uui-toggle label="Enable/Disable" .checked=${this._enabled} @change=${this._onToggleChange} compact>Enabled</uui-toggle>`
                         : ''}
+                    
+
+
                     <codeislife-unit-selector
                         .value=${this._unit}
                         @change=${this._onUnitChange}
                         ?disabled=${!this._enabled}>
                     </codeislife-unit-selector>
                 </div>
-                <div class="controls">
+                <div class="controls ${this._isInherited ? 'inherited' : ''}">
                     ${this._unit !== 'custom'
                 ? html`
                             <uui-slider
@@ -305,6 +267,12 @@ export class SizeEditorElement extends UmbFormControlMixin<string | undefined, t
         uui-input {
             --uui-input-height: 30px;
             min-height: 30px;
+        }
+
+        .inherited uui-input,
+        .inherited uui-slider {
+            opacity: 0.6;
+            --uui-input-text-color: var(--uui-color-text-alt);
         }
     `;
 }
