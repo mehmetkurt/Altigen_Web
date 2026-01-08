@@ -549,3 +549,4 @@ Altigen.Web.Models/Generated/ood.flag
 
 # CodeIsLife Elements Dist
 Packages/CodeIsLife.Elements/src/CodeIsLife.Elements/wwwroot/App_Plugins/codeislife.elements/dist/
+Altigen.Web/wwwroot/App_Plugins/codeislife.elements/dist/
