@@ -138,6 +138,7 @@ REMEMBER: After every memory reset, I begin completely fresh. The Memory Bank is
 ## 3. Accessibility (a11y) Rules
 - **Discernible Text**: All buttons and links MUST have discernible text.
     - If a button contains only an icon, use `aria-label` or a visually hidden span (`.visually-hidden`) to provide context.
+    - **Link Titles**: All `<a>` tags MUST have a non-empty `title` attribute that accurately describes the target or content, aiding accessibility and SEO.
     - Reference: [Deque University - Button Name](https://dequeuniversity.com/rules/axe/4.4/button-name)
 - **Semantic HTML**: Use correct semantic tags (`nav`, `main`, `header`, `footer`) to help screen readers.
 - **Microdata**: Ensure critical components (Navigation, Breadcrumbs) use Schema.org Microdata.
@@ -155,6 +156,7 @@ REMEMBER: After every memory reset, I begin completely fresh. The Memory Bank is
 - **Logic Placement**: Minimize logic in Razor views. Move business logic to Controllers, Services, or ViewComponents.
 - **Partial Views**: Encapsulate reusable UI components into Partial Views.
 - **No Magic Strings**: Avoid using hardcoded strings for Content Type Aliases or Property Aliases. Use generated constants (ModelsBuilder) or `nameof` where possible.
+- **Strongly Typed Property Access**: Avoid using `.Value<T>("alias")` or `.Value("alias")` in views. Always prefer strongly typed properties from ModelsBuilder classes. If a property belongs to a composition, use the corresponding interface (e.g., `item is ISeo seo ? seo.SeoPageTitle : item.Name`) for type checking and access.
 - **View Inheritance**: Do not use explicit `@inherits` in views unless necessary. Rely on `_ViewImports.cshtml` and use `@model` instead.
 - **Block List Labels (UFM)**: Umbraco v14+ removes AngularJS support for labels. Do NOT use `{{ propertyAlias }}`. Use **Umbraco Flavored Markdown (UFM)** syntax: `{=propertyAlias}` or `{umbValue: propertyAlias}`. For more complex labels, check the official documentation.
 

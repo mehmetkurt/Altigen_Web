@@ -30,15 +30,15 @@
 
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        @foreach (var item in (Model as IPublishedContent).Ancestors().Reverse())
+                        @foreach (var item in content.Ancestors().Reverse())
                         {
-                            var title = item.Value<string>("seoPageBreadcrumbTitle");
+                            var title = item is ISeo seoItem ? seoItem.SeoPageBreadcrumbTitle : null;
                             if (string.IsNullOrWhiteSpace(title)) title = item.Name;
-                            <li class="breadcrumb-item"><a href="@item.Url()">@title</a></li>
+                            <li class="breadcrumb-item"><a href="@item.Url()" title="@title">@title</a></li>
                         }
                         @{
-                            var currentTitle = Model.Value<string>("seoPageBreadcrumbTitle");
-                            if (string.IsNullOrWhiteSpace(currentTitle)) currentTitle = content.Name();
+                            var currentTitle = content is ISeo seo ? seo.SeoPageBreadcrumbTitle : null;
+                            if (string.IsNullOrWhiteSpace(currentTitle)) currentTitle = content.Name;
                         }
                         <li class="breadcrumb-item active" aria-current="page">@currentTitle</li>
                     </ol>

@@ -1,18 +1,12 @@
 using Altigen.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Umbraco.Cms.Web.Common;
-using Umbraco.Cms.Web.Common.PublishedModels;
 
 namespace Altigen.Web.ViewComponents;
 
-public class HeaderViewComponent : ViewComponent
+public class HeaderViewComponent(UmbracoHelper umbracoHelper) : ViewComponent
 {
-    private readonly UmbracoHelper _umbracoHelper;
-
-    public HeaderViewComponent(UmbracoHelper umbracoHelper)
-    {
-        _umbracoHelper = umbracoHelper;
-    }
+    private readonly UmbracoHelper _umbracoHelper = umbracoHelper;
 
     public IViewComponentResult Invoke()
     {
