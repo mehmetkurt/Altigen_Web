@@ -1,7 +1,13 @@
-﻿@{
+﻿@model IPublishedContent
+
+@{
     Layout = "root.cshtml";
 }
 
 @await Component.InvokeAsync("PageHeader")
 
-@RenderBody()
+<div class="sub-page-wrapper">
+    <div class="container">
+        @RenderBody()
+    </div>
+</div>

@@ -7,13 +7,25 @@ The project is in active development (January 2026), focusing on:
 3.  **Frontend Implementation**: Refining the Block styling service and ensuring accessibility correctness.
 
 ## Recent Changes
-- Updated Project Rules in `GEMINI.md` to include Accessibility and Styling guidelines.
-- Identified need for "Cline's Memory Bank" structure to persist context.
+- Fixed git ignore cache for `Altigen.Web/wwwroot/App_Plugins/codeislife.elements/dist` folder.
+- Removed `device-selector.element.ts` due to development issues and lack of control.
+- Fixed `BlockSettingsExtensions.cs` to correctly generate responsive border styles based on device settings.
+- Refactored `SizeEditor` property JSON parsing.
+- Analyzed and documented Content Type inheritance hierarchy for `HomePage`, `SubPage`, `Blog`, `Region`, and `Service` modules.
+- Updated `ServiceList` configuration to vary by **Culture**.
+- Fixed `NullReferenceException` in `PageHeader` component by explicitly passing the Model in `SubLayout.cshtml` and injecting `IPublishedValueFallback` in `Default.cshtml`.
+- Refactored `PageHeaderViewComponent` (Manually corrected by User): Reverted to returning View with `IUmbracoContext` content. `Default.cshtml` handles safe usage of `IPageHeader`.
+- Refactored `PageHeaderViewComponent` (Manually corrected by User): Reverted to returning View with `IUmbracoContext` content. `Default.cshtml` handles safe usage of `IPageHeader`.
+- Identified and fixed missing `@model` directives in `Blog.cshtml` and `BlogList.cshtml` (Manual fix by User).
+- Created `IGlobalSettingsService` and `GlobalSettingsService` in `Altigen.Web.Core` to provide centralized access to `GlobalSettings`.
+- Registered `GlobalSettingsService` using `ServiceComposer` in `Altigen.Web.Core`.
+- Refactored `GlobalSettingsService` to use `UmbracoHelper` for simplifying content access and avoiding `IPublishedContentCache` extension issues.
 
 ## Active Decisions
 - **Umbraco 17 Migration**: Project is running on .NET 10/Umbraco 17.
 - **Strict Accessibility**: Enforcing a11y rules in all new components.
 - **MCP Integration**: Utilizing `umbraco-mcp` for streamlined Umbraco operations.
+- **Content Modeling**: Adopting a Composition-over-Inheritance approach where `SubPage` aggregates shared interfaces (`ISeo`, `ISharing`, etc.) and functional pages (`Blog`, `Service`) inherit this baseline.
 
 ## Next Steps
 - Validate all existing artifacts against the new `GEMINI.md` rules.

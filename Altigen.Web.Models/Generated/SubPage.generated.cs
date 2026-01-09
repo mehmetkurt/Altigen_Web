@@ -50,21 +50,6 @@ namespace Altigen.Web.Models
 		// properties
 
 		///<summary>
-		/// Content
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("subPageContent")]
-		public virtual global::Umbraco.Cms.Core.Models.Blocks.BlockGridModel SubPageContent => this.Value<global::Umbraco.Cms.Core.Models.Blocks.BlockGridModel>(_publishedValueFallback, "subPageContent");
-
-		///<summary>
-		/// Show On Home Page
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
-		[ImplementPropertyType("subPageShowOnHomePage")]
-		public virtual bool SubPageShowOnHomePage => this.Value<bool>(_publishedValueFallback, "subPageShowOnHomePage");
-
-		///<summary>
 		/// Sub Title
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]

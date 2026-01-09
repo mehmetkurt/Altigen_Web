@@ -22,3 +22,23 @@ Altigen follows a strict separation of concerns:
 - **Async/Await**: Universal usage of async patterns.
 - **LINQ**: Preferred for collection manipulation.
 - **Razor**: Minimal logic; delegate to Services/ViewComponents.
+
+## Content Modeling
+Authentication and common page features are handled via a robust inheritance and composition strategy:
+
+### Base Types & Compositions
+- **`HomePage` (`homePage`)**: The Root node of the website.
+    - **Compositions**: `Seo`, `Sharing`, `Sitemap`, and `Slider` (unique main banner).
+    - **Children**: Strictly allows *List* types (`BlogList`, `RegionList`, `ServiceList`) as immediate children.
+- **`SubPage` (`subPage`)**: Acts as the foundational Document Type for content pages.
+    - **Compositions**: Aggregates `PageHeader` (Titles/Subtitles), `Seo` (Meta tags, Canonical), `Sharing` (OG/Twitter cards), and `Sitemap` (Priority, ChangeFreq).
+    - **Usage**: Inherited by specific functional pages (`Blog`, `Region`, `Service`) and their list containers.
+
+### Hierarchy & Relationships
+- **List-Item Pattern**: Structured content follows a strict parent-child relationship:
+    - `BlogList` (`allowedAsRoot`) -> Children: `Blog`
+    - `RegionList` (`allowedAsRoot`) -> Children: `Region`
+    - `ServiceList` (`allowedAsRoot`) -> Children: `Service`
+- **Variations**:
+    - All standard content types (`SubPage`, `Blog`, `BlogList`, `Region`, `RegionList`, `ServiceList`) vary by **Culture**.
+

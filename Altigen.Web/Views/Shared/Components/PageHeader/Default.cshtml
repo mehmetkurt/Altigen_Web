@@ -1,34 +1,44 @@
-@model IPublishedContent
+@model IPageHeader
+
+@{
+    var content = Model as IPublishedContent;
+
+    if (content == null)
+        return;
+
+    var headerTitle = Model.PageHeaderTitle;
+    if (string.IsNullOrWhiteSpace(headerTitle)) headerTitle = "";
+
+    var headerSubtitle = Model.PageHeaderSubtitle;
+    if (string.IsNullOrWhiteSpace(headerSubtitle)) headerSubtitle = "";
+
+}
 
 <div class="page-header">
     <div class="container">
         <div class="row">
             <div class="col-12">
-                @{
-                    var headerTitle = Model.Value<string>("pageHeaderTitle");
-                    if (string.IsNullOrWhiteSpace(headerTitle)) headerTitle = Model.Name;
-
-                    var headerSubtitle = Model.Value<string>("pageHeaderSubtitle");
-                    if (string.IsNullOrWhiteSpace(headerSubtitle)) headerSubtitle = Model.Value<string>("description");
+                @if (!string.IsNullOrWhiteSpace(headerSubtitle))
+                {
+                    <h1 class="h2 mb-2">@headerTitle</h1>
                 }
 
-                <h1 class="h2 mb-2">@headerTitle</h1>
                 @if (!string.IsNullOrWhiteSpace(headerSubtitle))
                 {
                     <p class="lead mb-3 text-white-50">@headerSubtitle</p>
                 }
-                
+
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        @foreach (var item in Model.Ancestors().Reverse())
+                        @foreach (var item in (Model as IPublishedContent).Ancestors().Reverse())
                         {
                             var title = item.Value<string>("seoPageBreadcrumbTitle");
                             if (string.IsNullOrWhiteSpace(title)) title = item.Name;
                             <li class="breadcrumb-item"><a href="@item.Url()">@title</a></li>
                         }
                         @{
-                             var currentTitle = Model.Value<string>("seoPageBreadcrumbTitle");
-                             if (string.IsNullOrWhiteSpace(currentTitle)) currentTitle = Model.Name;
+                            var currentTitle = Model.Value<string>("seoPageBreadcrumbTitle");
+                            if (string.IsNullOrWhiteSpace(currentTitle)) currentTitle = content.Name();
                         }
                         <li class="breadcrumb-item active" aria-current="page">@currentTitle</li>
                     </ol>

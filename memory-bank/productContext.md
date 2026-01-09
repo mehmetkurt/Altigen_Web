@@ -9,3 +9,10 @@ Altigen is designed to facilitate content management with high flexibility and c
 ## workflows
 - **Content Creation**: Editors use the Umbraco Backoffice to compose pages using predefined Blocks.
 - **Styling**: Styles are generated dynamically based on block settings, ensuring design consistency while preserving flexibility.
+
+## Core Content Modules
+The application provides standardized content structures for common business needs:
+- **Blogs**: Date-based articles with localized support.
+- **Services**: Portfolio of business offerings.
+- **Regions**: Location-based content management.
+- **SEO & Sharing**: Built-in optimization features (Meta tags, OpenGraph, Twitter Cards, Sitemap) inherited by all standard pages.
