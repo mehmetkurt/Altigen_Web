@@ -1,12 +1,11 @@
 @using Altigen.Web.Models
-@using Altigen.Web.Models
 @model BlogItemViewModel
 
 @{
     var mainImage = Model.Post.BlogFeaturedImages?.FirstOrDefault();
 }
 
-<div class="col-md-6 col-lg-4 grid-item @Model.CategorySlug">
+<div class="col-md-6 col-lg-4 grid-item">
     <article class="blog-card h-100 d-flex flex-column">
         <div class="card-img-top">
             <a href="@Model.Post.Url()" title="@Model.Post.Name" class="d-block h-100">

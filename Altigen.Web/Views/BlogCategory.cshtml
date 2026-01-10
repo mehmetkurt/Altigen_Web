@@ -1,7 +1,81 @@
-﻿@model BlogCategory
+﻿@using Umbraco.Cms.Core.Web
+@using Umbraco.Extensions
+@using Altigen.Web.Extensions
+@inject Umbraco.Cms.Core.IPublishedContentQuery PublishedContentQuery
+@model BlogCategory
+@using System
 
 @{
-	Layout = "SubLayout.cshtml";
+    Layout = "SubLayout.cshtml";
+
+    // 1. Get Sibling Categories(including self)
+    var parentBlogList = Model.Parent;
+    var categories = parentBlogList?.Children<BlogCategory>()?
+        .Where(x => x.IsVisible() && x.Children<Blog>().Any())
+        .ToList() ?? new List<BlogCategory>();
+
+    // 2. Get Posts (Only Children of THIS Category)
+    var catPosts = Model.Children<Altigen.Web.Models.Blog>()?
+        .Where(x => x.IsVisible())
+        .OrderByDescending(x => x.CreateDate)
+        .ToList() ?? new List<Altigen.Web.Models.Blog>();
+
+    // 4. Paging Logic
+    var pagingConfig = Model.GetEffectivePagingConfig();
+    int pageNumber = 1;
+    if (!int.TryParse(Context.Request.Query["page"], out pageNumber)) pageNumber = 1;
+    if (pageNumber < 1) pageNumber = 1;
+
+    var totalItems = catPosts.Count();
+    var pagedPosts = catPosts.Skip((pageNumber - 1) * pagingConfig.PageSize).Take(pagingConfig.PageSize).ToList();
+
+    // 5. Prepare ViewModel List
+    var blogItems = pagedPosts.Select(post => 
+    {
+        return new BlogItemViewModel 
+        {
+            Post = post,
+            CategorySlug = Model.UrlSegment,
+            CategoryName = Model.Name
+        };
+    });
 }
 
-<p>Blog Category</p>
+@section Head {
+    <link rel="stylesheet" href="/assets/styles/bloglist.css" />
+}
+
+<div class="blog-list-page container">
+    
+    @* Page Header Area: Filter Toolbar *@
+    <div class="blog-controls mb-5">
+        <div class="row align-items-center justify-content-end">
+            @if (categories.Any())
+            {
+                <div class="col-12">
+                    <div class="filter-toolbar d-flex flex-wrap gap-2 justify-content-end">
+                        <a href="@parentBlogList.Url()" class="btn btn-filter">Tümü</a>
+                        @foreach (var category in categories)
+                        {
+                             var isActive = category.Id == Model.Id ? "active" : "";
+                             <a href="@category.Url()" class="btn btn-filter @isActive">@category.Name</a>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    @* Blog Grid *@
+    @await Html.PartialAsync("~/Views/Partials/Blog/_BlogGrid.cshtml", blogItems)
+
+    @* Pager *@
+    @await Html.PartialAsync("~/Views/Partials/Common/_Pager.cshtml", new Altigen.Web.Models.PagerViewModel
+    {
+        Config = pagingConfig,
+        TotalItems = totalItems,
+        CurrentPage = pageNumber,
+        UrlFormat = "?page={0}"
+    })
+
+</div>

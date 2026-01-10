@@ -24,11 +24,12 @@ The project is in active development (January 2026), focusing on:
 - Created `IGlobalSettingsService` and `GlobalSettingsService` in `Altigen.Web.Core` to provide centralized access to `GlobalSettings`.
 - Registered `GlobalSettingsService` using `ServiceComposer` in `Altigen.Web.Core`.
 - Refactored `GlobalSettingsService` to use `UmbracoHelper` for simplifying content access and avoiding `IPublishedContentCache` extension issues.
-- **Blog List Refactoring**:
-    - **Search Removed:** Blog search functionality has been completely removed as per user request (pending a different solution).
-    - **Isotope & Filtering:** Isotope.js integration finalized for category filtering.
-    - **Modern UI:** Blog cards updated with a premium design (rounded corners, shadows, hover effects).
-    - **Architecture:** Blog grid rendering moved to `_BlogGrid.cshtml` partial.
+- **Blog List Refactoring**: 
+    - **Search Removed:** Blog search functionality has been completely removed.
+    - **Filtering:** Switched from Isotope.js (Client-Side) to Server-Side Category Navigation for SEO and Paging compatibility.
+    - **Modern UI:** Blog cards updated with a premium design.
+    - **Components:** `BlogCategory.cshtml` creates dedicated pages for categories.
+    - **Architecture:** `BlogList` and `BlogCategory` share `_BlogGrid` and `_Pager` partials.
     - **Content Hierarchy:** Restructured `BlogList` -> `BlogCategory` -> `Blog`.
     - **Strongly-Typed Views:** Introduced `BlogItemViewModel` for partial views.
     - **Partial Views:** Extracted rendering logic to `_BlogGrid.cshtml` and `_BlogCard.cshtml` partials.

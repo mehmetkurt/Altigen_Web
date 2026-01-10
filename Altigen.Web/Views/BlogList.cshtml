@@ -82,10 +82,10 @@
             {
                 <div class="col-12">
                     <div class="filter-toolbar d-flex flex-wrap gap-2 justify-content-end">
-                        <button class="btn btn-filter active" data-filter="*">Tümü</button>
+                        <a href="@Model.Url()" class="btn btn-filter active">Tümü</a>
                         @foreach (var category in categories)
                         {
-                             <button class="btn btn-filter" data-filter=".@category.UrlSegment">@category.Name</button>
+                             <a href="@category.Url()" class="btn btn-filter">@category.Name</a>
                         }
                     </div>
                 </div>
@@ -106,38 +106,3 @@
     })
 
 </div>
-
-
-@section Scripts {
-    <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
-    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
-    <script src="/sources/js/isotope-init.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var grid = document.querySelector('#blog-isotope');
-            if (grid) {
-                // Initialize Isotope after images are loaded to prevent overlap
-                imagesLoaded(grid, function() {
-                    var iso = new Isotope(grid, {
-                        itemSelector: '.grid-item',
-                        layoutMode: 'fitRows',
-                        percentPosition: true
-                    });
-
-                    // Filter items on button click
-                    var filters = document.querySelectorAll('.filter-toolbar .btn-filter');
-                    filters.forEach(function(filterBtn) {
-                        filterBtn.addEventListener('click', function() {
-                            // Manage active class
-                            filters.forEach(btn => btn.classList.remove('active'));
-                            this.classList.add('active');
-
-                            var filterValue = this.getAttribute('data-filter');
-                            iso.arrange({ filter: filterValue });
-                        });
-                    });
-                });
-            }
-        });
-    </script>
-}

@@ -12,46 +12,53 @@ namespace Altigen.Web.Extensions
         /// </summary>
         public static PagingConfigModel GetEffectivePagingConfig(this IPublishedContent content)
         {
-            var current = content;
+            var config = new PagingConfigModel();
 
-            // Traverse up to find the "source of truth"
-            while (current != null)
+            // 1. Check if current content supports IPaging
+            if (content is IPaging pagingItem)
             {
-                if (current is IPaging pagingItem)
+                // 2. Base Configuration (Inheritance vs Local)
+                // If InheritParent is TRUE, start with Parent's config.
+                // If InheritParent is FALSE, start with Default config (to be filled by Local).
+                if (pagingItem.PagingInheritParent && content.Parent != null)
                 {
-                    // If Inherit is FALSE, this is our config source.
-                    // If Inherit is TRUE, we continue loop to Parent.
-                    if (!pagingItem.PagingInheritParent)
-                    {
-                        return MapToConfig(pagingItem);
-                    }
+                    config = content.Parent.GetEffectivePagingConfig();
+                }
+                else
+                {
+                    // No inheritance (or root), set Local Booleans
+                    config.ShowFirst = pagingItem.PagingShowFirst;
+                    config.ShowLast = pagingItem.PagingShowLast;
+                    config.ShowNext = pagingItem.PagingShowNext;
+                    config.ShowPrev = pagingItem.PagingShowPrev;
                 }
 
-                current = current.Parent;
-            }
+                // 3. Integer Overrides (User Requirement: "If > 0, use valid local value")
+                // These apply regardless of Inheritance setting.
+                if (pagingItem.PagingPageSize > 0)
+                {
+                    config.PageSize = pagingItem.PagingPageSize;
+                }
 
-            // Fallback: If we traversed all the way up and found nothing (or everything inherited),
-            // we default to the initial item's values if it supports IPaging, otherwise defaults.
-            if (content is IPaging originalPaging)
+                if (pagingItem.PagingMaxPagerCount > 0)
+                {
+                    config.MaxPagerCount = pagingItem.PagingMaxPagerCount;
+                }
+            }
+            else if (content.Parent != null)
             {
-                return MapToConfig(originalPaging);
+                // Passthrough: Content doesn't have paging settings, look up to parent
+                return content.Parent.GetEffectivePagingConfig();
             }
 
-            // Absolute fallback (Default values defined in class)
-            return new PagingConfigModel();
+            return config;
         }
 
         private static PagingConfigModel MapToConfig(IPaging item)
         {
-            return new PagingConfigModel
-            {
-                PageSize = item.PagingPageSize > 0 ? item.PagingPageSize : 10,
-                MaxPagerCount = item.PagingMaxPagerCount > 0 ? item.PagingMaxPagerCount : 5,
-                ShowFirst = item.PagingShowFirst,
-                ShowLast = item.PagingShowLast,
-                ShowNext = item.PagingShowNext,
-                ShowPrev = item.PagingShowPrev
-            };
+            // This helper is no longer used in the recursive logic but kept if needed or removed.
+            // Removing it to keep code clean.
+            return new PagingConfigModel();
         }
     }
 }

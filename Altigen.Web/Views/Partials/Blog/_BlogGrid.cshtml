@@ -4,7 +4,7 @@
 @if (Model != null && Model.Any())
 {
     @* Blog Grid *@
-    <div class="blog-grid row g-4" id="blog-isotope">
+    <div class="blog-grid row g-4">
         @foreach (var item in Model)
         {
             @await Html.PartialAsync("~/Views/Partials/Blog/_BlogCard.cshtml", item)
