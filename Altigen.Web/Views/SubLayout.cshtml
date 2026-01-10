@@ -1,10 +1,18 @@
-﻿@model IPublishedContent
+@model IPublishedContent
 
 @{
     Layout = "root.cshtml";
 }
 
 @await Component.InvokeAsync("PageHeader")
+
+@section Head {
+    @await RenderSectionAsync("Head", required: false)
+}
+
+@section Scripts {
+    @await RenderSectionAsync("Scripts", required: false)
+}
 
 <div class="sub-page-wrapper">
     <div class="container">

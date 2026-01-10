@@ -3,6 +3,7 @@
   <Folder Name="/Packages/Elements/">
     <Project Path="Packages/CodeIsLife.Elements/src/CodeIsLife.Elements.Client/" Type="Website" DisplayName="CodeIsLife.Elements.Client">
       <BuildType Project="Debug" />
+      <Build Solution="Debug|*" Project="false" />
       <Properties Name="WebsiteProperties">
         <Property Name="Debug.AspNetCompiler.Debug" Value="&quot;True&quot;" />
         <Property Name="Debug.AspNetCompiler.FixedNames" Value="&quot;false&quot;" />
@@ -22,7 +23,9 @@
         <Property Name="VWDPort" Value="&quot;62535&quot;" />
       </Properties>
     </Project>
-    <Project Path="Packages/CodeIsLife.Elements/src/CodeIsLife.Elements/CodeIsLife.Elements.csproj" />
+    <Project Path="Packages/CodeIsLife.Elements/src/CodeIsLife.Elements/CodeIsLife.Elements.csproj">
+      <Build Solution="Debug|*" Project="false" />
+    </Project>
   </Folder>
   <Project Path="Altigen.Web.Core/Altigen.Web.Core.csproj" Id="08a6fa78-c046-4f0b-9c83-5252696d5a3e" />
   <Project Path="Altigen.Web/Altigen.Web.csproj" />

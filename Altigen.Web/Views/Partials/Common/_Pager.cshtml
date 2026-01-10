@@ -1,0 +1,82 @@
+@using Altigen.Web.Models
+@model PagerViewModel
+
+@if (Model != null && Model.TotalPages > 1)
+{
+    var config = Model.Config;
+    var current = Model.CurrentPage;
+    var total = Model.TotalPages;
+
+    // Calculate start and end page numbers for the pager loop
+    var startPage = current - (config.MaxPagerCount / 2);
+    if (startPage < 1) startPage = 1;
+
+    var endPage = startPage + config.MaxPagerCount - 1;
+    if (endPage > total)
+    {
+        endPage = total;
+        startPage = endPage - config.MaxPagerCount + 1;
+        if (startPage < 1) startPage = 1;
+    }
+
+    <nav aria-label="Page navigation" class="mt-5">
+        <ul class="pagination justify-content-center">
+            
+            @* First Page *@
+            @if (config.ShowFirst && current > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@string.Format(Model.UrlFormat, 1)" aria-label="First">
+                        <span aria-hidden="true">&laquo;&laquo;</span>
+                    </a>
+                </li>
+            }
+
+            @* Previous Page *@
+            @if (config.ShowPrev && current > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@string.Format(Model.UrlFormat, current - 1)" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            }
+
+            @* Page Numbers *@
+            @for (int i = startPage; i <= endPage; i++)
+            {
+                <li class="page-item @(i == current ? "active" : "")">
+                    @if (i == current)
+                    {
+                        <span class="page-link">@i</span>
+                    }
+                    else
+                    {
+                        <a class="page-link" href="@string.Format(Model.UrlFormat, i)">@i</a>
+                    }
+                </li>
+            }
+
+            @* Next Page *@
+            @if (config.ShowNext && current < total)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@string.Format(Model.UrlFormat, current + 1)" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            }
+
+            @* Last Page *@
+            @if (config.ShowLast && current < total)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@string.Format(Model.UrlFormat, total)" aria-label="Last">
+                        <span aria-hidden="true">&raquo;&raquo;</span>
+                    </a>
+                </li>
+            }
+
+        </ul>
+    </nav>
+}

@@ -1,7 +1,143 @@
-﻿@model BlogList
+﻿@using Examine
+@using Umbraco.Cms.Core.Web
+@using Umbraco.Extensions
+@using Altigen.Web.Extensions
+@inject Umbraco.Cms.Core.IPublishedContentQuery PublishedContentQuery
+@inject Examine.IExamineManager ExamineManager
+@model BlogList
+@using System
 
 @{
-	Layout = "SubLayout.cshtml";
+    Layout = "SubLayout.cshtml";
+
+    // 1. Get Categories (Children of BlogList)
+    var categories = Model.Children<BlogCategory>()?
+        .Where(x => x.IsVisible() && x.Children<Blog>().Any())
+        .ToList() ?? new List<BlogCategory>();
+
+    // 2. Get All Posts (Children of Categories)
+    var allPosts = new List<Altigen.Web.Models.Blog>();
+    
+    // We create a dictionary to map Post ID to Category UrlSegment (for filtering class)
+    var postCategoryMap = new Dictionary<int, string>();
+    var categoryNameMap = new Dictionary<string, string>(); // slug -> name
+
+    foreach (var category in categories)
+    {
+        var catSlug = category.UrlSegment();
+        categoryNameMap[catSlug] = category.Name;
+
+        var posts = category.Children<Blog>()?
+            .Where(x => x.IsVisible())
+            .ToList();
+            
+        if (posts != null)
+        {
+            foreach(var post in posts)
+            {
+                allPosts.Add(post);
+                postCategoryMap[post.Id] = catSlug;
+            }
+        }
+    }
+
+    IEnumerable<IPublishedContent> filteredPosts = allPosts;
+
+    // Order by Date
+    filteredPosts = filteredPosts.OrderByDescending(x => x.CreateDate).ToList();
+
+    // 4. Paging Logic
+    var pagingConfig = Model.GetEffectivePagingConfig();
+    int pageNumber = 1;
+    if (!int.TryParse(Context.Request.Query["page"], out pageNumber)) pageNumber = 1;
+    if (pageNumber < 1) pageNumber = 1;
+
+    var totalItems = filteredPosts.Count();
+    var pagedPosts = filteredPosts.Skip((pageNumber - 1) * pagingConfig.PageSize).Take(pagingConfig.PageSize).ToList();
+
+    // 5. Prepare ViewModel List (Use pagedPosts instead of filteredPosts)
+    var blogItems = pagedPosts.Select(post => 
+    {
+        var catSlug = postCategoryMap.ContainsKey(post.Id) ? postCategoryMap[post.Id] : "";
+        var catName = categoryNameMap.ContainsKey(catSlug) ? categoryNameMap[catSlug] : "";
+        return new BlogItemViewModel 
+        {
+            Post = (Blog)post,
+            CategorySlug = catSlug,
+            CategoryName = catName
+        };
+    });
 }
 
-<p>test</p>
+@section Head {
+    <link rel="stylesheet" href="/assets/styles/bloglist.css" />
+}
+
+<div class="blog-list-page container">
+    
+    @* Page Header Area: Filter Toolbar *@
+    <div class="blog-controls mb-5">
+        <div class="row align-items-center justify-content-end">
+            @if (categories.Any())
+            {
+                <div class="col-12">
+                    <div class="filter-toolbar d-flex flex-wrap gap-2 justify-content-end">
+                        <button class="btn btn-filter active" data-filter="*">Tümü</button>
+                        @foreach (var category in categories)
+                        {
+                             <button class="btn btn-filter" data-filter=".@category.UrlSegment">@category.Name</button>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    @* Blog Grid *@
+    @await Html.PartialAsync("~/Views/Partials/Blog/_BlogGrid.cshtml", blogItems)
+
+    @* Pager *@
+    @await Html.PartialAsync("~/Views/Partials/Common/_Pager.cshtml", new Altigen.Web.Models.PagerViewModel
+    {
+        Config = pagingConfig,
+        TotalItems = totalItems,
+        CurrentPage = pageNumber,
+        UrlFormat = "?page={0}"
+    })
+
+</div>
+
+
+@section Scripts {
+    <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
+    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+    <script src="/sources/js/isotope-init.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var grid = document.querySelector('#blog-isotope');
+            if (grid) {
+                // Initialize Isotope after images are loaded to prevent overlap
+                imagesLoaded(grid, function() {
+                    var iso = new Isotope(grid, {
+                        itemSelector: '.grid-item',
+                        layoutMode: 'fitRows',
+                        percentPosition: true
+                    });
+
+                    // Filter items on button click
+                    var filters = document.querySelectorAll('.filter-toolbar .btn-filter');
+                    filters.forEach(function(filterBtn) {
+                        filterBtn.addEventListener('click', function() {
+                            // Manage active class
+                            filters.forEach(btn => btn.classList.remove('active'));
+                            this.classList.add('active');
+
+                            var filterValue = this.getAttribute('data-filter');
+                            iso.arrange({ filter: filterValue });
+                        });
+                    });
+                });
+            }
+        });
+    </script>
+}

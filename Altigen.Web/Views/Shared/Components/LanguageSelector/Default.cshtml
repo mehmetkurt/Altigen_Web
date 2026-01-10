@@ -1,0 +1,28 @@
+@model LanguageSelectorViewModel
+
+@if (Model.Languages == null || Model.Languages.Count <= 1)
+{
+    return;
+}
+
+<div class="language-selector dropdown d-inline-block me-3">
+    <button class="btn btn-link dropdown-toggle d-flex align-items-center gap-2 p-0 text-decoration-none" 
+            type="button" 
+            id="languageSelector" 
+            data-bs-toggle="dropdown" 
+            aria-expanded="false">
+        <img src="@Model.CurrentLanguage.FlagUrl" alt="@Model.CurrentLanguage.Name" width="20" height="15" class="rounded-sm shadow-sm" style="object-fit: cover;">
+        <span class="d-none d-md-inline text-white">@Model.CurrentLanguage.Name</span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 mt-2" aria-labelledby="languageSelector">
+        @foreach (var language in Model.Languages)
+        {
+            <li>
+                <a class="dropdown-item d-flex align-items-center gap-2 @(language.IsActive ? "active" : "")" href="@language.Url">
+                    <img src="@language.FlagUrl" alt="@language.Name" width="20" height="15" class="rounded-sm shadow-sm" style="object-fit: cover;">
+                    <span>@language.Name</span>
+                </a>
+            </li>
+        }
+    </ul>
+</div>

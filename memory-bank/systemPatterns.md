@@ -21,7 +21,7 @@ Altigen follows a strict separation of concerns:
 ## Code Standards
 - **Async/Await**: Universal usage of async patterns.
 - **LINQ**: Preferred for collection manipulation.
-- **Razor**: Minimal logic; delegate to Services/ViewComponents.
+- **Razor**: Minimal logic; delegate to Services/ViewComponents. Use **Partial Views** and **ViewModels** to encapsulate rendering logic and data structures.
 
 ## Content Modeling
 Authentication and common page features are handled via a robust inheritance and composition strategy:
@@ -32,13 +32,14 @@ Authentication and common page features are handled via a robust inheritance and
     - **Children**: Strictly allows *List* types (`BlogList`, `RegionList`, `ServiceList`) as immediate children.
 - **`SubPage` (`subPage`)**: Acts as the foundational Document Type for content pages.
     - **Compositions**: Aggregates `PageHeader` (Titles/Subtitles), `Seo` (Meta tags, Canonical), `Sharing` (OG/Twitter cards), and `Sitemap` (Priority, ChangeFreq).
-    - **Usage**: Inherited by specific functional pages (`Blog`, `Region`, `Service`) and their list containers.
+    - **Usage**: Inherited by specific functional pages (`Blog`, `Region`, `Service`, `BlogCategory`) and their list containers.
 
 ### Hierarchy & Relationships
 - **List-Item Pattern**: Structured content follows a strict parent-child relationship:
-    - `BlogList` (`allowedAsRoot`) -> Children: `Blog`
     - `RegionList` (`allowedAsRoot`) -> Children: `Region`
     - `ServiceList` (`allowedAsRoot`) -> Children: `Service`
+    - `BlogList` (`allowedAsRoot`) -> Children: `BlogCategory`
+    - `BlogCategory` (`allowedAsRoot`) -> Children: `Blog`
 - **Variations**:
-    - All standard content types (`SubPage`, `Blog`, `BlogList`, `Region`, `RegionList`, `ServiceList`) vary by **Culture**.
+    - All standard content types (`SubPage`, `Blog`, `BlogList`, `Region`, `RegionList`, `ServiceList`, `BlogCategory`) vary by **Culture**.
 

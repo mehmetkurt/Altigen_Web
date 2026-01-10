@@ -1,0 +1,20 @@
+@using Altigen.Web.Models
+@model IEnumerable<BlogItemViewModel>
+
+@if (Model != null && Model.Any())
+{
+    @* Blog Grid *@
+    <div class="blog-grid row g-4" id="blog-isotope">
+        @foreach (var item in Model)
+        {
+            @await Html.PartialAsync("~/Views/Partials/Blog/_BlogCard.cshtml", item)
+        }
+    </div>
+}
+else
+{
+    <div class="text-center py-5 text-muted">
+        <i class="mso mb-3" style="font-size: 3rem;">sentiment_dissatisfied</i>
+        <h4>İçerik bulunamadı.</h4>
+    </div>
+}

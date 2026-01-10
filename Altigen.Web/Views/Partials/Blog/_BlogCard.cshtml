@@ -1,0 +1,60 @@
+@using Altigen.Web.Models
+@using Altigen.Web.Models
+@model BlogItemViewModel
+
+@{
+    var mainImage = Model.Post.BlogFeaturedImages?.FirstOrDefault();
+}
+
+<div class="col-md-6 col-lg-4 grid-item @Model.CategorySlug">
+    <article class="blog-card h-100 d-flex flex-column">
+        <div class="card-img-top">
+            <a href="@Model.Post.Url()" title="@Model.Post.Name" class="d-block h-100">
+                @if (mainImage != null)
+                {
+                    <img src="@mainImage.GetCropUrl(width: 400, height: 200)" 
+                         alt="@Model.Post.Name" 
+                         width="400" 
+                         height="200"
+                         loading="lazy">
+                }
+                else
+                {
+                    <img src="https://placehold.co/400x200?text=No+Image" 
+                         alt="No Image" 
+                         width="400" 
+                         height="200"
+                         loading="lazy">
+                }
+            </a>
+            @if (!string.IsNullOrEmpty(Model.CategoryName))
+            {
+                <span class="category-badge">@Model.CategoryName</span>
+            }
+        </div>
+        <div class="card-body d-flex flex-column flex-grow-1">
+            <div class="card-meta">
+                <i class="mso">calendar_today</i>
+                <span>@Model.Post.CreateDate.ToString("d MMMM yyyy")</span>
+                @if (Model.Post.BlogTags != null && Model.Post.BlogTags.Any())
+                {
+                    <span class="mx-2 opacity-50">|</span>
+                    <i class="mso" title="Etiketler">label</i>
+                    <span class="text-truncate" style="max-width: 150px;" title="@string.Join(", ", Model.Post.BlogTags)">
+                        @string.Join(", ", Model.Post.BlogTags.Take(2))
+                    </span>
+                }
+            </div>
+            <h2 class="card-title">
+                <a href="@Model.Post.Url()" title="@Model.Post.Name">@Model.Post.Name</a>
+            </h2>
+            <p class="card-text flex-grow-1">
+                @(Model.Post.BlogDescription)
+            </p>
+            <a href="@Model.Post.Url()" class="btn-read-more mt-auto" title="@Model.Post.Name">
+                Devamını Oku
+                <span class="mso">arrow_forward</span>
+            </a>
+        </div>
+    </article>
+</div>

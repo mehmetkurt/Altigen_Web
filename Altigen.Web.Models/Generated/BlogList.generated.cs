@@ -20,7 +20,7 @@ namespace Altigen.Web.Models
 {
 	/// <summary>Blog List</summary>
 	[PublishedModel("blogList")]
-	public partial class BlogList : SubPage
+	public partial class BlogList : SubPage, IPaging
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -48,5 +48,54 @@ namespace Altigen.Web.Models
 		}
 
 		// properties
+
+		///<summary>
+		/// Inherit Parent
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[ImplementPropertyType("pagingInheritParent")]
+		public virtual bool PagingInheritParent => global::Altigen.Web.Models.Paging.GetPagingInheritParent(this, _publishedValueFallback);
+
+		///<summary>
+		/// Max Pager Count
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[ImplementPropertyType("pagingMaxPagerCount")]
+		public virtual int PagingMaxPagerCount => global::Altigen.Web.Models.Paging.GetPagingMaxPagerCount(this, _publishedValueFallback);
+
+		///<summary>
+		/// Page Size
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[ImplementPropertyType("pagingPageSize")]
+		public virtual int PagingPageSize => global::Altigen.Web.Models.Paging.GetPagingPageSize(this, _publishedValueFallback);
+
+		///<summary>
+		/// Show First
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[ImplementPropertyType("pagingShowFirst")]
+		public virtual bool PagingShowFirst => global::Altigen.Web.Models.Paging.GetPagingShowFirst(this, _publishedValueFallback);
+
+		///<summary>
+		/// Show Last
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[ImplementPropertyType("pagingShowLast")]
+		public virtual bool PagingShowLast => global::Altigen.Web.Models.Paging.GetPagingShowLast(this, _publishedValueFallback);
+
+		///<summary>
+		/// Show Next
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[ImplementPropertyType("pagingShowNext")]
+		public virtual bool PagingShowNext => global::Altigen.Web.Models.Paging.GetPagingShowNext(this, _publishedValueFallback);
+
+		///<summary>
+		/// Show Prev
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.0.2+497c31e")]
+		[ImplementPropertyType("pagingShowPrev")]
+		public virtual bool PagingShowPrev => global::Altigen.Web.Models.Paging.GetPagingShowPrev(this, _publishedValueFallback);
 	}
 }

@@ -6,5 +6,9 @@
   {
     "outputFile": "wwwroot/assets/styles/altigen.css",
     "inputFile": "wwwroot/sources/scss/altigen.scss"
+  },
+  {
+    "outputFile": "wwwroot/assets/styles/bloglist.css",
+    "inputFile": "wwwroot/sources/scss/pages/bloglist.scss"
   }
 ]

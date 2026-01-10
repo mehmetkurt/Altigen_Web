@@ -1,6 +1,22 @@
 .page-header {
     position: relative;
-    height: 400px;
+    height: 300px;
+
+    @include media-breakpoint-up(md) {
+        height: 250px;
+    }
+
+    @include media-breakpoint-up(xl) {
+        height: 400px;
+    }
+    @include media-breakpoint-down(md) {
+        text-align: center;
+        
+        .breadcrumb {
+            justify-content: center;
+        }
+    }
+
     background: linear-gradient(135deg, $altigen-blue 0%, darken($altigen-blue, 10%) 100%);
     display: flex;
     align-items: flex-end;
@@ -14,7 +30,19 @@
         --bs-breadcrumb-item-active-color: $white;
         
         &-item {
+            display: inline-flex;
+            align-items: center;
+
+            &::before {
+                float: none;
+                align-self: center;
+                display: inline-block;
+                padding-right: var(--bs-breadcrumb-item-padding-x);
+            }
+
             a {
+                display: inline-flex;
+                align-items: center;
                 color: rgba($white, 0.7);
                 text-decoration: none;
                 transition: color 0.3s ease;
@@ -23,19 +51,36 @@
                     color: $white;
                 }
             }
+
+            .mso {
+                font-size: 1.2rem;
+                line-height: 1;
+                display: inline-flex;
+                align-items: center;
+            }
         }
     }
 
-    h1 {
+    &-title {
         color: $white;
-        margin-bottom: 0;
+        margin-bottom: 0.5rem;
         font-weight: 700;
-        font-size: 3rem; 
+        font-size: 3rem;
+
+        @include media-breakpoint-down(md) {
+            font-size: 2em;
+        }
     }
 
-    .lead {
+    &-subtitle {
         font-size: 1.1rem;
         font-weight: 400;
+        color: rgba($white, 0.7);
+        margin-bottom: 1rem;
+
+        @include media-breakpoint-down(md) {
+            font-size: 1em;
+        }
     }
 }
  

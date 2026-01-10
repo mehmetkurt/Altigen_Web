@@ -137,4 +137,53 @@
             }
         }
     }
+
+    .language-selector {
+        .dropdown-toggle {
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: opacity 0.3s ease;
+            color: rgba($white, 0.9);
+
+            &:hover {
+                opacity: 0.8;
+            }
+
+            &::after {
+                display: none;
+            }
+
+            img {
+                border: 1px solid rgba($white, 0.2);
+            }
+        }
+
+        .dropdown-menu {
+            background: rgba($primary, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba($white, 0.1);
+            border-radius: 12px;
+            padding: 0.5rem;
+            min-width: 150px;
+
+            .dropdown-item {
+                color: $white;
+                border-radius: 8px;
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+                transition: background-all 0.3s;
+
+                &:hover {
+                    background: rgba($white, 0.1);
+                }
+
+                &.active {
+                    background: $white;
+                    color: $primary;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
 }

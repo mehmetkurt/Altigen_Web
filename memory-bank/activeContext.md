@@ -8,6 +8,7 @@ The project is in active development (January 2026), focusing on:
 
 ## Recent Changes
 - Fixed git ignore cache for `Altigen.Web/wwwroot/App_Plugins/codeislife.elements/dist` folder.
+- Changed application ports to `56920` (http) and `44320` (https) in `launchSettings.json` to resolve `SocketException` caused by excluded port range.
 - Removed `device-selector.element.ts` due to development issues and lack of control.
 - Fixed `BlockSettingsExtensions.cs` to correctly generate responsive border styles based on device settings.
 - Refactored `SizeEditor` property JSON parsing.
@@ -23,6 +24,18 @@ The project is in active development (January 2026), focusing on:
 - Created `IGlobalSettingsService` and `GlobalSettingsService` in `Altigen.Web.Core` to provide centralized access to `GlobalSettings`.
 - Registered `GlobalSettingsService` using `ServiceComposer` in `Altigen.Web.Core`.
 - Refactored `GlobalSettingsService` to use `UmbracoHelper` for simplifying content access and avoiding `IPublishedContentCache` extension issues.
+- **Blog List Refactoring**:
+    - **Search Removed:** Blog search functionality has been completely removed as per user request (pending a different solution).
+    - **Isotope & Filtering:** Isotope.js integration finalized for category filtering.
+    - **Modern UI:** Blog cards updated with a premium design (rounded corners, shadows, hover effects).
+    - **Architecture:** Blog grid rendering moved to `_BlogGrid.cshtml` partial.
+    - **Content Hierarchy:** Restructured `BlogList` -> `BlogCategory` -> `Blog`.
+    - **Strongly-Typed Views:** Introduced `BlogItemViewModel` for partial views.
+    - **Partial Views:** Extracted rendering logic to `_BlogGrid.cshtml` and `_BlogCard.cshtml` partials.
+- **Global Paging Implementation**:
+    - **Structure:** `PagingConfigModel`, `PagingExtensions` (inheritance logic), `PagerViewModel`.
+    - **UI:** `_Pager.cshtml` partial view using Bootstrap pagination.
+    - **Integration:** Applied to `BlogList.cshtml` with server-side paging logic via `GetEffectivePagingConfig()`.
 
 ## Active Decisions
 - **Umbraco 17 Migration**: Project is running on .NET 10/Umbraco 17.
