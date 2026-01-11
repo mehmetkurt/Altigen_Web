@@ -1,0 +1,211 @@
+@import "../bootstrap/functions";
+@import "../overrides";
+@import "../bootstrap/variables";
+@import "../bootstrap/mixins";
+
+.blog-detail-page {
+    padding: 3rem 0;
+
+    // specialized hero styles
+    .blog-detail-hero {
+        img {
+            width: 100%;
+            height: auto;
+            max-height: 500px;
+            object-fit: cover;
+        }
+    }
+
+    // header meta
+    .blog-header {
+        .blog-meta {
+            font-size: 0.9rem;
+            i {
+                font-size: 1.1rem;
+            }
+        }
+    }
+
+    // content typography
+    .blog-content {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: $body-color;
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        h2, h3, h4, h5, h6 {
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: $headings-color;
+            font-weight: 700;
+        }
+
+        blockquote {
+            border-left: 4px solid $primary;
+            padding-left: 1.5rem;
+            font-style: italic;
+            margin: 2rem 0;
+            color: $text-muted;
+        }
+    }
+
+    // tags
+    .blog-tags {
+        .badge {
+            padding: 0.5rem 0.8rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+
+            &:hover {
+                background-color: $primary !important;
+                color: #fff !important;
+                border-color: $primary !important;
+            }
+        }
+    }
+
+    // Gallery Grid Styles
+    .blog-gallery-container {
+        #blog-lightgallery {
+            // Desktop: Justified Grid Logic
+            @media (min-width: 992px) {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem; // 8px gap
+                transform: none !important; // Override swiper transform
+            }
+
+            .gallery-item {
+                position: relative;
+                overflow: hidden;
+                border: 1px solid rgba(0,0,0,0.05);
+
+                // Desktop: Flex Item
+                @media (min-width: 992px) {
+                    flex-grow: 1;
+                    height: 300px;
+                    flex-basis: auto;
+                    width: auto !important; // Override swiper slide width
+                    margin-right: 0 !important; // Override swiper margin
+                }
+
+                // Mobile: Slider Item
+                @media (max-width: 991.98px) {
+                    height: 400px;
+                    // Width is handled by JS (slidesPerView) or default swiper
+                }
+
+                &:hover {
+                    .gallery-overlay {
+                        opacity: 1;
+                    }
+                    
+                    img {
+                        transform: scale(1.05);
+                    }
+                }
+
+                img {
+                    height: 100%;
+                    width: 100%; // Cover container
+                    min-width: 100%; // Ensure fills width
+                    object-fit: cover;
+                    vertical-align: bottom;
+                    transition: transform 0.5s ease;
+                    
+                    @media (min-width: 992px) {
+                        width: auto; // Let aspect ratio drive width on desktop
+                    }
+                }
+
+                .gallery-overlay {
+                    position: absolute;
+                    inset: 0;
+                    background: rgba(0,0,0,0.3);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    opacity: 0;
+                    transition: opacity 0.3s ease;
+                    backdrop-filter: blur(2px);
+                }
+            }
+        }
+    }
+
+    // Table of Contents
+    .toc-container {
+        font-size: 0.9rem;
+        
+        .nav-link {
+            border-left: 2px solid transparent;
+            transition: all 0.2s ease;
+            
+            &:hover, &.active {
+                color: $primary !important;
+                border-left-color: $primary;
+                background-color: rgba($primary, 0.05);
+            }
+        }
+    }
+
+    // Mobile TOC (Accordion)
+    .mobile-toc {
+        summary {
+            list-style: none;
+            cursor: pointer;
+            &::-webkit-details-marker { display: none; }
+            
+            .bi-chevron-down {
+                transition: transform 0.3s ease;
+            }
+        }
+
+        &[open] summary .bi-chevron-down {
+            transform: rotate(180deg);
+        }
+    }
+
+    // Blog Tags
+    .blog-tags {
+        .tag-item {
+            display: inline-block;
+            background: #fff;
+            border: 1px solid rgba($primary, 0.1);
+            color: $body-color;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+
+            &:hover {
+                background: rgba($primary, 0.05);
+                color: $primary;
+                transform: translateY(-2px);
+                border-color: rgba($primary, 0.2);
+            }
+        }
+    }
+
+    // related posts grid (Ported from bloglist.scss for independence)
+    .related-posts {
+        @import "../blog-card";
+    }
+}
+
+// Global scroll behavior for TOC links
+html {
+    scroll-padding-top: 120px;
+    scroll-behavior: smooth;
+}

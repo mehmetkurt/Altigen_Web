@@ -1,0 +1,72 @@
+@using Umbraco.Extensions
+@using Umbraco.Cms.Core.Models.PublishedContent
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Altigen.Web.Models.Blog>
+
+@{
+    var posts = Model.Parent?.Children<Altigen.Web.Models.Blog>()?
+        .Where(x => x.IsVisible())
+        .OrderByDescending(x => x.CreateDate)
+        .ToList();
+
+    if (posts == null || !posts.Any()) { return; }
+
+    var currentIndex = posts.FindIndex(x => x.Id == Model.Id);
+    if (currentIndex == -1) { return; }
+
+    // List is Newest -> Oldest
+    // Previous (in list) = Newer Post
+    // Next (in list) = Older Post
+    
+    var newerPost = currentIndex > 0 ? posts[currentIndex - 1] : null;      // << Geri (Index decreasing)
+    var olderPost = currentIndex < posts.Count - 1 ? posts[currentIndex + 1] : null; // İleri >> (Index increasing)
+}
+
+@if (newerPost != null || olderPost != null)
+{
+    <div class="blog-navigation d-flex justify-content-between align-items-center mb-5 pb-3">
+        @* Left: Newer Post (Önceki) *@
+        <div class="nav-prev">
+            @if (newerPost != null)
+            {
+                <a href="@newerPost.Url()" class="btn btn-outline-secondary border-0 d-flex align-items-center gap-2 py-2 px-3 hover-shadow" title="@newerPost.Name">
+                    <span class="mso fs-4">keyboard_double_arrow_left</span>
+                    <span class="d-none d-sm-inline fs-6 fw-bold">Önceki</span>
+                    <span class="d-inline d-sm-none fw-bold">Önceki</span>
+                </a>
+            }
+            else
+            {
+                <span class="text-muted opacity-25 d-flex align-items-center gap-2 py-2 px-3">
+                    <span class="mso fs-4">keyboard_double_arrow_left</span>
+                    <span class="fs-6 fw-bold">Önceki</span>
+                </span>
+            }
+        </div>
+        
+        @* Center: Link to Blog List *@
+        <div class="nav-center d-none d-md-block">
+             <a href="@Model.Parent.Url()" class="btn btn-light rounded-circle p-3 d-flex align-items-center justify-content-center text-muted hover-primary" style="width: 50px; height: 50px;" title="Listeye Dön">
+                 <span class="mso fs-4">grid_view</span>
+             </a>
+        </div>
+
+        @* Right: Older Post (Sonraki) *@
+        <div class="nav-next">
+            @if (olderPost != null)
+            {
+                <a href="@olderPost.Url()" class="btn btn-outline-secondary border-0 d-flex align-items-center gap-2 py-2 px-3 hover-shadow" title="@olderPost.Name">
+                    <span class="d-none d-sm-inline fs-6 fw-bold">Sonraki</span>
+                    <span class="d-inline d-sm-none fw-bold">Sonraki</span>
+                    <span class="mso fs-4">keyboard_double_arrow_right</span>
+                </a>
+            }
+            else
+            {
+                <span class="text-muted opacity-25 d-flex align-items-center gap-2 py-2 px-3">
+                     <span class="fs-6 fw-bold">Sonraki</span>
+                     <span class="mso fs-4">keyboard_double_arrow_right</span>
+                </span>
+            }
+        </div>
+    </div>
+}

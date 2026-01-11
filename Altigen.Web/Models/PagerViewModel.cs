@@ -4,7 +4,7 @@ namespace Altigen.Web.Models
 {
     public class PagerViewModel
     {
-        public PagingConfigModel Config { get; set; }
+        public PagingConfigModel Config { get; set; } = new();
         public int TotalItems { get; set; }
         public int CurrentPage { get; set; }
         

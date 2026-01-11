@@ -10,9 +10,11 @@ namespace Altigen.Web.Extensions
         /// Retrieves the effective paging configuration by traversing up the content tree
         /// if 'Inherit Parent' is enabled.
         /// </summary>
-        public static PagingConfigModel GetEffectivePagingConfig(this IPublishedContent content)
+        public static PagingConfigModel GetEffectivePagingConfig(this IPublishedContent? content)
         {
             var config = new PagingConfigModel();
+
+            if (content == null) return config;
 
             // 1. Check if current content supports IPaging
             if (content is IPaging pagingItem)
@@ -20,9 +22,9 @@ namespace Altigen.Web.Extensions
                 // 2. Base Configuration (Inheritance vs Local)
                 // If InheritParent is TRUE, start with Parent's config.
                 // If InheritParent is FALSE, start with Default config (to be filled by Local).
-                if (pagingItem.PagingInheritParent && content.Parent != null)
+                if (pagingItem.PagingInheritParent && content.Parent<IPublishedContent>() != null)
                 {
-                    config = content.Parent.GetEffectivePagingConfig();
+                    config = content.Parent<IPublishedContent>().GetEffectivePagingConfig();
                 }
                 else
                 {
@@ -45,10 +47,10 @@ namespace Altigen.Web.Extensions
                     config.MaxPagerCount = pagingItem.PagingMaxPagerCount;
                 }
             }
-            else if (content.Parent != null)
+            else if (content.Parent<IPublishedContent>() != null)
             {
                 // Passthrough: Content doesn't have paging settings, look up to parent
-                return content.Parent.GetEffectivePagingConfig();
+                return content.Parent<IPublishedContent>().GetEffectivePagingConfig();
             }
 
             return config;

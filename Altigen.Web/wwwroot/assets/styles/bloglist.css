@@ -1,5 +1,5 @@
 ﻿.blog-list-page {
-  padding: 3rem 0;
+  padding: 0 0 3rem 0;
   min-height: 80vh;
 }
 .blog-list-page .filter-toolbar .btn-filter {
@@ -158,11 +158,21 @@
 
 @media (max-width: 768px) {
   .blog-list-page .filter-toolbar {
-    justify-content: center;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 20px;
+    margin-bottom: -15px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .blog-list-page .filter-toolbar::-webkit-scrollbar {
+    display: none;
   }
   .blog-list-page .filter-toolbar .btn-filter {
     width: auto;
-    flex-grow: 1;
+    flex: 0 0 auto;
     text-align: center;
+    white-space: nowrap;
   }
 }

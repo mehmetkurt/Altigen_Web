@@ -1,0 +1,18 @@
+@using Umbraco.Extensions
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Altigen.Web.Models.Blog>
+
+@if (Model.BlogTags != null && Model.BlogTags.Any())
+{
+    var blogListUrl = Model.AncestorOrSelf<Altigen.Web.Models.BlogList>()?.Url() ?? "/";
+
+    <div class="blog-tags mb-5 pt-4">
+        <div class="d-flex flex-wrap gap-2">
+            @foreach (var tag in Model.BlogTags)
+            {
+                <a href="@blogListUrl?tag=@tag" class="tag-item">
+                    #@tag
+                </a>
+            }
+        </div>
+    </div>
+}

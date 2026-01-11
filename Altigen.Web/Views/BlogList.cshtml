@@ -24,8 +24,10 @@
 
     foreach (var category in categories)
     {
-        var catSlug = category.UrlSegment();
-        categoryNameMap[catSlug] = category.Name;
+        var catSlug = category.UrlSegment() ?? string.Empty;
+        if(!string.IsNullOrEmpty(catSlug)) {
+             categoryNameMap[catSlug] = category.Name;
+        }
 
         var posts = category.Children<Blog>()?
             .Where(x => x.IsVisible())
@@ -41,7 +43,17 @@
         }
     }
 
+    // 3. Filter by Tag
+    var activeTag = Context.Request.Query["tag"].ToString();
     IEnumerable<IPublishedContent> filteredPosts = allPosts;
+
+    if (!string.IsNullOrEmpty(activeTag))
+    {
+        filteredPosts = filteredPosts.Where(post => {
+            var tags = post.Value<IEnumerable<string>>("blogTags");
+            return tags != null && tags.Contains(activeTag, StringComparer.InvariantCultureIgnoreCase);
+        });
+    }
 
     // Order by Date
     filteredPosts = filteredPosts.OrderByDescending(x => x.CreateDate).ToList();
@@ -77,12 +89,35 @@
     
     @* Page Header Area: Filter Toolbar *@
     <div class="blog-controls mb-5">
+        
+        @* Active Tag Banner *@
+        @if (!string.IsNullOrEmpty(activeTag))
+        {
+            <div class="alert alert-light border shadow-sm d-flex align-items-center justify-content-between mb-4 fade show" role="alert">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <span class="mso">filter_alt</span>
+                    </div>
+                    <div>
+                        <p class="mb-0 text-muted small">
+                            <strong class="text-primary">@activeTag</strong> etiketine sahip <strong>@totalItems</strong> kayıt gösteriliyor.
+                        </p>
+                    </div>
+                </div>
+                <a href="@Model.Url()" class="btn btn-sm btn-outline-danger d-flex align-items-center gap-2 border-0 bg-danger bg-opacity-10 text-danger" title="Filtreyi Temizle">
+                    <span class="d-none d-sm-inline fw-medium">Filtreyi Kaldır</span>
+                    <span class="d-inline d-sm-none fw-medium">Temizle</span>
+                    <span class="mso">close</span>
+                </a>
+            </div>
+        }
+
         <div class="row align-items-center justify-content-end">
             @if (categories.Any())
             {
                 <div class="col-12">
                     <div class="filter-toolbar d-flex flex-wrap gap-2 justify-content-end">
-                        <a href="@Model.Url()" class="btn btn-filter active">Tümü</a>
+                        <a href="@Model.Url()" class="btn btn-filter @(string.IsNullOrEmpty(activeTag) ? "active" : "")">Tümü</a>
                         @foreach (var category in categories)
                         {
                              <a href="@category.Url()" class="btn btn-filter">@category.Name</a>
@@ -102,7 +137,7 @@
         Config = pagingConfig,
         TotalItems = totalItems,
         CurrentPage = pageNumber,
-        UrlFormat = "?page={0}"
+        UrlFormat = string.IsNullOrEmpty(activeTag) ? "?page={0}" : $"?tag={activeTag}&page={{0}}"
     })
 
 </div>

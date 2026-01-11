@@ -9,7 +9,7 @@
     Layout = "SubLayout.cshtml";
 
     // 1. Get Sibling Categories(including self)
-    var parentBlogList = Model.Parent;
+    var parentBlogList = Model.Parent<IPublishedContent>();
     var categories = parentBlogList?.Children<BlogCategory>()?
         .Where(x => x.IsVisible() && x.Children<Blog>().Any())
         .ToList() ?? new List<BlogCategory>();
@@ -35,7 +35,7 @@
         return new BlogItemViewModel 
         {
             Post = post,
-            CategorySlug = Model.UrlSegment,
+            CategorySlug = Model.UrlSegment ?? string.Empty,
             CategoryName = Model.Name
         };
     });
@@ -54,7 +54,10 @@
             {
                 <div class="col-12">
                     <div class="filter-toolbar d-flex flex-wrap gap-2 justify-content-end">
-                        <a href="@parentBlogList.Url()" class="btn btn-filter">Tümü</a>
+                        @if (parentBlogList != null)
+                        {
+                             <a href="@parentBlogList.Url()" class="btn btn-filter">Tümü</a>
+                        }
                         @foreach (var category in categories)
                         {
                              var isActive = category.Id == Model.Id ? "active" : "";

@@ -1,7 +1,109 @@
-﻿@model Blog
+﻿@using Umbraco.Cms.Core.Web
+@using Umbraco.Extensions
+@using Altigen.Web.Models
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Blog>
 
 @{
-	Layout = "SubLayout.cshtml";
+    Layout = "SubLayout.cshtml";
+    
+    // 1. Featured Images
+    var featuredImages = Model.BlogFeaturedImages;
+    var hasGallery = featuredImages != null && featuredImages.Count() > 1;
+    var colClass = hasGallery ? "col-12" : "col-lg-10";
+
+    // 2. Related Posts Logic
+    // Same Category (Parent), exclude current post, take latest 3
+    var relatedPosts = Model.Parent<IPublishedContent>()?
+        .Children<Blog>()?
+        .Where(x => x.IsVisible() && x.Id != Model.Id)
+        .OrderByDescending(x => x.CreateDate)
+        .Take(3)
+        .ToList();
+
+    // Prepare ViewModel for Related Posts Grid
+    var relatedItems = new List<BlogItemViewModel>();
+    if(relatedPosts != null && relatedPosts.Any())
+    {
+         var parentCat = Model.Parent<BlogCategory>(); 
+         var catSlug = parentCat?.UrlSegment ?? "";
+         var catName = parentCat?.Name ?? "";
+
+         relatedItems = relatedPosts.Select(post => new BlogItemViewModel
+         {
+             Post = post,
+             CategorySlug = catSlug,
+             CategoryName = catName
+         }).ToList();
+    }
+
+    // 3. Table of Contents Logic
+    var blogContentHtml = Model.BlogContent?.ToString() ?? string.Empty;
+    var tocResult = Altigen.Web.Services.TableOfContentsParser.Parse(blogContentHtml);
+    var hasToc = tocResult.Items.Any();
 }
 
-<p>Blog</p>
+@section Head {
+    <link rel="stylesheet" href="/assets/styles/blog.css" />
+}
+
+<div class="blog-detail-page container py-5">
+    
+    <div class="row justify-content-center">
+        @* Main Content Area *@
+        <div class="@(hasToc ? "col-lg-9 order-lg-2" : colClass)">
+            
+            @* Blog Navigation (Prev/Next) *@
+            @await Html.PartialAsync("~/Views/Partials/Blog/_BlogNavigation.cshtml", Model)
+
+            @* Header / Meta *@
+            <header class="blog-header mb-5 text-center">
+                
+                @* Mobile TOC (Accordion) - Top Position *@
+                @await Html.PartialAsync("~/Views/Partials/Blog/_BlogToc.cshtml", tocResult, new ViewDataDictionary(ViewData) { { "IsMobile", true } })
+
+                @* Gallery or Hero Image *@
+                @await Html.PartialAsync("~/Views/Partials/Blog/_BlogGallery.cshtml", featuredImages)
+                
+                <div class="blog-meta text-muted mb-3 d-flex align-items-center justify-content-center gap-3">
+                    <span class="d-flex align-items-center gap-1">
+                        <i class="bi bi-calendar3"></i> 
+                        @Model.CreateDate.ToString("d MMMM yyyy")
+                    </span>
+                    <span class="d-flex align-items-center gap-1">
+                        <i class="bi bi-folder2-open"></i>
+                        <a href="@Model.Parent.Url()" class="text-decoration-none text-muted">
+                            @(Model.Parent.Name)
+                        </a>
+                    </span>
+                </div>
+            </header>
+
+            @* Content *@
+            <article class="blog-content mb-5">
+                @Html.Raw(tocResult.Content)
+            </article>
+
+            @* Tags *@
+            @await Html.PartialAsync("~/Views/Partials/Blog/_BlogTags.cshtml", Model)
+
+        </div>
+
+        @* Sticky Sidebar for TOC *@
+        @if (hasToc)
+        {
+            <div class="col-lg-3 order-lg-1 d-none d-lg-block">
+                @await Html.PartialAsync("~/Views/Partials/Blog/_BlogToc.cshtml", tocResult, new ViewDataDictionary(ViewData) { { "IsMobile", false } })
+            </div>
+        }
+    </div>
+
+    @* Related Posts *@
+    @if (relatedItems.Any())
+    {
+        <div class="related-posts mt-5 pt-5 border-top">
+            <h3 class="mb-4 text-center">Bunları da Beğenebilirsiniz</h3>
+            @await Html.PartialAsync("~/Views/Partials/Blog/_BlogGrid.cshtml", relatedItems)
+        </div>
+    }
+
+</div>

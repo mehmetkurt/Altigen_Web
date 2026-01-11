@@ -50,6 +50,50 @@ namespace Altigen.Web.Models
 		// properties
 
 		///<summary>
+		/// Description
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("subPageBottomDescription")]
+		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString SubPageBottomDescription => this.Value<global::Umbraco.Cms.Core.Strings.IHtmlEncodedString>(_publishedValueFallback, "subPageBottomDescription");
+
+		///<summary>
+		/// Height
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[ImplementPropertyType("subPageBottomDescriptionHeight")]
+		public virtual int SubPageBottomDescriptionHeight => this.Value<int>(_publishedValueFallback, "subPageBottomDescriptionHeight");
+
+		///<summary>
+		/// Description
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("subPageTopDescription")]
+		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString SubPageTopDescription => this.Value<global::Umbraco.Cms.Core.Strings.IHtmlEncodedString>(_publishedValueFallback, "subPageTopDescription");
+
+		///<summary>
+		/// Height
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[ImplementPropertyType("subPageTopDescriptionHeight")]
+		public virtual int SubPageTopDescriptionHeight => this.Value<int>(_publishedValueFallback, "subPageTopDescriptionHeight");
+
+		///<summary>
+		/// Visible
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[ImplementPropertyType("subPageVisibleBottomDescription")]
+		public virtual bool SubPageVisibleBottomDescription => this.Value<bool>(_publishedValueFallback, "subPageVisibleBottomDescription");
+
+		///<summary>
+		/// Visible
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[ImplementPropertyType("subPageVisibleTopDescription")]
+		public virtual bool SubPageVisibleTopDescription => this.Value<bool>(_publishedValueFallback, "subPageVisibleTopDescription");
+
+		///<summary>
 		/// Sub Title
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]

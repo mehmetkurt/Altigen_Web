@@ -10,5 +10,9 @@
   {
     "outputFile": "wwwroot/assets/styles/bloglist.css",
     "inputFile": "wwwroot/sources/scss/pages/bloglist.scss"
+  },
+  {
+    "outputFile": "wwwroot/assets/styles/blog.css",
+    "inputFile": "wwwroot/sources/scss/pages/blog.scss"
   }
 ]

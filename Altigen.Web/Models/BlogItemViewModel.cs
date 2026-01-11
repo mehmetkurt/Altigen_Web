@@ -4,8 +4,8 @@ namespace Altigen.Web.Models
 {
     public class BlogItemViewModel
     {
-        public Blog Post { get; set; }
-        public string CategorySlug { get; set; }
-        public string CategoryName { get; set; }
+        public required Blog Post { get; set; }
+        public string CategorySlug { get; set; } = string.Empty;
+        public string CategoryName { get; set; } = string.Empty;
     }
 }
