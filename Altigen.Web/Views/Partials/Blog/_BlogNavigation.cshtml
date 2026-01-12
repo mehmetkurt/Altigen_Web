@@ -3,7 +3,7 @@
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Altigen.Web.Models.Blog>
 
 @{
-    var posts = Model.Parent?.Children<Altigen.Web.Models.Blog>()?
+    var posts = Model.Parent<IPublishedContent>()?.Children<Altigen.Web.Models.Blog>()?
         .Where(x => x.IsVisible())
         .OrderByDescending(x => x.CreateDate)
         .ToList();
@@ -45,7 +45,7 @@
         
         @* Center: Link to Blog List *@
         <div class="nav-center d-none d-md-block">
-             <a href="@Model.Parent.Url()" class="btn btn-light rounded-circle p-3 d-flex align-items-center justify-content-center text-muted hover-primary" style="width: 50px; height: 50px;" title="Listeye Dön">
+             <a href="@(Model.Parent<IPublishedContent>()?.Url())" class="btn btn-light rounded-circle p-3 d-flex align-items-center justify-content-center text-muted hover-primary" style="width: 50px; height: 50px;" title="Listeye Dön">
                  <span class="mso fs-4">grid_view</span>
              </a>
         </div>

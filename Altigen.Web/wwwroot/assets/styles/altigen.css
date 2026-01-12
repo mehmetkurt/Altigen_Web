@@ -11034,7 +11034,10 @@ body, p {
 .page-header-title {
   color: #ffffff;
   margin-bottom: 0.5rem;
-  font-weight: 700;
+  font-family: "Dosis", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
   font-size: 3rem;
 }
 @media (max-width: 767.98px) {
