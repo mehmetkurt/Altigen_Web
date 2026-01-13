@@ -20,4 +20,5 @@
 - **No Inline JS**: All JavaScript must be in separate files.
 - **Strong Typing**: Use `IPublishedContent` and strongly typed ViewModels.
 - **No Console Logs**: Production code must be clean.
+- **No HTML Comments**: Do not use `<!-- -->` in Razor views; use `@* *@` if necessary or remove them.
 - **Accessibility**: All interactive elements must have discernible text/ARIA labels.

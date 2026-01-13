@@ -4,6 +4,8 @@
 - [x] Project Rules definition (`GEMINI.md`)
 - [x] Memory Bank structure initialization
 - [x] Base solution structure setup (.NET 10 / Umbraco 17)
+- [x] Blog Compilation Fixes
+- [x] Main Slider Enhancement (Thumbnails, Overlay, Cleanup)
 
 ## In Progress
 - [ ] Refinement of custom Property Editors

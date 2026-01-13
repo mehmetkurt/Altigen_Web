@@ -6,40 +6,53 @@
     var sliderItems = Model.Value<BlockListModel>("sliderItems");
     if (sliderItems == null || !sliderItems.Any()) return;
 }
+<div class="main-slider-container position-relative">
+    <div class="swiper main-slider">
+        <div class="swiper-wrapper">
+            @foreach (var block in sliderItems)
+            {
+                var content = block.Content;
+                var image = content.Value<IPublishedContent>("image");
+                var imageUrl = image?.Url() ?? "";
+                var title = content.Value<string>("title");
+                var description = content.Value<string>("description");
+                var link = content.Value<Umbraco.Cms.Core.Models.Link>("link");
+                var bgClass = "bg-dark";
 
-<!-- Main Slider Component -->
-<div class="swiper main-slider">
-    <div class="swiper-wrapper">
-        @foreach (var block in sliderItems)
-        {
-            var content = block.Content;
-            var image = content.Value<IPublishedContent>("image");
-            var imageUrl = image?.Url() ?? "";
-            var title = content.Value<string>("title");
-            var description = content.Value<string>("description");
-            var link = content.Value<Umbraco.Cms.Core.Models.Link>("link");
-            var bgClass = "bg-dark"; // Default fallback
-
-            <div class="swiper-slide d-flex align-items-center justify-content-center @bgClass text-white" 
-                 style="background-image: url('@imageUrl'); background-size: cover; background-position: center;">
-                <div class="container text-center">
-                    @if (!string.IsNullOrEmpty(title))
-                    {
-                        <h1 class="display-3 fw-bold">@title</h1>
-                    }
-                    @if (!string.IsNullOrEmpty(description))
-                    {
-                        <p class="lead">@description</p>
-                    }
-                    @if (link != null)
-                    {
-                        <a href="@link.Url" target="@link.Target" class="btn btn-primary mt-3">@link.Name</a>
-                    }
+                <div class="swiper-slide d-flex align-items-center justify-content-center @bgClass text-white" 
+                     style="background-image: url('@imageUrl'); background-size: cover; background-position: center;">
+                    <div class="slider-overlay"></div>
+                    <div class="container text-center position-relative z-2">
+                        @if (!string.IsNullOrEmpty(title))
+                        {
+                            <h1 class="display-3 fw-bold">@title</h1>
+                        }
+                        @if (!string.IsNullOrEmpty(description))
+                        {
+                            <p class="lead">@description</p>
+                        }
+                        @if (link != null)
+                        {
+                            <a href="@link.Url" target="@link.Target" class="btn btn-primary mt-3">@link.Name</a>
+                        }
+                    </div>
                 </div>
-            </div>
-        }
+            }
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
     </div>
-    <div class="swiper-pagination"></div>
-    <div class="swiper-button-next"></div>
-    <div class="swiper-button-prev"></div>
+    <div class="swiper main-slider-thumbs">
+        <div class="swiper-wrapper">
+            @foreach (var block in sliderItems)
+            {
+                var content = block.Content;
+                var title = content.Value<string>("title");
+
+                <div class="swiper-slide">
+                    <span class="thumb-text">@title</span>
+                </div>
+            }
+        </div>
+    </div>
 </div>
