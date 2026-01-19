@@ -19,13 +19,13 @@ using Umbraco.Extensions;
 namespace Altigen.Web.Models
 {
 	/// <summary>Blog List</summary>
-	[PublishedModel("blogList")]
-	public partial class BlogList : SubPage, IPaging
+	[PublishedModel("BlogList")]
+	public partial class BlogList : PagingList
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
-		public new const string ModelTypeAlias = "blogList";
+		public new const string ModelTypeAlias = "BlogList";
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
 		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
@@ -48,54 +48,5 @@ namespace Altigen.Web.Models
 		}
 
 		// properties
-
-		///<summary>
-		/// Inherit Parent
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
-		[ImplementPropertyType("pagingInheritParent")]
-		public virtual bool PagingInheritParent => global::Altigen.Web.Models.Paging.GetPagingInheritParent(this, _publishedValueFallback);
-
-		///<summary>
-		/// Max Pager Count
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
-		[ImplementPropertyType("pagingMaxPagerCount")]
-		public virtual int PagingMaxPagerCount => global::Altigen.Web.Models.Paging.GetPagingMaxPagerCount(this, _publishedValueFallback);
-
-		///<summary>
-		/// Page Size
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
-		[ImplementPropertyType("pagingPageSize")]
-		public virtual int PagingPageSize => global::Altigen.Web.Models.Paging.GetPagingPageSize(this, _publishedValueFallback);
-
-		///<summary>
-		/// Show First
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
-		[ImplementPropertyType("pagingShowFirst")]
-		public virtual bool PagingShowFirst => global::Altigen.Web.Models.Paging.GetPagingShowFirst(this, _publishedValueFallback);
-
-		///<summary>
-		/// Show Last
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
-		[ImplementPropertyType("pagingShowLast")]
-		public virtual bool PagingShowLast => global::Altigen.Web.Models.Paging.GetPagingShowLast(this, _publishedValueFallback);
-
-		///<summary>
-		/// Show Next
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
-		[ImplementPropertyType("pagingShowNext")]
-		public virtual bool PagingShowNext => global::Altigen.Web.Models.Paging.GetPagingShowNext(this, _publishedValueFallback);
-
-		///<summary>
-		/// Show Prev
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
-		[ImplementPropertyType("pagingShowPrev")]
-		public virtual bool PagingShowPrev => global::Altigen.Web.Models.Paging.GetPagingShowPrev(this, _publishedValueFallback);
 	}
 }

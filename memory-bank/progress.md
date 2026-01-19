@@ -5,7 +5,8 @@
 - [x] Memory Bank structure initialization
 - [x] Base solution structure setup (.NET 10 / Umbraco 17)
 - [x] Blog Compilation Fixes
-- [x] Main Slider Enhancement (Thumbnails, Overlay, Cleanup)
+- [x] Main Slider Enhancement (Thumbnails, Overlay, Cleanup, Logic Fix)
+- [x] Page Header Background Image & Overlay
 
 ## In Progress
 - [ ] Refinement of custom Property Editors

@@ -1,17 +1,24 @@
 .page-header {
     position: relative;
-    height: 300px;
+    height: auto;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
 
     @include media-breakpoint-up(md) {
-        height: 250px;
+        padding-top: 3rem;
     }
 
     @include media-breakpoint-up(xl) {
-        height: 400px;
+        padding-top: 60px;
     }
+
+    @media (min-width: 1300px) {
+        padding-top: 200px;
+    }
+
     @include media-breakpoint-down(md) {
         text-align: center;
-        
+        padding-top: 90px;
         .breadcrumb {
             justify-content: center;
         }
@@ -20,7 +27,6 @@
     background: linear-gradient(135deg, $altigen-blue 0%, darken($altigen-blue, 10%) 100%);
     display: flex;
     align-items: flex-end;
-    padding-bottom: 3rem;
     color: $white;
     margin-bottom: 3rem;
 

@@ -46,7 +46,14 @@ The project is in active development (January 2026), focusing on:
     - **Pagination**: Removed bullet pagination in favor of thumbnails and arrows.
     - **Overlay**: Added a dark overlay (`.slider-overlay`) to slides to improve text readability on all backgrounds.
     - **Alignment**: Fixed thumbnail container alignment using `width: fit-content` and `slidesPerView: 'auto'`.
-    - **Cleanup**: Removed all HTML and Razor comments from `Default.cshtml` for cleaner production code.
+    - **Cleanup**: Removed all HTML/Razor comments and invisible thumbnail text (`.thumb-text`) from `Default.cshtml` for cleaner UI/code.
+    - **Logic Fix**: Updated thumbnail logic to prioritize `thumbnail` property and enforce 150x100 crop for consistency, falling back to cropped `image` if thumbnail is missing.
+- **Page Header Enhancement**:
+    - **Background Image**: Implemented support for `PageHeaderBackgroundImage`.
+    - **Overlay**: Added a semi-transparent black overlay using CSS `linear-gradient` to ensure text readability against any background.
+    - **Styling**: Enforced `background-size: cover`, `background-position: center`, and `no-repeat` for optimal display.
+- **RichText Block Styling investigation**:
+    - Identified that `BlockStyleService` currently ignores RichText properties. (Paused to address immediate UI requests).
 
 ## Active Decisions
 - **Umbraco 17 Migration**: Project is running on .NET 10/Umbraco 17.

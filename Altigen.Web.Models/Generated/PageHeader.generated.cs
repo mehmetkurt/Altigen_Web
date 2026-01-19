@@ -22,6 +22,11 @@ namespace Altigen.Web.Models
 	/// <summary>Page Header</summary>
 	public partial interface IPageHeader : IPublishedElement
 	{
+		/// <summary>Background Image</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		global::Umbraco.Cms.Core.Models.MediaWithCrops PageHeaderBackgroundImage { get; }
+
 		/// <summary>Sub Title</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
@@ -63,6 +68,19 @@ namespace Altigen.Web.Models
 		}
 
 		// properties
+
+		///<summary>
+		/// Background Image
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("pageHeaderBackgroundImage")]
+		public virtual global::Umbraco.Cms.Core.Models.MediaWithCrops PageHeaderBackgroundImage => GetPageHeaderBackgroundImage(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Background Image</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static global::Umbraco.Cms.Core.Models.MediaWithCrops GetPageHeaderBackgroundImage(IPageHeader that, IPublishedValueFallback publishedValueFallback) => that.Value<global::Umbraco.Cms.Core.Models.MediaWithCrops>(publishedValueFallback, "pageHeaderBackgroundImage");
 
 		///<summary>
 		/// Sub Title

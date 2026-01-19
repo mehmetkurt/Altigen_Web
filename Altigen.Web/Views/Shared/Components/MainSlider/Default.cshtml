@@ -48,9 +48,25 @@
             {
                 var content = block.Content;
                 var title = content.Value<string>("title");
+                
+                var thumbnail = content.Value<MediaWithCrops>("thumbnail");
+                var image = content.Value<MediaWithCrops>("image");
+                var thumbUrl = "";
+
+                if (thumbnail != null)
+                {
+                    thumbUrl = thumbnail.GetCropUrl(width: 150, height: 100); // Apply consistent crop to thumbnail
+                }
+                else if (image != null)
+                {
+                    thumbUrl = image.GetCropUrl(width: 150, height: 100); // Fallback to main image crop
+                }
 
                 <div class="swiper-slide">
-                    <span class="thumb-text">@title</span>
+                    @if (!string.IsNullOrEmpty(thumbUrl))
+                    {
+                        <img src="@thumbUrl" alt="@title" class="thumb-image" />
+                    }
                 </div>
             }
         </div>

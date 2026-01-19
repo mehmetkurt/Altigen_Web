@@ -51,5 +51,18 @@ namespace Altigen.Web.Core.HtmlHelpers
             var service = GetService(html);
             return service?.GetUniqueBlockClass(item.Content.Key) ?? $"codeislife-{item.Content.Key:N}";
         }
+
+        /// <summary>
+        /// Returns the unique CSS class name for a given rich text block item.
+        /// </summary>
+        public static string GetUniqueBlockClass<TContent, TSettings>(this IHtmlHelper html, RichTextBlockItem<TContent, TSettings> item)
+            where TContent : IPublishedElement
+            where TSettings : IPublishedElement
+        {
+            if (item == null) return string.Empty;
+
+            var service = GetService(html);
+            return service?.GetUniqueBlockClass(item.Content.Key) ?? $"codeislife-{item.Content.Key:N}";
+        }
     }
 }

@@ -94,6 +94,14 @@ namespace Altigen.Web.Models
 		public virtual bool SubPageVisibleTopDescription => this.Value<bool>(_publishedValueFallback, "subPageVisibleTopDescription");
 
 		///<summary>
+		/// Background Image
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("pageHeaderBackgroundImage")]
+		public virtual global::Umbraco.Cms.Core.Models.MediaWithCrops PageHeaderBackgroundImage => global::Altigen.Web.Models.PageHeader.GetPageHeaderBackgroundImage(this, _publishedValueFallback);
+
+		///<summary>
 		/// Sub Title
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]

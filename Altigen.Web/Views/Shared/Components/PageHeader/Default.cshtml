@@ -12,9 +12,16 @@
     var headerSubtitle = Model.PageHeaderSubtitle;
     if (string.IsNullOrWhiteSpace(headerSubtitle)) headerSubtitle = "";
 
+    var bgImage = Model.PageHeaderBackgroundImage;
+    var styleAttr = "";
+    if (bgImage != null)
+    {
+        // Overlay added for better text readability
+        styleAttr = $"style=\"background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{bgImage.MediaUrl()}'); background-repeat: no-repeat; background-size: cover; background-position: center;\"";
+    }
 }
 
-<div class="page-header">
+<div class="page-header" @Html.Raw(styleAttr)>
     <div class="container">
         <div class="row">
             <div class="col-12">

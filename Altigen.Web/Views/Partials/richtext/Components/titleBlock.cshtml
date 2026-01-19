@@ -1,0 +1,33 @@
+@using Umbraco.Cms.Core.Models.Blocks
+@using Altigen.Web.Core.HtmlHelpers
+@model RichTextBlockItem<TitleBlock, BlockSettingsModel>
+@{
+    var title = Model.Content.TitleBlockText;
+    var tag = ElementStyleHelper.GetString(Model.Content.TitleBlockTagType) ?? "h2";
+    
+    var settings = Model.Settings;
+    var uniqueClass = Html.GetUniqueBlockClass(Model);
+}
+
+@if (!string.IsNullOrEmpty(title))
+{
+    @CreateHeading(tag ?? "h2", title, "title-block " + settings.GetBlockAlignmentClass() + " " + uniqueClass)
+}
+
+@functions{
+    public IHtmlContent CreateHeading(string? tag, string title, string cssClass)
+    {
+        var tagName = string.IsNullOrEmpty(tag) ? "h2" : tag;
+
+        var builder = new TagBuilder(tagName);
+
+        if(!string.IsNullOrEmpty(cssClass))
+        {
+            builder.AddCssClass(cssClass);
+        }
+        
+        builder.InnerHtml.Append(title);
+
+        return builder;
+    }
+}
