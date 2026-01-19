@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const thumbsSwiper = new Swiper(".main-slider-thumbs", {
             spaceBetween: 10,
             slidesPerView: "auto",
-            freeMode: true,
             watchSlidesProgress: true,
+            slideToClickedSlide: true,
         });
 
         const swiper = new Swiper(".main-slider", {

@@ -21,47 +21,52 @@
 
 .main-slider-thumbs {
     position: absolute;
-    bottom: 20px;
+    bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
-    width: fit-content;
-    max-width: 90%; // Prevent overflow on small screens
+    width: auto;
+    max-width: 90%;
     z-index: 10;
-    padding: 10px 0;
+    padding: 10px;
 
     .swiper-slide {
-        width: auto; /* Allow auto width for text content */
-        height: auto;
-        opacity: 0.7;
+        width: 120px !important; // Fixed width for consistency
+        height: 80px !important; // Fixed height for consistency
+        opacity: 0.5;
         cursor: pointer;
-        transition: all 0.3s ease;
-        background-color: rgba(0, 0, 0, 0.4);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 30px; /* Pill shape */
-        padding: 10px 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        backdrop-filter: blur(5px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 2px solid rgba(255, 255, 255, 0.3); // Subtle border
+        border-radius: 12px; // Modern rounded corners
+        overflow: hidden; // Ensures image respects border radius
+        padding: 0; // Reset padding
+        background-color: #000;
 
-        .thumb-text {
-            color: #fff;
-            font-size: 0.9rem;
-            font-weight: 500;
-            white-space: nowrap;
+        img.thumb-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
         }
 
         &:hover {
-            background-color: rgba(0, 0, 0, 0.6);
-            opacity: 1;
+            opacity: 0.8;
+            border-color: rgba(255, 255, 255, 0.8);
+            
+            img.thumb-image {
+                transform: scale(1.1); // Subtle zoom on hover
+            }
         }
     }
 
     .swiper-slide-thumb-active {
         opacity: 1;
-        background-color: $altigen-blue;
         border-color: $altigen-blue;
-        transform: scale(1.05);
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        transform: translateY(-5px); // Lift effect
+
+        img.thumb-image {
+            transform: scale(1);
+        }
     }
 }
