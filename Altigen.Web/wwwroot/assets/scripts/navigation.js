@@ -23,4 +23,23 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
     }
+
+
+    // Sticky Header Logic
+    var header = document.querySelector('.main-header');
+    if (header) {
+        var stickyOffset = 50; // Threshold to trigger sticky state
+        
+        var handleScroll = function() {
+            if (window.scrollY > stickyOffset) {
+                header.classList.add('sticky-active');
+            } else {
+                header.classList.remove('sticky-active');
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        // Check initial state
+        handleScroll();
+    }
 });

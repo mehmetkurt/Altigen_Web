@@ -10663,6 +10663,28 @@ body, p {
     color: #20486d;
   }
 }
+@media (min-width: 1300px) {
+  .main-header.sticky-active {
+    position: fixed;
+    top: 0;
+    background-color: rgba(32, 72, 109, 0.95) !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+    padding: 0;
+    z-index: 1040;
+  }
+  .main-header.sticky-active .container {
+    max-width: 100% !important;
+    padding: 0 2rem;
+  }
+  .main-header.sticky-active .header-inner {
+    background-color: transparent;
+    border-radius: 0;
+    padding: 0.5rem 0;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-shadow: none;
+  }
+}
 .main-header .language-selector .dropdown-toggle {
   font-size: 0.9rem;
   font-weight: 500;
