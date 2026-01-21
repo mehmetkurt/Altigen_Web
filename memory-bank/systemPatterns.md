@@ -33,13 +33,17 @@ Authentication and common page features are handled via a robust inheritance and
 - **`SubPage` (`subPage`)**: Acts as the foundational Document Type for content pages.
     - **Compositions**: Aggregates `PageHeader` (Titles/Subtitles), `Seo` (Meta tags, Canonical), `Sharing` (OG/Twitter cards), and `Sitemap` (Priority, ChangeFreq).
     - **Usage**: Inherited by specific functional pages (`Blog`, `Region`, `Service`, `BlogCategory`) and their list containers.
+- **`PagingList` (`pagingList`)**: Specialized extension of `SubPage` for list views with pagination support.
+    - **Compositions**: Inherits `SubPage` compositions + implements `IPaging`.
+    - **Usage**: Base class for `BlogList` and used by `BlogCategory`.
 
 ### Hierarchy & Relationships
 - **List-Item Pattern**: Structured content follows a strict parent-child relationship:
-    - `RegionList` (`allowedAsRoot`) -> Children: `Region`
-    - `ServiceList` (`allowedAsRoot`) -> Children: `Service`
-    - `BlogList` (`allowedAsRoot`) -> Children: `BlogCategory`
-    - `BlogCategory` (`allowedAsRoot`) -> Children: `Blog`
+    - `RegionList` -> Children: `Region` (Note: RegionList model not generated, managed dynamically or maps to base List)
+    - `ServiceList` -> Children: `Service` (Note: ServiceList model not generated, managed dynamically or maps to base List)
+    - `BlogList` -> Children: `BlogCategory` (Strict Mode: BlogList only allows Categories)
+    - `BlogCategory` -> Children: `Blog`
 - **Variations**:
-    - All standard content types (`SubPage`, `Blog`, `BlogList`, `Region`, `RegionList`, `ServiceList`, `BlogCategory`) vary by **Culture**.
+    - All standard content types vary by **Culture**.
+
 

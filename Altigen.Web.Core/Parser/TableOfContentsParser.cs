@@ -2,7 +2,7 @@ using HtmlAgilityPack;
 using System.Text.RegularExpressions;
 using Umbraco.Cms.Core;
 
-namespace Altigen.Web.Services
+namespace Altigen.Web.Core.Parser
 {
     public class TocItem
     {
@@ -30,7 +30,7 @@ namespace Altigen.Web.Services
             var doc = new HtmlDocument();
             doc.LoadHtml(html);
 
-            var headers = doc.DocumentNode.SelectNodes("//h2|//h3");
+            var headers = doc.DocumentNode.SelectNodes("//h2|//h3|//h4|//h5|//h6");
             if (headers == null || !headers.Any())
                 return result;
 

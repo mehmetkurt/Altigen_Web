@@ -2,9 +2,21 @@
 
 
 $altigen-blue: #20486d;
+$altigen-dark-blue: #08223a;
+$altigen-yellow: #ffda06;
+$altigen-native-blue: #93d4ef;
+$altigen-green: #9bcc95;
+$altigen-pink: #eb5d8b;
+
+$altigen-dark-yellow: #eac309;
+$altigen-dark-pink: #ce336b;
+$altigen-dark-green: #75ad6d;
+$altigen-dark-native-blue: #6bb4ce;
+
 $altigen-blue-light: #93c5fd;
 $white: #ffffff;
 $gray-600: #6c757d;
+$gray-900: #212529;
 
 
 $primary: $altigen-blue;
@@ -21,3 +33,5 @@ $dropdown-border: rgba($white, 0.1);
 $dropdown-item-text: rgba($white, 0.7);
 $dropdown-item-hover: $white;
 $dropdown-accent: $altigen-blue-light;
+
+$light-gray-bg: #eeeeee;

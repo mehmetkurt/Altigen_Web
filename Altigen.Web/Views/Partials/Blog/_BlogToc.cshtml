@@ -1,52 +1,28 @@
-@using Altigen.Web.Services
 @model TocResult
-@{
-    var isMobile = ViewData["IsMobile"] as bool? ?? false;
-}
 
 @if (Model != null && Model.Items.Any())
 {
-    if (isMobile)
-    {
-        @* Mobile Mode: Accordion *@
-        <div class="d-lg-none mb-4 mobile-toc-wrapper">
-            <details class="mobile-toc border rounded-3 bg-light">
-                <summary class="p-3 fw-bold d-flex align-items-center justify-content-between cursor-pointer list-style-none">
-                    <span class="text-uppercase small ls-1">İçindekiler</span>
-                    <i class="bi bi-chevron-down small transition-transform"></i>
-                </summary>
-                <nav class="toc-content p-3 pt-0 border-top-0">
-                    <ul class="nav flex-column gap-1">
-                        @foreach (var item in Model.Items)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link py-1 text-secondary small @(item.Level == 3 ? "ps-3" : "")" href="#@item.Id">
-                                    @item.Title
-                                </a>
-                            </li>
-                        }
-                    </ul>
-                </nav>
-            </details>
-        </div>
-    }
-    else
-    {
-        @* Sidebar Mode: Sticky Nav *@
-        <div class="sticky-top" style="top: 100px; z-index: 10;">
-            <nav id="toc-nav" class="toc-container p-3 rounded-3 bg-light border mb-4">
-                <h6 class="fw-bold mb-3 text-dark text-uppercase small ls-1">İçindekiler</h6>
+    @* Collapsible TOC (Accordion) *@
+    <div class="mb-5 mobile-toc-wrapper">
+        <details class="mobile-toc border rounded-3 bg-white">
+            <summary class="p-3 fw-bold d-flex align-items-center justify-content-between cursor-pointer list-style-none">
+                <span class="text-uppercase ls-1">İçindekiler</span>
+                <span class="mso transition-transform">keyboard_arrow_down</span>
+            </summary>
+            <nav class="toc-content p-3 pt-0 border-top-0">
                 <ul class="nav flex-column gap-1">
                     @foreach (var item in Model.Items)
                     {
+                        var levelClass = $"toc-level-{item.Level}";
+                        
                         <li class="nav-item">
-                            <a class="nav-link py-1 text-secondary small @(item.Level == 3 ? "ps-3" : "")" href="#@item.Id">
+                            <a class="nav-link py-1 text-secondary @levelClass" href="#@item.Id">
                                 @item.Title
                             </a>
                         </li>
                     }
                 </ul>
             </nav>
-        </div>
-    }
+        </details>
+    </div>
 }

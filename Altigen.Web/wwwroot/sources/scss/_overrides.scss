@@ -5,9 +5,30 @@ $enable-shadows: true;
 $enable-gradients: false;
 $enable-rounded: true;
 
+// 1. Theme Color Overrides
+$primary:       $altigen-blue;
+$secondary:     $gray-600; 
+$success:       $altigen-green;
+$info:          $altigen-native-blue;
+$warning:       $altigen-yellow;
+$danger:        $altigen-pink;
+$light:         $altigen-blue-light;
+$dark:          $altigen-dark-blue;
 
-$font-family-sans-serif: "Inter", system-ui, -apple-system, sans-serif;
+// 2. Global Styles
+$body-bg:       $light-gray-bg;
+$body-color:    $gray-900; 
 
-
+// 3. Components
 $border-radius: 0.5rem;
+$component-active-bg: $primary; 
+
+$link-color:            $altigen-blue;
+$link-decoration:       none;
+$link-hover-color:      darken($altigen-blue, 15%);
+$link-hover-decoration: underline;
+
+// 4. Typography
+$font-family-sans-serif: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
 $offcanvas-box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175);

@@ -25,6 +25,10 @@ The project is in active development (January 2026), focusing on:
 - Created `IGlobalSettingsService` and `GlobalSettingsService` in `Altigen.Web.Core` to provide centralized access to `GlobalSettings`.
 - Registered `GlobalSettingsService` using `ServiceComposer` in `Altigen.Web.Core`.
 - Refactored `GlobalSettingsService` to use `UmbracoHelper` for simplifying content access and avoiding `IPublishedContentCache` extension issues.
+- Moved `TableOfContentsParser` to `Altigen.Web.Core.Parser` and updated `_ViewImports` to clean up namespace usage in Views.
+- Standardized View inheritance by removing explicit `@inherits` directives and redundant `@using` statements in favor of `_ViewImports.cshtml`.
+- Refactored `_BlogGallery.cshtml` partial to delegate asset loading (CSS/JS) to `Blog.cshtml` via standard `Head` and `Scripts` sections, adhering to layout structure.
+- Refactored `_Scripts.cshtml` inline navigation logic to `navigation.js`.
 - **Blog List Refactoring**: 
     - **Search Removed:** Blog search functionality has been completely removed.
     - **Filtering:** Switched from Isotope.js (Client-Side) to Server-Side Category Navigation for SEO and Paging compatibility.
@@ -60,6 +64,7 @@ The project is in active development (January 2026), focusing on:
 - **Strict Accessibility**: Enforcing a11y rules in all new components.
 - **MCP Integration**: Utilizing `umbraco-mcp` for streamlined Umbraco operations.
 - **Content Modeling**: Adopting a Composition-over-Inheritance approach where `SubPage` aggregates shared interfaces (`ISeo`, `ISharing`, etc.) and functional pages (`Blog`, `Service`) inherit this baseline.
+- **Code Cleanliness**: Strict enforcement of no unnecessary blank lines, no inline scripts, and using `_ViewImports` for namespaces.
 
 ## Next Steps
 - Validate all existing artifacts against the new `GEMINI.md` rules.

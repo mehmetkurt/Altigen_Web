@@ -1,6 +1,4 @@
-@using Umbraco.Extensions
-@using Umbraco.Cms.Core.Models.PublishedContent
-@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Altigen.Web.Models.Blog>
+@model Blog
 
 @{
     var posts = Model.Parent<IPublishedContent>()?.Children<Altigen.Web.Models.Blog>()?
@@ -28,7 +26,7 @@
         <div class="nav-prev">
             @if (newerPost != null)
             {
-                <a href="@newerPost.Url()" class="btn btn-outline-secondary border-0 d-flex align-items-center gap-2 py-2 px-3 hover-shadow" title="@newerPost.Name">
+                <a href="@newerPost.Url()" class="btn btn-blog-nav d-flex align-items-center gap-2 py-2 px-3" title="@newerPost.Name">
                     <span class="mso fs-4">keyboard_double_arrow_left</span>
                     <span class="d-none d-sm-inline fs-6 fw-bold">Önceki</span>
                     <span class="d-inline d-sm-none fw-bold">Önceki</span>
@@ -54,7 +52,7 @@
         <div class="nav-next">
             @if (olderPost != null)
             {
-                <a href="@olderPost.Url()" class="btn btn-outline-secondary border-0 d-flex align-items-center gap-2 py-2 px-3 hover-shadow" title="@olderPost.Name">
+                <a href="@olderPost.Url()" class="btn btn-blog-nav d-flex align-items-center gap-2 py-2 px-3" title="@olderPost.Name">
                     <span class="d-none d-sm-inline fs-6 fw-bold">Sonraki</span>
                     <span class="d-inline d-sm-none fw-bold">Sonraki</span>
                     <span class="mso fs-4">keyboard_double_arrow_right</span>

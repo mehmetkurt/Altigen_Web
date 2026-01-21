@@ -143,11 +143,15 @@
 
     // Table of Contents
     .toc-container {
-        font-size: 0.9rem;
+        // font-size: 0.9rem; // Removed to increase font size
+        background-color: #ffffff;
+        border: 1px solid #e9ecef !important; // Light gray border
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         
         .nav-link {
             border-left: 2px solid transparent;
             transition: all 0.2s ease;
+            color: $secondary;
             
             &:hover, &.active {
                 color: $primary !important;
@@ -155,7 +159,15 @@
                 background-color: rgba($primary, 0.05);
             }
         }
+
     }
+
+    // Custom Indentation Levels (Shared for Desktop & Mobile)
+    .toc-level-2 { padding-left: 1rem !important; }
+    .toc-level-3 { padding-left: 2rem !important; }
+    .toc-level-4 { padding-left: 3rem !important; }
+    .toc-level-5 { padding-left: 4rem !important; }
+    .toc-level-6 { padding-left: 5rem !important; }
 
     // Mobile TOC (Accordion)
     .mobile-toc {
@@ -201,6 +213,25 @@
     // related posts grid (Ported from bloglist.scss for independence)
     .related-posts {
         @import "../blog-card";
+    }
+
+    // Blog Navigation
+    .blog-navigation {
+        .btn-blog-nav {
+            color: $primary;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid $primary; // Thick border
+            border-radius: 0;
+            transition: all 0.3s ease;
+
+            &:hover, &:focus {
+                color: darken($primary, 10%);
+                background-color: rgba($primary, 0.05);
+                border-bottom-color: darken($primary, 10%);
+                box-shadow: none !important;
+            }
+        }
     }
 }
 

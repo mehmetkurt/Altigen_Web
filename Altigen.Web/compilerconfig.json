@@ -14,5 +14,9 @@
   {
     "outputFile": "wwwroot/assets/styles/blog.css",
     "inputFile": "wwwroot/sources/scss/pages/blog.scss"
+  },
+  {
+    "outputFile": "wwwroot/assets/styles/main-slider.css",
+    "inputFile": "wwwroot/sources/scss/components/main-slider.scss"
   }
 ]

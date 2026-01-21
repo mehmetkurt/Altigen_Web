@@ -1,7 +1,5 @@
 ﻿@using Umbraco.Cms.Core.Web
-@using Umbraco.Extensions
-@using Altigen.Web.Models
-@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Blog>
+@model Blog
 
 @{
     Layout = "SubLayout.cshtml";
@@ -38,19 +36,35 @@
 
     // 3. Table of Contents Logic
     var blogContentHtml = Model.BlogContent?.ToString() ?? string.Empty;
-    var tocResult = Altigen.Web.Services.TableOfContentsParser.Parse(blogContentHtml);
+    var tocResult = TableOfContentsParser.Parse(blogContentHtml);
     var hasToc = tocResult.Items.Any();
 }
 
 @section Head {
     <link rel="stylesheet" href="/assets/styles/blog.css" />
+    @if (hasGallery)
+    {
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/css/lightgallery.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/css/lg-zoom.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/css/lg-thumbnail.min.css" />
+    }
+}
+
+@section Scripts {
+    @if (hasGallery)
+    {
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/lightgallery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/plugins/zoom/lg-zoom.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/plugins/thumbnail/lg-thumbnail.min.js"></script>
+        <script src="/assets/scripts/blog-gallery.js"></script>
+    }
 }
 
 <div class="blog-detail-page container">
     
     <div class="row justify-content-center">
         @* Main Content Area *@
-        <div class="@(hasToc ? "col-lg-9 order-lg-2" : colClass)">
+        <div class="@colClass">
             
             @* Blog Navigation (Prev/Next) *@
             @await Html.PartialAsync("~/Views/Partials/Blog/_BlogNavigation.cshtml", Model)
@@ -58,8 +72,7 @@
             @* Header / Meta *@
             <header class="blog-header mb-5 text-center">
                 
-                @* Mobile TOC (Accordion) - Top Position *@
-                @await Html.PartialAsync("~/Views/Partials/Blog/_BlogToc.cshtml", tocResult, new ViewDataDictionary(ViewData) { { "IsMobile", true } })
+
 
                 @* Gallery or Hero Image *@
                 @await Html.PartialAsync("~/Views/Partials/Blog/_BlogGallery.cshtml", featuredImages)
@@ -78,6 +91,9 @@
                 </div>
             </header>
 
+            @* Mobile TOC (Accordion) - Moved outside header *@
+            @await Html.PartialAsync("~/Views/Partials/Blog/_BlogToc.cshtml", tocResult)
+
             @* Content *@
             <article class="blog-content mb-5">
                 @Html.Raw(tocResult.Content)
@@ -88,13 +104,7 @@
 
         </div>
 
-        @* Sticky Sidebar for TOC *@
-        @if (hasToc)
-        {
-            <div class="col-lg-3 order-lg-1 d-none d-lg-block">
-                @await Html.PartialAsync("~/Views/Partials/Blog/_BlogToc.cshtml", tocResult, new ViewDataDictionary(ViewData) { { "IsMobile", false } })
-            </div>
-        }
+
     </div>
 
     @* Related Posts *@

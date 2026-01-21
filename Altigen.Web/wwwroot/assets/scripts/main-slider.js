@@ -4,8 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.querySelector('.main-slider')) {
         // Initialize Thumbnails Slider
         const thumbsSwiper = new Swiper(".main-slider-thumbs", {
+            loop: true,
             spaceBetween: 10,
-            slidesPerView: "auto",
+            slidesPerView: 2,
             watchSlidesProgress: true,
             slideToClickedSlide: true,
         });

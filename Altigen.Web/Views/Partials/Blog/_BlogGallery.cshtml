@@ -11,14 +11,6 @@
 
 @if (isGallery)
 {
-    @* LightGallery Assets (CDN) *@
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/css/lightgallery.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/css/lg-zoom.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/css/lg-thumbnail.min.css" />
-
-    @* Swiper Assets (CDN) *@
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-
     <div class="blog-gallery-container mb-5">
         <div id="blog-gallery-slider" class="swiper">
             <div class="swiper-wrapper" id="blog-lightgallery">
@@ -42,55 +34,6 @@
             <div class="swiper-pagination d-lg-none mt-4"></div>
         </div>
     </div>
-
-    @* LightGallery Script *@
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/lightgallery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/plugins/zoom/lg-zoom.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/plugins/thumbnail/lg-thumbnail.min.js"></script>
-    
-    @* Swiper Script *@
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // LightGallery Init
-            lightGallery(document.getElementById('blog-lightgallery'), {
-                plugins: [lgZoom, lgThumbnail],
-                speed: 500,
-                mode: 'lg-fade',
-                download: false,
-                selector: '.gallery-item',
-                getCaptionFromTitleOrAlt: false
-            });
-
-            // Swiper Responsive Init
-            let blogSwiper;
-            const initSwiper = () => {
-                const isMobile = window.innerWidth < 992;
-                
-                if (isMobile && !blogSwiper) {
-                    blogSwiper = new Swiper('#blog-gallery-slider', {
-                        slidesPerView: 1.1,
-                        spaceBetween: 16,
-                        centeredSlides: false,
-                        pagination: {
-                            el: '.swiper-pagination',
-                            clickable: true,
-                        },
-                    });
-                } else if (!isMobile && blogSwiper) {
-                    blogSwiper.destroy(true, true);
-                    blogSwiper = undefined;
-                    // Cleanup inline styles added by Swiper
-                    document.querySelector('#blog-lightgallery').removeAttribute('style');
-                    document.querySelectorAll('.gallery-item').forEach(slide => slide.removeAttribute('style'));
-                }
-            };
-
-            window.addEventListener('resize', initSwiper);
-            initSwiper(); // Initial check
-        });
-    </script>
 }
 else
 {
