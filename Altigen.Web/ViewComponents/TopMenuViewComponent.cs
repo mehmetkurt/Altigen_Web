@@ -16,10 +16,12 @@ public class TopMenuViewComponent : ViewComponent
     public IViewComponentResult Invoke()
     {
         // Uses the generated Navigation model to avoid magic strings.
-        // Returns the first found Navigation node at the root.
-        var navigationNode = _umbracoHelper.ContentAtRoot()
-            .OfType<Navigation>()
+        // Returns the Navigation node with NavigationType "Header"
+        var globalSettings = _umbracoHelper.ContentAtRoot()
+            .OfType<GlobalSettings>()
             .FirstOrDefault();
+
+        var navigationNode = globalSettings?.HeaderSettingsMenu;
 
         return View(navigationNode);
     }

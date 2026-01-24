@@ -24,6 +24,7 @@
                 var title = content.Value<string>("title");
                 var link = content.Value<Link>("link");
                 var isMegaMenu = content.Value<bool>("isMegaMenu");
+                var iconCssClass = content.Value<string>("iconCssClass");
                 var subItems = content.Value<IEnumerable<BlockListItem>>("subItems");
 
                 var url = link?.Url ?? "#";
@@ -35,7 +36,13 @@
                 if (isMegaMenu && subItems != null && subItems.Any())
                 {
                     <li class="nav-item dropdown position-static">
-                        <a href="@url" class="nav-link dropdown-toggle @itemClass" style="@itemStyle" id="mobile-dropdown-@content.Key-@renderId" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-display="static" itemprop="url"><span itemprop="name">@title</span></a>
+                        <a href="@url" class="nav-link dropdown-toggle @itemClass" style="@itemStyle" id="mobile-dropdown-@content.Key-@renderId" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-display="static" itemprop="url">
+                             @if (!string.IsNullOrEmpty(iconCssClass))
+                            {
+                                <i class="@iconCssClass me-2"></i>
+                            }
+                            <span itemprop="name">@title</span>
+                        </a>
                         <div class="dropdown-menu shadow-lg border-0 mt-0" aria-labelledby="mobile-dropdown-@content.Key-@renderId" style="border-radius: 0 0 20px 20px; overflow: hidden;">
                             <div class="px-4 py-3">
                                 <div class="row g-5">
@@ -53,6 +60,7 @@
                                             var promoImg = subContent.Value<MediaWithCrops>("promoImage");
                                             var promoText = subContent.Value<string>("promoText");
                                             var promoTitle = subContent.Value<string>("title");
+                                            var promoIcon = subContent.Value<string>("iconCssClass");
 
                                             <div class="col-auto">
                                                 <div class="card border-0 text-white rounded-3 overflow-hidden @subItemClass" style="width: 250px; @subItemStyle">
@@ -61,7 +69,13 @@
                                                         <img src="@promoImg.Url()" class="card-img" alt="@promoTitle" style="height: 100%; object-fit: cover;">
                                                     }
                                                     <div class="card-img-overlay d-flex flex-column justify-content-end bg-dark bg-opacity-50">
-                                                        <h5 class="card-title">@promoTitle</h5>
+                                                        <h5 class="card-title">
+                                                            @if (!string.IsNullOrEmpty(promoIcon))
+                                                            {
+                                                                <i class="@promoIcon me-2"></i>
+                                                            }
+                                                            @promoTitle
+                                                        </h5>
                                                         <p class="card-text small">@promoText</p>
                                                     </div>
                                                 </div>
@@ -70,10 +84,17 @@
                                         else if (isColHeader)
                                         {
                                             var colTitle = subContent.Value<string>("title");
+                                            var colIcon = subContent.Value<string>("iconCssClass");
                                             var colLinks = subContent.Value<IEnumerable<BlockListItem>>("subItems");
 
                                             <div class="col-auto">
-                                                <h6 class="text-primary text-uppercase fw-bold mb-3 @subItemClass" style="@subItemStyle">@colTitle</h6>
+                                                <h6 class="text-primary text-uppercase fw-bold mb-3 @subItemClass" style="@subItemStyle">
+                                                    @if (!string.IsNullOrEmpty(colIcon))
+                                                    {
+                                                        <i class="@colIcon me-2"></i>
+                                                    }
+                                                    @colTitle
+                                                </h6>
                                                 @if (colLinks != null && colLinks.Any())
                                                 {
                                                      <ul class="list-unstyled w-100 h-100 d-flex flex-column gap-2">
@@ -82,6 +103,7 @@
                                                             var linkContent = linkItem.Content;
                                                             var lTitle = linkContent.Value<string>("title");
                                                             var lLink = linkContent.Value<Link>("link");
+                                                            var lIcon = linkContent.Value<string>("iconCssClass");
                                                             
                                                             var linkClass = ElementStyleHelper.GetItemClass(linkItem);
                                                             var linkStyle = ElementStyleHelper.GetItemStyle(linkItem);
@@ -92,6 +114,10 @@
                                                                    class="dropdown-item @linkClass" 
                                                                    style="@linkStyle"
                                                                    itemprop="url">
+                                                                    @if (!string.IsNullOrEmpty(lIcon))
+                                                                    {
+                                                                        <i class="@lIcon me-2"></i>
+                                                                    }
                                                                     <span itemprop="name">@lTitle</span>
                                                                 </a>
                                                             </li>
@@ -109,7 +135,13 @@
                 else
                 {
                     <li class="nav-item">
-                        <a href="@url" target="@target" class="nav-link @itemClass" style="@itemStyle" itemprop="url"><span itemprop="name">@title</span></a>
+                        <a href="@url" target="@target" class="nav-link @itemClass" style="@itemStyle" itemprop="url">
+                            @if (!string.IsNullOrEmpty(iconCssClass))
+                            {
+                                <i class="@iconCssClass me-2"></i>
+                            }
+                            <span itemprop="name">@title</span>
+                        </a>
                     </li>
                 }
             }
@@ -128,6 +160,7 @@
                     var title = content.Value<string>("title");
                     var link = content.Value<Link>("link");
                     var isMegaMenu = content.Value<bool>("isMegaMenu");
+                    var iconCssClass = content.Value<string>("iconCssClass");
                     
                     var url = link?.Url ?? "#";
                     var target = link?.Target ?? "_self";
@@ -139,6 +172,10 @@
 
                     <li class="nav-item @(hasDropdown ? "has-dropdown" : "")" data-target="@(hasDropdown ? contentId : "")">
                         <a href="@url" target="@target" class="nav-link @itemClass" style="@itemStyle" itemprop="url">
+                            @if (!string.IsNullOrEmpty(iconCssClass))
+                            {
+                                <i class="@iconCssClass me-2"></i>
+                            }
                             <span itemprop="name">@title</span>
                             @if (hasDropdown)
                             {
@@ -189,6 +226,7 @@
                                                 var promoImg = subContent.Value<MediaWithCrops>("promoImage");
                                                 var promoText = subContent.Value<string>("promoText");
                                                 var promoTitle = subContent.Value<string>("title");
+                                                var promoIcon = subContent.Value<string>("iconCssClass");
 
                                                 <div class="col">
                                                     <div class="card border-0 text-white rounded-3 overflow-hidden h-100 @subItemClass" style="@subItemStyle">
@@ -197,7 +235,13 @@
                                                             <img src="@promoImg.Url()" class="card-img" alt="@promoTitle" style="height: 100%; object-fit: cover;">
                                                         }
                                                         <div class="card-img-overlay d-flex flex-column justify-content-end bg-dark bg-opacity-50">
-                                                            <h5 class="card-title">@promoTitle</h5>
+                                                            <h5 class="card-title">
+                                                                @if(!string.IsNullOrEmpty(promoIcon))
+                                                                {
+                                                                    <i class="@promoIcon me-2"></i>
+                                                                }
+                                                                @promoTitle
+                                                            </h5>
                                                             <p class="card-text small">@promoText</p>
                                                         </div>
                                                     </div>
@@ -206,10 +250,17 @@
                                             else if (isColHeader)
                                             {
                                                 var colTitle = subContent.Value<string>("title");
+                                                var colIcon = subContent.Value<string>("iconCssClass");
                                                 var colLinks = subContent.Value<IEnumerable<BlockListItem>>("subItems");
 
                                                 <div class="col">
-                                                    <h6 class="dropdown-header text-primary text-uppercase fw-bold mb-3 ps-0 @subItemClass" style="@subItemStyle">@colTitle</h6>
+                                                    <h6 class="dropdown-header text-primary text-uppercase fw-bold mb-3 ps-0 @subItemClass" style="@subItemStyle">
+                                                        @if(!string.IsNullOrEmpty(colIcon))
+                                                        {
+                                                            <i class="@colIcon me-2"></i>
+                                                        }
+                                                        @colTitle
+                                                    </h6>
                                                     @if (colLinks != null && colLinks.Any())
                                                     {
                                                          <ul class="list-unstyled w-100 h-100 d-flex flex-column gap-2">
@@ -218,6 +269,7 @@
                                                                 var linkContent = linkItem.Content;
                                                                 var lTitle = linkContent.Value<string>("title");
                                                                 var lLink = linkContent.Value<Link>("link");
+                                                                var lIcon = linkContent.Value<string>("iconCssClass");
                                                                 
                                                                 var linkClass = ElementStyleHelper.GetItemClass(linkItem);
                                                                 var linkStyle = ElementStyleHelper.GetItemStyle(linkItem);
@@ -227,6 +279,10 @@
                                                                        target="@(lLink?.Target ?? "_self")" 
                                                                        class="dropdown-item @linkClass"
                                                                        style="@linkStyle">
+                                                                        @if(!string.IsNullOrEmpty(lIcon))
+                                                                        {
+                                                                            <i class="@lIcon me-2"></i>
+                                                                        }
                                                                         @lTitle
                                                                     </a>
                                                                 </li>

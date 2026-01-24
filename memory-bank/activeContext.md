@@ -58,6 +58,10 @@ The project is in active development (January 2026), focusing on:
     - **Styling**: Enforced `background-size: cover`, `background-position: center`, and `no-repeat` for optimal display.
 - **RichText Block Styling investigation**:
     - Identified that `BlockStyleService` currently ignores RichText properties. (Paused to address immediate UI requests).
+- Resolved `CS8618` warning in `FooterViewModel.cs` by adding `required` modifier to `Logo` and `Description` properties, enforcing initialization at compile time.
+- Implemented `FooterMenu/Default.cshtml` and `FooterMenuViewComponent.cs` to utilize the standard `Navigation` model.
+- Added logic to `FooterMenu` to dynamically generate columns based on `isColumnHeader` property, limiting recursion to the first level of sub-items.
+- Updated `TopMenuViewComponent` and `FooterMenuViewComponent` to filter `Navigation` nodes by `NavigationType` ("Header" vs. "Footer"), ensuring correct menu resolution.
 
 ## Active Decisions
 - **Umbraco 17 Migration**: Project is running on .NET 10/Umbraco 17.

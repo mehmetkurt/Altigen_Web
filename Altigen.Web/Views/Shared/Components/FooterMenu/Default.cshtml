@@ -1,6 +1,117 @@
-<nav>
-    <ul>
-        <li><a href="#">Privacy</a></li>
-        <li><a href="#">Terms</a></li>
-    </ul>
-</nav>
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Cms.Core.Models
+@using Altigen.Web.Models
+@model IPublishedContent
+
+@if (Model == null)
+{
+    return;
+}
+
+@{
+    var menuItems = Model.Value<IEnumerable<BlockListItem>>("menuItems");
+}
+
+@if (menuItems != null && menuItems.Any())
+{
+    @* Check if we have any column headers to decide structure *@
+    bool hasColumns = menuItems.Any(x => x.Content.Value<bool>("isColumnHeader"));
+    
+    if (hasColumns) 
+    {
+        @* If mixed or purely columns, we loop and render blocks *@
+        <div class="d-flex flex-column gap-4">
+            @foreach (var item in menuItems)
+            {
+                var content = item.Content;
+                var title = content.Value<string>("title");
+                var link = content.Value<Link>("link");
+                var isColHeader = content.Value<bool>("isColumnHeader");
+                var subItems = content.Value<IEnumerable<BlockListItem>>("subItems");
+                var iconCssClass = content.Value<string>("iconCssClass");
+
+                if (isColHeader)
+                {
+                    <div class="footer-column-group">
+                        <h5 class="text-white text-uppercase fw-bold mb-3">
+                             @if (!string.IsNullOrEmpty(iconCssClass))
+                            {
+                                <i class="@iconCssClass me-2"></i>
+                            }
+                            @title
+                        </h5>
+                        @if (subItems != null && subItems.Any())
+                        {
+                             <ul class="footer-menu">
+                                @foreach(var subItem in subItems)
+                                {
+                                    var subContent = subItem.Content;
+                                    var subTitle = subContent.Value<string>("title");
+                                    var subLink = subContent.Value<Link>("link");
+                                    var subIcon = subContent.Value<string>("iconCssClass");
+                                    var subUrl = subLink?.Url ?? "#";
+                                    var subTarget = subLink?.Target ?? "_self";
+
+                                    <li>
+                                        <a href="@subUrl" target="@subTarget">
+                                            @if (!string.IsNullOrEmpty(subIcon))
+                                            {
+                                                <i class="@subIcon me-2"></i>
+                                            }
+                                            <span class="mso">chevron_right</span> @subTitle
+                                        </a>
+                                    </li>
+                                }
+                             </ul>
+                        }
+                    </div>
+                }
+                else
+                {
+                    @* Fallback for root items that are NOT headers - Just render them as a generic list, likely user won't mix but good to handle *@
+                    <ul class="footer-menu mb-0">
+                         @{
+                            var url = link?.Url ?? "#";
+                            var target = link?.Target ?? "_self";
+                         }
+                         <li>
+                            <a href="@url" target="@target">
+                                @if (!string.IsNullOrEmpty(iconCssClass))
+                                {
+                                    <i class="@iconCssClass me-2"></i>
+                                }
+                                <span class="mso">chevron_right</span> @title
+                            </a>
+                        </li>
+                    </ul>
+                }
+            }
+        </div>
+    }
+    else
+    {
+        @* Original flat list behavior if no column headers exist *@
+        <ul class="footer-menu">
+            @foreach (var item in menuItems)
+            {
+                var content = item.Content;
+                var title = content.Value<string>("title");
+                var link = content.Value<Link>("link");
+                var iconCssClass = content.Value<string>("iconCssClass");
+                var url = link?.Url ?? "#";
+                var target = link?.Target ?? "_self";
+
+                <li>
+                    <a href="@url" target="@target">
+                         @if (!string.IsNullOrEmpty(iconCssClass))
+                        {
+                            <i class="@iconCssClass me-2"></i>
+                        }
+                        <span class="mso">chevron_right</span> @title
+                    </a>
+                </li>
+            }
+        </ul>
+    }
+}

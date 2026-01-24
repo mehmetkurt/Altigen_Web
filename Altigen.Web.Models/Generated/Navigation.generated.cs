@@ -56,13 +56,5 @@ namespace Altigen.Web.Models
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("menuItems")]
 		public virtual global::Umbraco.Cms.Core.Models.Blocks.BlockListModel MenuItems => this.Value<global::Umbraco.Cms.Core.Models.Blocks.BlockListModel>(_publishedValueFallback, "menuItems");
-
-		///<summary>
-		/// Navigation Type: Select whether this is the Header or Footer menu.
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("navigationType")]
-		public virtual string NavigationType => this.Value<string>(_publishedValueFallback, "navigationType");
 	}
 }

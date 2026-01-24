@@ -31,12 +31,20 @@ public class FooterViewComponent : ViewComponent
         var footerTablet = settingsNode.FooterSettingsLogoTablet;
         var footerMobile = settingsNode.FooterSettingsLogoMobile;
 
-        return View(new LogoViewModel
+        var logo = new LogoViewModel
         {
             DesktopLogo = footerDesktop,
             TabletLogo = footerTablet,
             MobileLogo = footerMobile,
             Location = LogoLocation.Footer
-        });
+        };
+
+        var model = new FooterViewModel
+        {
+            Logo = logo,
+            Description = "Türkiye'nin öncü dijital dönüşüm platformu. Teknoloji ve inovasyon odaklı çözümlerimizle iş dünyasına değer katıyoruz."
+        };
+
+        return View(model);
     }
 }

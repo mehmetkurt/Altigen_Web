@@ -74,6 +74,14 @@ namespace Altigen.Web.Models
 		public virtual global::Umbraco.Cms.Core.Models.MediaWithCrops FooterSettingsLogoTablet => global::Altigen.Web.Models.FooterSettings.GetFooterSettingsLogoTablet(this, _publishedValueFallback);
 
 		///<summary>
+		/// Menu
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("footerSettingsMenu")]
+		public virtual global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent FooterSettingsMenu => global::Altigen.Web.Models.FooterSettings.GetFooterSettingsMenu(this, _publishedValueFallback);
+
+		///<summary>
 		/// Desktop
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
@@ -96,6 +104,14 @@ namespace Altigen.Web.Models
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("headerSettingsLogoTablet")]
 		public virtual global::Umbraco.Cms.Core.Models.MediaWithCrops HeaderSettingsLogoTablet => global::Altigen.Web.Models.HeaderSettings.GetHeaderSettingsLogoTablet(this, _publishedValueFallback);
+
+		///<summary>
+		/// Menu
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("headerSettingsMenu")]
+		public virtual global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent HeaderSettingsMenu => global::Altigen.Web.Models.HeaderSettings.GetHeaderSettingsMenu(this, _publishedValueFallback);
 
 		///<summary>
 		/// Global SEO Description

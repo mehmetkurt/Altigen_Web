@@ -58,6 +58,14 @@ namespace Altigen.Web.Models
 		public virtual string CssClass => this.Value<string>(_publishedValueFallback, "cssClass");
 
 		///<summary>
+		/// iconCssClass
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("iconCssClass")]
+		public virtual string IconCssClass => this.Value<string>(_publishedValueFallback, "iconCssClass");
+
+		///<summary>
 		/// Bold Item: Makes the navigation item bold.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]

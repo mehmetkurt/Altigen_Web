@@ -1,8 +1,72 @@
 @using Umbraco.Cms.Core.Models
 @using Altigen.Web.Models
-@model LogoViewModel
+@model FooterViewModel
+
 <footer>
-    @await Component.InvokeAsync("Logo", new { logo = Model })
-    @await Component.InvokeAsync("FooterMenu")
-    <p>&copy; 2025 Altigen</p>
+    <div class="container">
+        <div class="row gy-5">
+            <!-- Company Info & Logo -->
+            <div class="col-lg-4 col-md-6">
+                <div class="footer-logo">
+                    @await Component.InvokeAsync("Logo", new { logo = Model.Logo })
+                </div>
+                <p class="text-white-50">@Model.Description</p>
+                <div class="social-links">
+                     <a href="#" aria-label="LinkedIn"><span class="mso">share</span></a>
+                     <a href="#" aria-label="Twitter"><span class="mso">rss_feed</span></a>
+                     <a href="#" aria-label="Instagram"><span class="mso">photo_camera</span></a>
+                     <a href="#" aria-label="YouTube"><span class="mso">play_circle</span></a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="col-lg-4 col-md-6">
+                @await Component.InvokeAsync("FooterMenu")
+            </div>
+
+            <!-- Contact Info -->
+            <div class="col-lg-4 col-md-12">
+                <h5>İletişim</h5>
+                <ul class="contact-info">
+                    <li>
+                        <span class="mso">location_on</span>
+                        <div>
+                            <strong>Adres</strong>
+                            <span class="text-white-50">Maslak Mah. Büyükdere Cad.<br>No: 123, Sarıyer/İstanbul</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="mso">phone</span>
+                        <div>
+                            <strong>Telefon</strong>
+                            <a href="tel:+902120000000">+90 (212) 000 00 00</a>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="mso">mail</span>
+                        <div>
+                            <strong>E-posta</strong>
+                            <a href="mailto:info@altigen.com.tr">info@altigen.com.tr</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="copyright">&copy; @DateTime.Now.Year Altigen Dijital. Tüm hakları saklıdır.</p>
+                </div>
+                <div class="col-md-6">
+                    <div class="bottom-links">
+                        <a href="#">Gizlilik Politikası</a>
+                        <a href="#">Çerez Politikası</a>
+                        <a href="#">KVKK</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </footer>
