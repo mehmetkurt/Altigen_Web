@@ -1,0 +1,64 @@
+@model SliderItem
+
+@if (Model?.SliderItemButtons != null && Model.SliderItemButtons.Any())
+{
+    var isGrouped = Model.SliderItemButtonsGrouped;
+    var containerClass = isGrouped ? "btn-group" : "d-flex flex-wrap justify-content-center gap-3 mt-4";
+    var containerRole = isGrouped ? "group" : "";
+
+    <div class="main-slider-buttons">
+        <div class="@containerClass" @(isGrouped ? "role=group" : "")>
+            @foreach (var buttonBlock in Model.SliderItemButtons)
+            {
+                if (buttonBlock.Content is ButtonItem buttonItem && 
+                    (buttonItem.ButtonItemUrl != null || !string.IsNullOrWhiteSpace(buttonItem.ButtonItemText)))
+                {
+                    var color = !string.IsNullOrWhiteSpace(buttonItem.ButtonItemColor) ? buttonItem.ButtonItemColor : "primary";
+                    var isOutline = !string.IsNullOrWhiteSpace(buttonItem.ButtonItemStyle) && 
+                                    buttonItem.ButtonItemStyle.Contains("Outline", StringComparison.OrdinalIgnoreCase);
+                    
+                    var buttonStyle = isOutline ? $"btn-outline-{color}" : $"btn-{color}";
+
+                    var buttonText = !string.IsNullOrWhiteSpace(buttonItem.ButtonItemText) 
+                        ? buttonItem.ButtonItemText 
+                        : buttonItem.ButtonItemUrl?.Name;
+
+                    // Skip if we still don't have text
+                    if (string.IsNullOrWhiteSpace(buttonText)) continue;
+                        
+                    var buttonTitle = !string.IsNullOrWhiteSpace(buttonItem.ButtonItemTitle)
+                        ? buttonItem.ButtonItemTitle
+                        : buttonText;
+
+                    var cssClass = buttonItem.ButtonItemCssClass;
+                    var size = buttonItem.ButtonItemSize;
+                    var buttonSizeClass = "";
+                    
+                    if (!string.IsNullOrWhiteSpace(size) && !size.Equals("standard", StringComparison.OrdinalIgnoreCase))
+                    {
+                        buttonSizeClass = $"btn-{size}";
+                    }
+
+                    if (buttonItem.ButtonItemIsLink)
+                    {
+                        <a href="@(buttonItem.ButtonItemUrl?.Url ?? "#")" 
+                           target="@(buttonItem.ButtonItemUrl?.Target ?? "_self")" 
+                           class="btn @buttonStyle @buttonSizeClass @cssClass"
+                           role="button"
+                           title="@buttonTitle">
+                            @buttonText
+                        </a>
+                    }
+                    else
+                    {
+                        <button type="button" 
+                                class="btn @buttonStyle @buttonSizeClass @cssClass"
+                                title="@buttonTitle">
+                            @buttonText
+                        </button>
+                    }
+                }
+            }
+        </div>
+    </div>
+}

@@ -18,14 +18,14 @@ using Umbraco.Extensions;
 
 namespace Altigen.Web.Models
 {
-	/// <summary>Slider Item</summary>
-	[PublishedModel("sliderItem")]
-	public partial class SliderItem : PublishedElementModel
+	/// <summary>Button Item</summary>
+	[PublishedModel("buttonItem")]
+	public partial class ButtonItem : PublishedElementModel
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
-		public new const string ModelTypeAlias = "sliderItem";
+		public new const string ModelTypeAlias = "buttonItem";
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
 		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
@@ -34,14 +34,14 @@ namespace Altigen.Web.Models
 			=> PublishedModelUtility.GetModelContentType(contentTypeCache, ModelItemType, ModelTypeAlias);
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedContentTypeCache contentTypeCache, Expression<Func<SliderItem, TValue>> selector)
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedContentTypeCache contentTypeCache, Expression<Func<ButtonItem, TValue>> selector)
 			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(contentTypeCache), selector);
 #pragma warning restore 0109
 
 		private IPublishedValueFallback _publishedValueFallback;
 
 		// ctor
-		public SliderItem(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
+		public ButtonItem(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
 			: base(content, publishedValueFallback)
 		{
 			_publishedValueFallback = publishedValueFallback;
@@ -50,58 +50,66 @@ namespace Altigen.Web.Models
 		// properties
 
 		///<summary>
-		/// Buttons
+		/// Color
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("sliderItemButtons")]
-		public virtual global::Umbraco.Cms.Core.Models.Blocks.BlockListModel SliderItemButtons => this.Value<global::Umbraco.Cms.Core.Models.Blocks.BlockListModel>(_publishedValueFallback, "sliderItemButtons");
+		[ImplementPropertyType("buttonItemColor")]
+		public virtual string ButtonItemColor => this.Value<string>(_publishedValueFallback, "buttonItemColor");
 
 		///<summary>
-		/// Grouped
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
-		[ImplementPropertyType("sliderItemButtonsGrouped")]
-		public virtual bool SliderItemButtonsGrouped => this.Value<bool>(_publishedValueFallback, "sliderItemButtonsGrouped");
-
-		///<summary>
-		/// Description
+		/// Css Class
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("sliderItemDescription")]
-		public virtual string SliderItemDescription => this.Value<string>(_publishedValueFallback, "sliderItemDescription");
+		[ImplementPropertyType("buttonItemCssClass")]
+		public virtual string ButtonItemCssClass => this.Value<string>(_publishedValueFallback, "buttonItemCssClass");
 
 		///<summary>
-		/// Image
+		/// Is Link
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[ImplementPropertyType("buttonItemIsLink")]
+		public virtual bool ButtonItemIsLink => this.Value<bool>(_publishedValueFallback, "buttonItemIsLink");
+
+		///<summary>
+		/// Size
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("sliderItemImage")]
-		public virtual global::Umbraco.Cms.Core.Models.MediaWithCrops SliderItemImage => this.Value<global::Umbraco.Cms.Core.Models.MediaWithCrops>(_publishedValueFallback, "sliderItemImage");
+		[ImplementPropertyType("buttonItemSize")]
+		public virtual string ButtonItemSize => this.Value<string>(_publishedValueFallback, "buttonItemSize");
 
 		///<summary>
-		/// Mobile Image
+		/// Style
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("sliderItemMobileImage")]
-		public virtual global::Umbraco.Cms.Core.Models.MediaWithCrops SliderItemMobileImage => this.Value<global::Umbraco.Cms.Core.Models.MediaWithCrops>(_publishedValueFallback, "sliderItemMobileImage");
+		[ImplementPropertyType("buttonItemStyle")]
+		public virtual string ButtonItemStyle => this.Value<string>(_publishedValueFallback, "buttonItemStyle");
 
 		///<summary>
-		/// Thumbnail
+		/// Text
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("sliderItemThumbnail")]
-		public virtual global::Umbraco.Cms.Core.Models.MediaWithCrops SliderItemThumbnail => this.Value<global::Umbraco.Cms.Core.Models.MediaWithCrops>(_publishedValueFallback, "sliderItemThumbnail");
+		[ImplementPropertyType("buttonItemText")]
+		public virtual string ButtonItemText => this.Value<string>(_publishedValueFallback, "buttonItemText");
 
 		///<summary>
 		/// Title
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("sliderItemTitle")]
-		public virtual string SliderItemTitle => this.Value<string>(_publishedValueFallback, "sliderItemTitle");
+		[ImplementPropertyType("buttonItemTitle")]
+		public virtual string ButtonItemTitle => this.Value<string>(_publishedValueFallback, "buttonItemTitle");
+
+		///<summary>
+		/// Url
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("buttonItemUrl")]
+		public virtual global::Umbraco.Cms.Core.Models.Link ButtonItemUrl => this.Value<global::Umbraco.Cms.Core.Models.Link>(_publishedValueFallback, "buttonItemUrl");
 	}
 }

@@ -1,5 +1,3 @@
-@using Umbraco.Cms.Core.Models.Blocks
-@using Umbraco.Extensions
 @model IPublishedContent
 
 @{
@@ -13,16 +11,35 @@
             @foreach (var block in sliderItems)
             {
                 var content = block.Content;
-                var image = content.Value<IPublishedContent>("image");
-                var imageUrl = image?.Url() ?? "";
-                var title = content.Value<string>("title");
-                var description = content.Value<string>("description");
-                var link = content.Value<Umbraco.Cms.Core.Models.Link>("link");
+                var sliderItem = content as SliderItem; // Attempt to cast for strong typing if models are generated
+                
+                // Fallback to Value<T> if casting fails or direct property access isn't available
+                var image = sliderItem?.SliderItemImage ?? content.Value<MediaWithCrops>("sliderItemImage");
+                var mobileImage = sliderItem?.SliderItemMobileImage ?? content.Value<MediaWithCrops>("sliderItemMobileImage");
+                
+                var imageUrl = image?.GetCropUrl(width: 1920, height: 1080) ?? ""; // Default desktop size
+                var mobileImageUrl = mobileImage?.GetCropUrl(width: 768, height: 1024) ?? ""; // Default mobile size
+                
+                var title = sliderItem?.SliderItemTitle ?? content.Value<string>("sliderItemTitle");
+                var description = sliderItem?.SliderItemDescription ?? content.Value<string>("sliderItemDescription");
+                // Link property is removed from model, replaced by Buttons (not implemented in view yet)
                 var bgClass = "bg-dark";
 
-                <div class="swiper-slide d-flex align-items-center justify-content-center @bgClass text-white" 
-                     style="background-image: url('@imageUrl'); background-size: cover; background-position: center;">
-                    <div class="slider-overlay"></div>
+                <div class="swiper-slide d-flex align-items-center justify-content-center @bgClass text-white position-relative overflow-hidden">
+                    
+                    @* Responsive Background Image *@
+                    <div class="position-absolute top-0 start-0 w-100 h-100 z-0">
+                        <picture>
+                             @if (!string.IsNullOrEmpty(mobileImageUrl))
+                            {
+                                <source media="(max-width: 768px)" srcset="@mobileImageUrl" />
+                            }
+                            <img src="@imageUrl" alt="@title" class="w-100 h-100 object-fit-cover" />
+                        </picture>
+                    </div>
+
+                    <div class="slider-overlay z-1"></div>
+                    
                     <div class="container text-center position-relative z-2">
                         @if (!string.IsNullOrEmpty(title))
                         {
@@ -32,9 +49,9 @@
                         {
                             <p class="lead">@description</p>
                         }
-                        @if (link != null)
+                        @if (sliderItem?.SliderItemButtons != null && sliderItem.SliderItemButtons.Any())
                         {
-                            <a href="@link.Url" target="@link.Target" class="btn btn-primary mt-3">@link.Name</a>
+                            @await Html.PartialAsync("_SliderButtons", sliderItem)
                         }
                     </div>
                 </div>
@@ -43,33 +60,5 @@
         <div class="swiper-button-next"></div>
         <div class="swiper-button-prev"></div>
     </div>
-    <div class="swiper main-slider-thumbs">
-        <div class="swiper-wrapper">
-            @foreach (var block in sliderItems)
-            {
-                var content = block.Content;
-                var title = content.Value<string>("title");
-                
-                var thumbnail = content.Value<MediaWithCrops>("thumbnail");
-                var image = content.Value<MediaWithCrops>("image");
-                var thumbUrl = "";
-
-                if (thumbnail != null)
-                {
-                    thumbUrl = thumbnail.GetCropUrl(width: 150, height: 100); // Apply consistent crop to thumbnail
-                }
-                else if (image != null)
-                {
-                    thumbUrl = image.GetCropUrl(width: 150, height: 100); // Fallback to main image crop
-                }
-
-                <div class="swiper-slide">
-                    @if (!string.IsNullOrEmpty(thumbUrl))
-                    {
-                        <img src="@thumbUrl" alt="@title" class="thumb-image" />
-                    }
-                </div>
-            }
-        </div>
-    </div>
+    @await Html.PartialAsync("_SliderThumbnails", sliderItems)
 </div>

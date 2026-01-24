@@ -1,0 +1,33 @@
+@model BlockListModel
+
+<div class="swiper main-slider-thumbs">
+    <div class="swiper-wrapper">
+        @foreach (var block in Model)
+        {
+            var content = block.Content;
+            var sliderItem = content as SliderItem; // Attempt to cast for strong typing
+
+            var title = sliderItem?.SliderItemTitle ?? content.Value<string>("sliderItemTitle");
+            
+            var thumbnail = sliderItem?.SliderItemThumbnail ?? content.Value<MediaWithCrops>("sliderItemThumbnail");
+            var image = sliderItem?.SliderItemImage ?? content.Value<MediaWithCrops>("sliderItemImage");
+            var thumbUrl = "";
+
+            if (thumbnail != null)
+            {
+                thumbUrl = thumbnail.GetCropUrl(width: 150, height: 100); // Apply consistent crop to thumbnail
+            }
+            else if (image != null)
+            {
+                thumbUrl = image.GetCropUrl(width: 150, height: 100); // Fallback to main image crop
+            }
+
+            <div class="swiper-slide">
+                @if (!string.IsNullOrEmpty(thumbUrl))
+                {
+                    <img src="@thumbUrl" alt="@title" class="thumb-image" />
+                }
+            </div>
+        }
+    </div>
+</div>
