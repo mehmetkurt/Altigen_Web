@@ -1,0 +1,48 @@
+// Button overrides
+.btn {
+    border-radius: 50rem; // Oval shape
+    padding: 1rem 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    transition: all 0.3s ease-in-out;
+}
+
+$btn-theme-colors: (
+    "primary": $primary,
+    "secondary": $secondary,
+    "success": $success,
+    "danger": $danger,
+    "warning": $warning,
+    "info": $info,
+    "dark": $dark,
+    "light": $light
+);
+
+@each $name, $value in $btn-theme-colors {
+    .btn-#{$name} {
+        background-color: $value;
+        border: 1px solid $value;
+
+        @if $name =="light" {
+            color: $gray-900;
+        }
+
+        @else {
+            color: $white;
+        }
+
+        &:hover,
+        &:focus,
+        &:active,
+        &.active {
+            background-color: transparent;
+            border-color: $value;
+            color: $value;
+        }
+    }
+}
+
+// Ensure outline buttons also follow the shape, though the main requirement was about the filled ones behaving this way.
+// We can leave standard outline buttons as is, or enforce the shape on them too (which is done via .btn selector above).

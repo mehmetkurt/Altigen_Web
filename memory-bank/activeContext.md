@@ -4,10 +4,12 @@
 The project is in active development (January 2026), focusing on:
 1.  **Memory Bank Initialization**: Establishing the documentation structure.
 2.  **Backoffice Customization**: Developing custom property editors (`AdvancedDropdown`, `UnitSelector`, etc.).
-4.  **Main Slider Enhancement**: Adding thumbnail navigation and visual improvements.
-5.  **Blog Optimization**: Fixing warnings and refining the blog experience.
+3.  **Main Slider Enhancement**: Adding thumbnail navigation and visual improvements.
+4.  **Blog Optimization**: Fixing warnings and refining the blog experience.
 
 ## Recent Changes
+- Enforced `UmbracoUrlAlias` check for all `ISeo` implementations to support custom URL overrides.
+- Updated `GEMINI.md` and Memory Bank to reflect the new SEO URL handling rule.
 - Fixed git ignore cache for `Altigen.Web/wwwroot/App_Plugins/codeislife.elements/dist` folder.
 - Changed application ports to `56920` (http) and `44320` (https) in `launchSettings.json` to resolve `SocketException` caused by excluded port range.
 - Removed `device-selector.element.ts` due to development issues and lack of control.

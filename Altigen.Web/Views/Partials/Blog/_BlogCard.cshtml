@@ -3,12 +3,23 @@
 
 @{
     var mainImage = Model.Post.BlogFeaturedImages?.FirstOrDefault();
+
+    var postUrl = Model.Post.Url();
+    if (Model.Post is ISeo seoPost && !string.IsNullOrWhiteSpace(seoPost.UmbracoUrlAlias))
+    {
+        postUrl = seoPost.UmbracoUrlAlias;
+        // If the alias doesn't start with / and isn't an absolute URL, prepend / to make it root relative
+        if (!postUrl.StartsWith("/") && !postUrl.StartsWith("http"))
+        {
+            postUrl = "/" + postUrl;
+        }
+    }
 }
 
 <div class="col-md-6 col-lg-4 grid-item">
     <article class="blog-card h-100 d-flex flex-column">
         <div class="card-img-top">
-            <a href="@Model.Post.Url()" title="@Model.Post.Name" class="d-block h-100">
+            <a href="@postUrl" title="@Model.Post.Name" class="d-block h-100">
                 @if (mainImage != null)
                 {
                     <img src="@mainImage.GetCropUrl(width: 400, height: 200)" 
@@ -45,12 +56,12 @@
                 }
             </div>
             <h2 class="card-title">
-                <a href="@Model.Post.Url()" title="@Model.Post.Name">@Model.Post.Name</a>
+                <a href="@postUrl" title="@Model.Post.Name">@Model.Post.Name</a>
             </h2>
             <p class="card-text flex-grow-1">
                 @(Model.Post.BlogDescription)
             </p>
-            <a href="@Model.Post.Url()" class="btn-read-more mt-auto" title="@Model.Post.Name">
+            <a href="@postUrl" class="btn-read-more mt-auto" title="@Model.Post.Name">
                 Devamını Oku
                 <span class="mso">arrow_forward</span>
             </a>

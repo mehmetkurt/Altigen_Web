@@ -15,8 +15,6 @@
 .dosis-700 { @include dosis(700); }
 .dosis-800 { @include dosis(800); }
 
-
-
 @mixin google-sans($weight: 400) {
   font-family: "Google Sans", sans-serif;
   font-optical-sizing: auto;
@@ -35,8 +33,6 @@
 .google-sans-700 { @include google-sans(700); }
 .google-sans-800 { @include google-sans(800); }
 .google-sans-900 { @include google-sans(900); }
-
-
 
 @mixin open-sans($weight: 400) {
   font-family: "Open Sans", sans-serif;

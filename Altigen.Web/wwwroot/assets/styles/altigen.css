@@ -10384,6 +10384,104 @@ textarea.form-control-lg {
   font-family: "Material Symbols Sharp" !important;
 }
 
+.btn {
+  border-radius: 50rem;
+  padding: 1rem 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  transition: all 0.3s ease-in-out;
+}
+
+.btn-primary {
+  background-color: #20486d;
+  border: 1px solid #20486d;
+  color: #ffffff;
+}
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active {
+  background-color: transparent;
+  border-color: #20486d;
+  color: #20486d;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border: 1px solid #6c757d;
+  color: #ffffff;
+}
+.btn-secondary:hover, .btn-secondary:focus, .btn-secondary:active, .btn-secondary.active {
+  background-color: transparent;
+  border-color: #6c757d;
+  color: #6c757d;
+}
+
+.btn-success {
+  background-color: #9bcc95;
+  border: 1px solid #9bcc95;
+  color: #ffffff;
+}
+.btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active {
+  background-color: transparent;
+  border-color: #9bcc95;
+  color: #9bcc95;
+}
+
+.btn-danger {
+  background-color: #eb5d8b;
+  border: 1px solid #eb5d8b;
+  color: #ffffff;
+}
+.btn-danger:hover, .btn-danger:focus, .btn-danger:active, .btn-danger.active {
+  background-color: transparent;
+  border-color: #eb5d8b;
+  color: #eb5d8b;
+}
+
+.btn-warning {
+  background-color: #ffda06;
+  border: 1px solid #ffda06;
+  color: #ffffff;
+}
+.btn-warning:hover, .btn-warning:focus, .btn-warning:active, .btn-warning.active {
+  background-color: transparent;
+  border-color: #ffda06;
+  color: #ffda06;
+}
+
+.btn-info {
+  background-color: #93d4ef;
+  border: 1px solid #93d4ef;
+  color: #ffffff;
+}
+.btn-info:hover, .btn-info:focus, .btn-info:active, .btn-info.active {
+  background-color: transparent;
+  border-color: #93d4ef;
+  color: #93d4ef;
+}
+
+.btn-dark {
+  background-color: #08223a;
+  border: 1px solid #08223a;
+  color: #ffffff;
+}
+.btn-dark:hover, .btn-dark:focus, .btn-dark:active, .btn-dark.active {
+  background-color: transparent;
+  border-color: #08223a;
+  color: #08223a;
+}
+
+.btn-light {
+  background-color: #93c5fd;
+  border: 1px solid #93c5fd;
+  color: #212529;
+}
+.btn-light:hover, .btn-light:focus, .btn-light:active, .btn-light.active {
+  background-color: transparent;
+  border-color: #93c5fd;
+  color: #93c5fd;
+}
+
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;

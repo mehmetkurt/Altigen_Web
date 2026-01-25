@@ -47,3 +47,11 @@ Authentication and common page features are handled via a robust inheritance and
     - All standard content types vary by **Culture**.
 
 
+#### 6. URL Resolution Strategy
+- **ISeo Interface**: All content types implementing `ISeo` must respect the `UmbracoUrlAlias` property.
+- **Priority**:
+    1. `UmbracoUrlAlias` (if not null/empty)
+    2. Standard `.Url()`
+- **Implementation**: When generating links in Views or ViewComponents for SEO-enabled content, explicitly check this property to ensure custom URL overrides are respected.
+
+### Integration Patterns

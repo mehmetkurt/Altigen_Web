@@ -159,6 +159,7 @@ REMEMBER: After every memory reset, I begin completely fresh. The Memory Bank is
 - **Strongly Typed Property Access**: Avoid using `.Value<T>("alias")` or `.Value("alias")` in views. Always prefer strongly typed properties from ModelsBuilder classes. If a property belongs to a composition, use the corresponding interface (e.g., `item is ISeo seo ? seo.SeoPageTitle : item.Name`) for type checking and access.
 - **View Inheritance**: Do not use explicit `@inherits` in views unless necessary. Rely on `_ViewImports.cshtml` and use `@model` instead.
 - **Block List Labels (UFM)**: Umbraco v14+ removes AngularJS support for labels. Do NOT use `{{ propertyAlias }}`. Use **Umbraco Flavored Markdown (UFM)** syntax: `{=propertyAlias}` or `{umbValue: propertyAlias}`. For more complex labels, check the official documentation.
+- **ISeo URL Handling**: For any object implementing `Altigen.Web.Models.ISeo` (from `Seo.generated.cs`), ALWAYS check `UmbracoUrlAlias` property first. If it is populated, use it as the URL (ensure it starts with `/` if relative). Fallback to standard `.Url()` only if empty.
 
 ## 5. JavaScript Rules
 - **Modern Syntax**: Use ES6+ features (e.g., `const`/`let` instead of `var`, arrow functions, template literals).
