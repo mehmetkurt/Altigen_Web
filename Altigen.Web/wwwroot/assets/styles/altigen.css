@@ -11146,16 +11146,137 @@ body, p {
   opacity: 1;
 }
 
-.block {
+.content-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   position: relative;
-  padding-top: 3rem;
-  padding-bottom: 3rem;
 }
-@media (min-width: 992px) {
-  .block {
-    padding-top: 6rem;
-    padding-bottom: 6rem;
-  }
+.content-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border-color: rgba(32, 72, 109, 0.1);
+}
+.content-card:hover .card-img-top img {
+  transform: scale(1.05);
+}
+.content-card .card-img-top {
+  height: 220px;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+}
+.content-card .card-img-top img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.content-card .card-img-top .category-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(4px);
+  padding: 0.4rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #20486d;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  z-index: 10;
+}
+.content-card .card-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+.content-card .card-body .card-meta {
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+  color: var(--bs-secondary-color);
+  opacity: 0.8;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.content-card .card-body .card-meta i {
+  margin-right: 0.4rem;
+  font-size: 1rem;
+}
+.content-card .card-body .card-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+  color: inherit;
+  min-height: 2.8em;
+}
+.content-card .card-body .card-title a {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.2s;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.content-card .card-body .card-title a:hover {
+  color: #20486d;
+}
+.content-card .card-body .card-text {
+  font-size: 0.95rem;
+  color: var(--bs-secondary-color);
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex-grow: 1;
+  min-height: 4.8em;
+}
+.content-card .card-body .btn-read-more {
+  color: #20486d;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.04);
+  width: 100%;
+  margin-top: auto;
+  transition: all 0.2s;
+}
+.content-card .card-body .btn-read-more span:not(.mso-icon) {
+  transition: transform 0.2s;
+}
+.content-card .card-body .btn-read-more .mso {
+  transition: transform 0.2s;
+}
+.content-card .card-body .btn-read-more:hover {
+  color: #20486d;
+  filter: brightness(0.9);
+}
+.content-card .card-body .btn-read-more:hover .mso {
+  transform: translateX(4px);
 }
 
 .page-header {
@@ -11167,7 +11288,6 @@ body, p {
   display: flex;
   align-items: flex-end;
   color: #ffffff;
-  margin-bottom: 3rem;
 }
 @media (min-width: 768px) {
   .page-header {
@@ -11280,6 +11400,27 @@ footer h5::after, footer .h5::after {
   width: 30px;
   height: 2px;
   background-color: #ffda06;
+}
+footer h5.footer-collapse-header, footer .footer-collapse-header.h5 {
+  cursor: pointer;
+}
+@media (min-width: 768px) {
+  footer h5.footer-collapse-header, footer .footer-collapse-header.h5 {
+    cursor: default;
+    pointer-events: none;
+  }
+}
+footer h5.footer-collapse-header .toggle-icon, footer .footer-collapse-header.h5 .toggle-icon {
+  transition: transform 0.3s ease;
+}
+footer h5.footer-collapse-header[aria-expanded=true] .toggle-icon, footer .footer-collapse-header[aria-expanded=true].h5 .toggle-icon {
+  transform: rotate(180deg);
+}
+@media (min-width: 768px) {
+  footer .footer-collapse-content {
+    display: block !important;
+    height: auto !important;
+  }
 }
 footer p {
   line-height: 1.6;

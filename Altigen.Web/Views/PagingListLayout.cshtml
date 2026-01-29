@@ -1,10 +1,11 @@
 ﻿@{
-	Layout = "Root.cshtml";
+    Layout = "Root.cshtml";
 }
 
 @await Component.InvokeAsync("PageHeader")
 
 @section Head {
+    <link href="~/assets/styles/subpage.css" rel="stylesheet" />
     @await RenderSectionAsync("Head", required: false)
 }
 
@@ -20,7 +21,7 @@
 
 <div class="sub-page-wrapper">
     <div class="container">
-        
+
         @* Top Description *@
         @if (subPage?.SubPageTopDescription != null && subPage.SubPageVisibleTopDescription)
         {
@@ -33,8 +34,10 @@
                 topClass += " p-3 border rounded";
             }
 
-            <div class="@topClass" style="@topStyle">
-                @subPage.SubPageTopDescription
+            <div class="container">
+                <div class="@topClass" style="@topStyle">
+                    @subPage.SubPageTopDescription
+                </div>
             </div>
         }
 
@@ -52,8 +55,10 @@
                 bottomClass += " p-3 border rounded";
             }
 
-            <div class="@bottomClass" style="@bottomStyle">
-                @subPage.SubPageBottomDescription
+            <div class="container">
+                <div class="@bottomClass" style="@bottomStyle">
+                    @subPage.SubPageBottomDescription
+                </div>
             </div>
         }
     </div>

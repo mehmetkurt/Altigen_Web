@@ -28,40 +28,49 @@
                 var subItems = content.Value<IEnumerable<BlockListItem>>("subItems");
                 var iconCssClass = content.Value<string>("iconCssClass");
 
-                <div class="col-6">
+                var collapseId = $"footer_collapse_{Guid.NewGuid().ToString("N")}";
+
+                <div class="col-12 col-lg-6">
                     @if (isColHeader)
                     {
                         <div class="footer-column-group">
-                            <h5 class="text-white text-uppercase fw-bold mb-3">
+                            <h5 class="text-white text-uppercase fw-bold mb-3 footer-collapse-header" 
+                                data-bs-toggle="collapse" 
+                                data-bs-target="#@collapseId" 
+                                aria-expanded="false" 
+                                aria-controls="@collapseId">
                                  @if (!string.IsNullOrEmpty(iconCssClass))
                                 {
                                     <i class="@iconCssClass me-2"></i>
                                 }
                                 @title
+                                <span class="mso toggle-icon d-md-none float-end">expand_more</span>
                             </h5>
                             @if (subItems != null && subItems.Any())
                             {
-                                 <ul class="footer-menu">
-                                    @foreach(var subItem in subItems)
-                                    {
-                                        var subContent = subItem.Content;
-                                        var subTitle = subContent.Value<string>("title");
-                                        var subLink = subContent.Value<Link>("link");
-                                        var subIcon = subContent.Value<string>("iconCssClass");
-                                        var subUrl = subLink?.Url ?? "#";
-                                        var subTarget = subLink?.Target ?? "_self";
-
-                                        <li>
-                                            <a href="@subUrl" target="@subTarget">
-                                                @if (!string.IsNullOrEmpty(subIcon))
-                                                {
-                                                    <i class="@subIcon me-2"></i>
-                                                }
-                                                <span class="mso">chevron_right</span> @subTitle
-                                            </a>
-                                        </li>
-                                    }
-                                 </ul>
+                                 <div class="collapse footer-collapse-content" id="@collapseId">
+                                     <ul class="footer-menu">
+                                        @foreach(var subItem in subItems)
+                                        {
+                                            var subContent = subItem.Content;
+                                            var subTitle = subContent.Value<string>("title");
+                                            var subLink = subContent.Value<Link>("link");
+                                            var subIcon = subContent.Value<string>("iconCssClass");
+                                            var subUrl = subLink?.Url ?? "#";
+                                            var subTarget = subLink?.Target ?? "_self";
+    
+                                            <li>
+                                                <a href="@subUrl" target="@subTarget">
+                                                    @if (!string.IsNullOrEmpty(subIcon))
+                                                    {
+                                                        <i class="@subIcon me-2"></i>
+                                                    }
+                                                    <span class="mso">chevron_right</span> @subTitle
+                                                </a>
+                                            </li>
+                                        }
+                                     </ul>
+                                 </div>
                             }
                         </div>
                     }

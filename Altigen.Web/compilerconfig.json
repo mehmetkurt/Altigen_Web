@@ -22,5 +22,9 @@
   {
     "outputFile": "wwwroot/assets/styles/region.css",
     "inputFile": "wwwroot/sources/scss/pages/region.scss"
+  },
+  {
+    "outputFile": "wwwroot/assets/styles/subpage.css",
+    "inputFile": "wwwroot/sources/scss/pages/subpage.scss"
   }
 ]

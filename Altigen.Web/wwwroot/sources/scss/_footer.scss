@@ -31,6 +31,32 @@ footer {
             height: 2px;
             background-color: $altigen-yellow;
         }
+
+        &.footer-collapse-header {
+            cursor: pointer;
+            
+            @include media-breakpoint-up(md) {
+                cursor: default;
+                pointer-events: none; // Disable click on desktop
+            }
+
+            .toggle-icon {
+                transition: transform 0.3s ease;
+            }
+
+            &[aria-expanded="true"] {
+                .toggle-icon {
+                    transform: rotate(180deg);
+                }
+            }
+        }
+    }
+
+    .footer-collapse-content {
+        @include media-breakpoint-up(md) {
+            display: block !important; // Always show on desktop
+            height: auto !important;
+        }
     }
 
     p {

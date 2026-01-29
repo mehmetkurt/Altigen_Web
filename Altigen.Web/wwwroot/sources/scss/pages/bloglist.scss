@@ -41,7 +41,10 @@
             margin-bottom: 2rem; 
         }
 
-        @import "../blog-card";
+        @import "../block";
+        .blog-card {
+            @extend .content-card;
+        }
     }
 }
 
