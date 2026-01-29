@@ -1,0 +1,309 @@
+﻿@model RegionList
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Altigen.Web.Models
+
+@{
+    Layout = "PagingListLayout.cshtml";
+
+    // 1. Get All Categories (Children of RegionList)
+    var categories = Model.Children<RegionCategory>()?
+        .Where(x => x.IsVisible())
+        .OrderByDescending(x => x.CreateDate)
+        .ToList() ?? new List<RegionCategory>();
+
+    // -------------------------------------------------------------
+    // 2. Build Location Data Hierarchy
+    // -------------------------------------------------------------
+    var usedCountries = new HashSet<IPublishedContent>(new PublishedContentComparer());
+    var usedCities = new HashSet<IPublishedContent>(new PublishedContentComparer());
+    var usedDistricts = new HashSet<IPublishedContent>(new PublishedContentComparer());
+    var usedNeighborhoods = new HashSet<IPublishedContent>(new PublishedContentComparer());
+    
+    // Helper to traverse up and collect parents
+    void CollectParents(IPublishedContent content)
+    {
+        if (content == null) return;
+        
+        switch (content.ContentType.Alias)
+        {
+            case Neighborhood.ModelTypeAlias:
+                usedNeighborhoods.Add(content);
+                CollectParents(content.Parent);
+                break;
+            case District.ModelTypeAlias:
+                usedDistricts.Add(content);
+                CollectParents(content.Parent);
+                break;
+            case City.ModelTypeAlias:
+                 usedCities.Add(content);
+                 CollectParents(content.Parent);
+                 break;
+            case Country.ModelTypeAlias:
+                 usedCountries.Add(content);
+                 break;
+        }
+    }
+
+    foreach(var cat in categories)
+    {
+        var regions = cat.Children<Region>();
+        if(regions != null)
+        {
+            foreach(var region in regions)
+            {
+                if(region.RegionLocation != null)
+                {
+                    foreach(var loc in region.RegionLocation)
+                    {
+                        CollectParents(loc);
+                    }
+                }
+            }
+        }
+    }
+
+    // -------------------------------------------------------------
+    // 3. Filter Parameters
+    // -------------------------------------------------------------
+    var selectedDistrictSlug = Context.Request.Query["district"].ToString();
+    var selectedNeighborhoodSlug = Context.Request.Query["neighborhood"].ToString();
+
+    // Reset neighborhood if district changed (simple check: if neighborhood parent slug != selectedDistrictSlug)
+    // Actually, distinct filtering logic below handles data consistency.
+    
+    // Resolve Selected Objects for Display
+    var selectedDistrict = usedDistricts.FirstOrDefault(x => x.UrlSegment() == selectedDistrictSlug);
+    var selectedNeighborhood = usedNeighborhoods.FirstOrDefault(x => x.UrlSegment() == selectedNeighborhoodSlug);
+    
+    // If neighborhood selected, enforce its district
+    if (selectedNeighborhood != null)
+    {
+        // Ensure the district matches the neighborhood's parent
+        if (selectedNeighborhood.Parent != null)
+        {
+            selectedDistrict = selectedNeighborhood.Parent;
+            selectedDistrictSlug = selectedDistrict.UrlSegment();
+        }
+    }
+
+    // -------------------------------------------------------------
+    // 4. Apply Filter to Categories (Updated Coverage Logic)
+    // -------------------------------------------------------------
+    var filteredCategories = categories.AsEnumerable();
+    
+    // Determine the most specific selected filter item
+    IPublishedContent effectiveSelection = selectedNeighborhood ?? selectedDistrict;
+
+    if (effectiveSelection != null)
+    {
+        filteredCategories = filteredCategories.Where(cat => {
+            var regions = cat.Children<Region>();
+            if (regions == null) return false;
+            
+            return regions.Any(r => 
+            {
+                if (r.RegionLocation == null) return false;
+                
+                // Check coverage for EACH location defined in the Region
+                foreach(var loc in r.RegionLocation)
+                {
+                    // Logic: Match if the Region's location covers the selection OR is covered by the selection.
+                    
+                    // 1. Exact Match
+                    if (loc.Id == effectiveSelection.Id) return true;
+                    
+                    // 2. Ancestor Match (Region Location covers Selection)
+                    // e.g. Region has "Istanbul" (City), Selection is "Beylikdüzü" (District).
+                    // Istanbul is Ancestor of Beylikdüzü -> TRUE.
+                    if (effectiveSelection.IsDescendant(loc)) return true;
+                    
+                    // 3. Descendant Match (Selection covers Region Location)
+                    // e.g. Region has "Barış Mh." (Neighborhood), Selection is "Beylikdüzü" (District).
+                    // Barış is Descendant of Beylikdüzü -> TRUE.
+                    if (loc.IsDescendant(effectiveSelection)) return true;
+                }
+                return false;
+            });
+        });
+    }
+
+    var totalItems = filteredCategories.Count();
+
+    // -------------------------------------------------------------
+    // 5. Build Dropdown Lists
+    // -------------------------------------------------------------
+    // Districts: Provide all used districts (optionally filtered by City if we had city selection, but here we assume single city context if hidden)
+    var districtsList = usedDistricts.OrderBy(x => x.Name).ToList();
+
+    // Neighborhoods: Only show if District is selected
+    var neighborhoodsList = new List<IPublishedContent>();
+    if (selectedDistrict != null)
+    {
+        neighborhoodsList = usedNeighborhoods
+            .Where(x => x.Parent != null && x.Parent.Id == selectedDistrict.Id)
+            .OrderBy(x => x.Name)
+            .ToList();
+    }
+
+    // -------------------------------------------------------------
+    // 6. Pagination Logic
+    // -------------------------------------------------------------
+    var pagingConfig = Model.GetEffectivePagingConfig();
+    var pageSize = pagingConfig.PageSize;
+    var pageNumber = 1;
+
+    if (!int.TryParse(Context.Request.Query["page"], out pageNumber)) pageNumber = 1;
+
+    var pagedItems = filteredCategories.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+    
+    // Build Pager URL
+    var queryParams = new List<string>();
+    if (!string.IsNullOrEmpty(selectedDistrictSlug)) queryParams.Add($"district={selectedDistrictSlug}");
+    if (!string.IsNullOrEmpty(selectedNeighborhoodSlug)) queryParams.Add($"neighborhood={selectedNeighborhoodSlug}");
+    
+    var baseUrl = "?";
+    if (queryParams.Any()) baseUrl += string.Join("&", queryParams) + "&";
+    var pagerUrlFormat = baseUrl + "page={0}";
+}
+
+@functions {
+    // Comparer to ensure Distinct works on IPublishedContent by Id
+    public class PublishedContentComparer : IEqualityComparer<IPublishedContent>
+    {
+        public bool Equals(IPublishedContent x, IPublishedContent y)
+        {
+            if (Object.ReferenceEquals(x, y)) return true;
+            if (Object.ReferenceEquals(x, null) || Object.ReferenceEquals(y, null)) return false;
+            return x.Id == y.Id;
+        }
+
+        public int GetHashCode(IPublishedContent obj)
+        {
+            if (Object.ReferenceEquals(obj, null)) return 0;
+            return obj.Id.GetHashCode();
+        }
+    }
+}
+
+@section Head {
+    <link rel="stylesheet" href="~/assets/styles/region.css" />
+    <link rel="stylesheet" href="~/assets/styles/bloglist.css" />
+}
+
+@section Scripts {
+    <script src="~/sources/js/region-list.js"></script>
+}
+
+<div class="region-list-page">
+    <div class="container">
+        
+        @* Filter Toolbar *@
+        <div class="blog-controls mb-5 p-4 bg-light rounded-3 shadow-sm">
+            <div class="row g-3 align-items-end">
+                
+                <div class="col-12">
+                    <h5 class="mb-3 text-secondary d-flex align-items-center gap-2">
+                        <span class="mso">filter_list</span>
+                        Hizmet Bölgesi Ara
+                    </h5>
+                </div>
+
+                @* Filter Form *@
+                <div class="col-12">
+                    <form id="regionFilterForm" method="get" class="row g-3">
+                        
+                        @* Country & City (Hidden logic: Show only if count > 1) *@
+                        @if (usedCountries.Count > 1)
+                        {
+                            <div class="col-md-3">
+                                <label class="form-label small text-muted">Ülke</label>
+                                <select class="form-select" disabled>
+                                    <option selected>Türkiye</option>
+                                </select>
+                            </div>
+                        }
+
+                        @if (usedCities.Count > 1)
+                        {
+                            <div class="col-md-3">
+                                <label class="form-label small text-muted">Şehir</label>
+                                <select class="form-select" disabled>
+                                    <option selected>İstanbul</option>
+                                </select>
+                            </div>
+                        }
+
+                        @* District Select *@
+                        <div class="col-md-4 col-lg-3">
+                            <label class="form-label small text-muted">İlçe</label>
+                            <select name="district" class="form-select">
+                                <option value="">Tüm İlçeler</option>
+                                @foreach (var item in districtsList)
+                                {
+                                    <!option value="@item.UrlSegment()" @(item.UrlSegment() == selectedDistrictSlug ? "selected" : "")>
+                                        @item.Name
+                                    </!option>
+                                }
+                            </select>
+                        </div>
+
+                        @* Neighborhood Select *@
+                        <div class="col-md-4 col-lg-3">
+                            <label class="form-label small text-muted">Semt / Mahalle</label>
+                            <select name="neighborhood" class="form-select" @(selectedDistrict == null ? "disabled" : "")>
+                                <option value="">@(selectedDistrict == null ? "Önce İlçe Seçiniz" : "Tüm Semtler")</option>
+                                @foreach (var item in neighborhoodsList)
+                                {
+                                    <!option value="@item.UrlSegment()" @(item.UrlSegment() == selectedNeighborhoodSlug ? "selected" : "")>
+                                        @item.Name
+                                    </!option>
+                                }
+                            </select>
+                        </div>
+
+                        @* Reset Button *@
+                         <div class="col-auto ms-auto">
+                            @if (selectedDistrict != null)
+                            {
+                                <a href="@Model.Url()" class="btn btn-outline-danger d-flex align-items-center gap-2" title="Filtreyi Temizle">
+                                    <span class="mso">close</span>
+                                    Temizle
+                                </a>
+                            }
+                        </div>
+
+                    </form>
+                </div>
+
+                @* Active Filter Status *@
+                @if (selectedDistrict != null)
+                {
+                    <div class="col-12 mt-3">
+                        <div class="alert alert-info border-0 bg-primary bg-opacity-10 text-primary mb-0 d-flex align-items-center gap-2 small">
+                            <span class="mso">info</span>
+                            <span>
+                                <strong>
+                                    Türkiye > İstanbul > @selectedDistrict.Name 
+                                    @(selectedNeighborhood != null ? " > " + selectedNeighborhood.Name : "")
+                                </strong> 
+                                bölgesindeki <strong>@totalItems</strong> hizmet kategorisi listeleniyor.
+                            </span>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        @* Region Grid *@
+        @await Html.PartialAsync("~/Views/Partials/Region/_RegionGrid.cshtml", pagedItems)
+
+        @* Pager *@
+        @await Html.PartialAsync("~/Views/Partials/Common/_Pager.cshtml", new PagerViewModel
+        {
+            Config = pagingConfig,
+            TotalItems = totalItems,
+            CurrentPage = pageNumber,
+            UrlFormat = pagerUrlFormat
+        })
+    </div>
+</div>

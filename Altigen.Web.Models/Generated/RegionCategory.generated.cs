@@ -18,14 +18,14 @@ using Umbraco.Extensions;
 
 namespace Altigen.Web.Models
 {
-	/// <summary>Region</summary>
-	[PublishedModel("region")]
-	public partial class Region : SubPage
+	/// <summary>Region Category</summary>
+	[PublishedModel("regionCategory")]
+	public partial class RegionCategory : PagingList
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
-		public new const string ModelTypeAlias = "region";
+		public new const string ModelTypeAlias = "regionCategory";
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
 		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
@@ -34,14 +34,14 @@ namespace Altigen.Web.Models
 			=> PublishedModelUtility.GetModelContentType(contentTypeCache, ModelItemType, ModelTypeAlias);
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedContentTypeCache contentTypeCache, Expression<Func<Region, TValue>> selector)
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedContentTypeCache contentTypeCache, Expression<Func<RegionCategory, TValue>> selector)
 			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(contentTypeCache), selector);
 #pragma warning restore 0109
 
 		private IPublishedValueFallback _publishedValueFallback;
 
 		// ctor
-		public Region(IPublishedContent content, IPublishedValueFallback publishedValueFallback)
+		public RegionCategory(IPublishedContent content, IPublishedValueFallback publishedValueFallback)
 			: base(content, publishedValueFallback)
 		{
 			_publishedValueFallback = publishedValueFallback;
@@ -50,35 +50,19 @@ namespace Altigen.Web.Models
 		// properties
 
 		///<summary>
-		/// Content
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("regionContent")]
-		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString RegionContent => this.Value<global::Umbraco.Cms.Core.Strings.IHtmlEncodedString>(_publishedValueFallback, "regionContent");
-
-		///<summary>
 		/// Description
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("regionDescription")]
-		public virtual string RegionDescription => this.Value<string>(_publishedValueFallback, "regionDescription");
+		[ImplementPropertyType("regionCategoryDescription")]
+		public virtual string RegionCategoryDescription => this.Value<string>(_publishedValueFallback, "regionCategoryDescription");
 
 		///<summary>
-		/// Featured Images
+		/// Featured Image
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("regionFeaturedImages")]
-		public virtual global::System.Collections.Generic.IEnumerable<global::Umbraco.Cms.Core.Models.MediaWithCrops> RegionFeaturedImages => this.Value<global::System.Collections.Generic.IEnumerable<global::Umbraco.Cms.Core.Models.MediaWithCrops>>(_publishedValueFallback, "regionFeaturedImages");
-
-		///<summary>
-		/// Location
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("regionLocation")]
-		public virtual global::System.Collections.Generic.IEnumerable<global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent> RegionLocation => this.Value<global::System.Collections.Generic.IEnumerable<global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent>>(_publishedValueFallback, "regionLocation");
+		[ImplementPropertyType("regionCategoryFeaturedImage")]
+		public virtual global::Umbraco.Cms.Core.Models.MediaWithCrops RegionCategoryFeaturedImage => this.Value<global::Umbraco.Cms.Core.Models.MediaWithCrops>(_publishedValueFallback, "regionCategoryFeaturedImage");
 	}
 }

@@ -42,7 +42,17 @@ public class FooterViewComponent : ViewComponent
         var model = new FooterViewModel
         {
             Logo = logo,
-            Description = "Türkiye'nin öncü dijital dönüşüm platformu. Teknoloji ve inovasyon odaklı çözümlerimizle iş dünyasına değer katıyoruz."
+            Description = settingsNode.FooterSettingsDescription ?? string.Empty,
+            Address = settingsNode.FooterSettingsAddress,
+            Phone = settingsNode.FooterSettingsPhone,
+            Email = settingsNode.FooterSettingsEmail,
+            PrivacyPolicy = settingsNode.FooterSettingsPrivacyPolicy,
+            CookiePolicy = settingsNode.FooterSettingsCookiePolicy,
+            Gdpr = settingsNode.FooterSettingsGdpr,
+            SocialIcons = settingsNode.FooterSettingsSocialIcons?
+                .Select(x => x.Content)
+                .OfType<SocialItem>()
+                .Where(x => x.SocialItemUrl != null)
         };
 
         return View(model);

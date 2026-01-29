@@ -59,11 +59,26 @@ The project is in active development (January 2026), focusing on:
     - **Overlay**: Added a semi-transparent black overlay using CSS `linear-gradient` to ensure text readability against any background.
     - **Styling**: Enforced `background-size: cover`, `background-position: center`, and `no-repeat` for optimal display.
 - **RichText Block Styling investigation**:
-    - Identified that `BlockStyleService` currently ignores RichText properties. (Paused to address immediate UI requests).
+  ## Current Focus
+- Refactoring Footer component (Separated Social Links into Partial).
+
+## Recent Changes
+- Extracted Social Links logic from `Footer/Default.cshtml` to `_SocialLinks.cshtml` partial.
+- Implemented dynamic Social Media icons in Footer.
+- Refined Footer layout (3-6-3 grid, horizontal gap).
+- Updated `FooterViewComponent` to map these values from `GlobalSettings`.
+- Updated `Footer/Default.cshtml` to render dynamic content instead of hardcoded strings.
 - Resolved `CS8618` warning in `FooterViewModel.cs` by adding `required` modifier to `Logo` and `Description` properties, enforcing initialization at compile time.
 - Implemented `FooterMenu/Default.cshtml` and `FooterMenuViewComponent.cs` to utilize the standard `Navigation` model.
 - Added logic to `FooterMenu` to dynamically generate columns based on `isColumnHeader` property, limiting recursion to the first level of sub-items.
 - Updated `TopMenuViewComponent` and `FooterMenuViewComponent` to filter `Navigation` nodes by `NavigationType` ("Header" vs. "Footer"), ensuring correct menu resolution.
+- Resolved `CS8601` and `CS8619` warnings in `FooterViewComponent.cs` by ensuring `Description` is not null and correctly casting `SocialIcons` using `OfType<SocialItem>()`.
+- **Region Module Update**: Introduction of `RegionList` and `RegionCategory` which now inherit from `PagingList`, standardizing the pagination logic and hierarchy (`RegionList` -> `RegionCategory` -> `Region`).
+- **Region List UI**: Implemented `RegionList.cshtml`, `_RegionGrid.cshtml`, `_RegionCard.cshtml`, and `region.scss` to display Region Categories in a grid layout with card style and pagination.
+- **Location Filter**: Implemented filtering logic in `RegionList.cshtml` to filter categories based on their children's locations (City/District). Added a filter toolbar similar to Blog List.
+- **Hierarchical & Coverage Filtering**: Refined filtering logic to support hierarchical coverage. If a parent (e.g., City) is selected in the Region, it covers all child filters (District/Neighborhood). Conversely, filtering by a parent (District) shows regions assigned to its children (Neighborhood).
+- **UI Refinement**: Updated `region.scss` to style filter dropdowns with a modern "pill-shaped" look, matching the Blog Category buttons.
+- **Footer Layout**: Fixed horizontal overflow on mobile by using responsive gutter classes (`gx-0 gx-lg-5`) in `Default.cshtml`.
 
 ## Active Decisions
 - **Umbraco 17 Migration**: Project is running on .NET 10/Umbraco 17.

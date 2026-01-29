@@ -35,11 +35,12 @@ Authentication and common page features are handled via a robust inheritance and
     - **Usage**: Inherited by specific functional pages (`Blog`, `Region`, `Service`, `BlogCategory`) and their list containers.
 - **`PagingList` (`pagingList`)**: Specialized extension of `SubPage` for list views with pagination support.
     - **Compositions**: Inherits `SubPage` compositions + implements `IPaging`.
-    - **Usage**: Base class for `BlogList` and used by `BlogCategory`.
+    - **Usage**: Base class for `BlogList`, `RegionList`, and `RegionCategory`.
 
 ### Hierarchy & Relationships
 - **List-Item Pattern**: Structured content follows a strict parent-child relationship:
-    - `RegionList` -> Children: `Region` (Note: RegionList model not generated, managed dynamically or maps to base List)
+    - `RegionList` -> Children: `RegionCategory` (Strict Mode)
+    - `RegionCategory` -> Children: `Region`
     - `ServiceList` -> Children: `Service` (Note: ServiceList model not generated, managed dynamically or maps to base List)
     - `BlogList` -> Children: `BlogCategory` (Strict Mode: BlogList only allows Categories)
     - `BlogCategory` -> Children: `Blog`

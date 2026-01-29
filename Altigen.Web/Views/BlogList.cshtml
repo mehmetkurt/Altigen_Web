@@ -8,7 +8,7 @@
 @using System
 
 @{
-    Layout = "SubLayout.cshtml";
+    Layout = "PagingListLayout.cshtml";
 
     // 1. Get Categories (Children of BlogList)
     var categories = Model.Children<BlogCategory>()?
@@ -132,7 +132,7 @@
     @await Html.PartialAsync("~/Views/Partials/Blog/_BlogGrid.cshtml", blogItems)
 
     @* Pager *@
-    @await Html.PartialAsync("~/Views/Partials/Common/_Pager.cshtml", new Altigen.Web.Models.PagerViewModel
+    @await Html.PartialAsync("~/Views/Partials/Common/_Pager.cshtml", new PagerViewModel
     {
         Config = pagingConfig,
         TotalItems = totalItems,

@@ -22,6 +22,31 @@ namespace Altigen.Web.Models
 	/// <summary>Footer Settings</summary>
 	public partial interface IFooterSettings : IPublishedElement
 	{
+		/// <summary>Address</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		string FooterSettingsAddress { get; }
+
+		/// <summary>Cookie Policy</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent FooterSettingsCookiePolicy { get; }
+
+		/// <summary>Description</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		string FooterSettingsDescription { get; }
+
+		/// <summary>E-mail</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		string FooterSettingsEmail { get; }
+
+		/// <summary>GDPR</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent FooterSettingsGdpr { get; }
+
 		/// <summary>Desktop</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
@@ -41,6 +66,21 @@ namespace Altigen.Web.Models
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent FooterSettingsMenu { get; }
+
+		/// <summary>Phone</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		string FooterSettingsPhone { get; }
+
+		/// <summary>Privacy Policy</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent FooterSettingsPrivacyPolicy { get; }
+
+		/// <summary>Social Items</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		global::Umbraco.Cms.Core.Models.Blocks.BlockListModel FooterSettingsSocialIcons { get; }
 	}
 
 	/// <summary>Footer Settings</summary>
@@ -73,6 +113,71 @@ namespace Altigen.Web.Models
 		}
 
 		// properties
+
+		///<summary>
+		/// Address
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("footerSettingsAddress")]
+		public virtual string FooterSettingsAddress => GetFooterSettingsAddress(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Address</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static string GetFooterSettingsAddress(IFooterSettings that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "footerSettingsAddress");
+
+		///<summary>
+		/// Cookie Policy
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("footerSettingsCookiePolicy")]
+		public virtual global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent FooterSettingsCookiePolicy => GetFooterSettingsCookiePolicy(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Cookie Policy</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent GetFooterSettingsCookiePolicy(IFooterSettings that, IPublishedValueFallback publishedValueFallback) => that.Value<global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent>(publishedValueFallback, "footerSettingsCookiePolicy");
+
+		///<summary>
+		/// Description
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("footerSettingsDescription")]
+		public virtual string FooterSettingsDescription => GetFooterSettingsDescription(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Description</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static string GetFooterSettingsDescription(IFooterSettings that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "footerSettingsDescription");
+
+		///<summary>
+		/// E-mail
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("footerSettingsEmail")]
+		public virtual string FooterSettingsEmail => GetFooterSettingsEmail(this, _publishedValueFallback);
+
+		/// <summary>Static getter for E-mail</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static string GetFooterSettingsEmail(IFooterSettings that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "footerSettingsEmail");
+
+		///<summary>
+		/// GDPR
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("footerSettingsGdpr")]
+		public virtual global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent FooterSettingsGdpr => GetFooterSettingsGdpr(this, _publishedValueFallback);
+
+		/// <summary>Static getter for GDPR</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent GetFooterSettingsGdpr(IFooterSettings that, IPublishedValueFallback publishedValueFallback) => that.Value<global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent>(publishedValueFallback, "footerSettingsGdpr");
 
 		///<summary>
 		/// Desktop: Fallback Header Desktop
@@ -125,5 +230,44 @@ namespace Altigen.Web.Models
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		public static global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent GetFooterSettingsMenu(IFooterSettings that, IPublishedValueFallback publishedValueFallback) => that.Value<global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent>(publishedValueFallback, "footerSettingsMenu");
+
+		///<summary>
+		/// Phone
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("footerSettingsPhone")]
+		public virtual string FooterSettingsPhone => GetFooterSettingsPhone(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Phone</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static string GetFooterSettingsPhone(IFooterSettings that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "footerSettingsPhone");
+
+		///<summary>
+		/// Privacy Policy
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("footerSettingsPrivacyPolicy")]
+		public virtual global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent FooterSettingsPrivacyPolicy => GetFooterSettingsPrivacyPolicy(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Privacy Policy</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent GetFooterSettingsPrivacyPolicy(IFooterSettings that, IPublishedValueFallback publishedValueFallback) => that.Value<global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent>(publishedValueFallback, "footerSettingsPrivacyPolicy");
+
+		///<summary>
+		/// Social Items
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("footerSettingsSocialIcons")]
+		public virtual global::Umbraco.Cms.Core.Models.Blocks.BlockListModel FooterSettingsSocialIcons => GetFooterSettingsSocialIcons(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Social Items</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static global::Umbraco.Cms.Core.Models.Blocks.BlockListModel GetFooterSettingsSocialIcons(IFooterSettings that, IPublishedValueFallback publishedValueFallback) => that.Value<global::Umbraco.Cms.Core.Models.Blocks.BlockListModel>(publishedValueFallback, "footerSettingsSocialIcons");
 	}
 }

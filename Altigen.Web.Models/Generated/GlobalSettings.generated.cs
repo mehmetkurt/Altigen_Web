@@ -50,6 +50,46 @@ namespace Altigen.Web.Models
 		// properties
 
 		///<summary>
+		/// Address
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("footerSettingsAddress")]
+		public virtual string FooterSettingsAddress => global::Altigen.Web.Models.FooterSettings.GetFooterSettingsAddress(this, _publishedValueFallback);
+
+		///<summary>
+		/// Cookie Policy
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("footerSettingsCookiePolicy")]
+		public virtual global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent FooterSettingsCookiePolicy => global::Altigen.Web.Models.FooterSettings.GetFooterSettingsCookiePolicy(this, _publishedValueFallback);
+
+		///<summary>
+		/// Description
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("footerSettingsDescription")]
+		public virtual string FooterSettingsDescription => global::Altigen.Web.Models.FooterSettings.GetFooterSettingsDescription(this, _publishedValueFallback);
+
+		///<summary>
+		/// E-mail
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("footerSettingsEmail")]
+		public virtual string FooterSettingsEmail => global::Altigen.Web.Models.FooterSettings.GetFooterSettingsEmail(this, _publishedValueFallback);
+
+		///<summary>
+		/// GDPR
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("footerSettingsGdpr")]
+		public virtual global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent FooterSettingsGdpr => global::Altigen.Web.Models.FooterSettings.GetFooterSettingsGdpr(this, _publishedValueFallback);
+
+		///<summary>
 		/// Desktop: Fallback Header Desktop
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
@@ -80,6 +120,30 @@ namespace Altigen.Web.Models
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("footerSettingsMenu")]
 		public virtual global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent FooterSettingsMenu => global::Altigen.Web.Models.FooterSettings.GetFooterSettingsMenu(this, _publishedValueFallback);
+
+		///<summary>
+		/// Phone
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("footerSettingsPhone")]
+		public virtual string FooterSettingsPhone => global::Altigen.Web.Models.FooterSettings.GetFooterSettingsPhone(this, _publishedValueFallback);
+
+		///<summary>
+		/// Privacy Policy
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("footerSettingsPrivacyPolicy")]
+		public virtual global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent FooterSettingsPrivacyPolicy => global::Altigen.Web.Models.FooterSettings.GetFooterSettingsPrivacyPolicy(this, _publishedValueFallback);
+
+		///<summary>
+		/// Social Items
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("footerSettingsSocialIcons")]
+		public virtual global::Umbraco.Cms.Core.Models.Blocks.BlockListModel FooterSettingsSocialIcons => global::Altigen.Web.Models.FooterSettings.GetFooterSettingsSocialIcons(this, _publishedValueFallback);
 
 		///<summary>
 		/// Desktop

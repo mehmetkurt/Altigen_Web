@@ -1,0 +1,18 @@
+
+@model IEnumerable<RegionCategory>
+
+@if (Model != null && Model.Any())
+{
+    <div class="row region-grid">
+        @foreach (var item in Model)
+        {
+            @await Html.PartialAsync("~/Views/Partials/Region/_RegionCard.cshtml", item)
+        }
+    </div>
+}
+else
+{
+    <div class="alert alert-info">
+        Henüz eklenmiş bir bölge kategorisi bulunmuyor.
+    </div>
+}

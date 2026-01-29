@@ -1,0 +1,15 @@
+
+@model IEnumerable<SocialItem>
+
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+        var url = item.SocialItemUrl?.Url;
+        var target = item.SocialItemUrl?.Target;
+        if (!string.IsNullOrEmpty(url))
+        {
+            <a href="@url" target="@target" aria-label="@item.SocialItemName"><span class="@item.SocialItemIconCssClass"></span></a>
+        }
+    }
+}

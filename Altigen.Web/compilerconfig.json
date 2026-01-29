@@ -18,5 +18,9 @@
   {
     "outputFile": "wwwroot/assets/styles/main-slider.css",
     "inputFile": "wwwroot/sources/scss/components/main-slider.scss"
+  },
+  {
+    "outputFile": "wwwroot/assets/styles/region.css",
+    "inputFile": "wwwroot/sources/scss/pages/region.scss"
   }
 ]
