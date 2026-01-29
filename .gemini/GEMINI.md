@@ -150,6 +150,9 @@ REMEMBER: After every memory reset, I begin completely fresh. The Memory Bank is
 - **Async/Await**: Always use the `Async` suffix for asynchronous methods and await them. Avoid `.Result` or `.Wait()`.
 - **LINQ**: Prefer LINQ for readable collection manipulations.
 - **Null Safety**: Use defensive coding practices (e.g., null coalescing `??`, null conditional `?.`) to prevent runtime errors.
+- **Null Safety**: Use defensive coding practices (e.g., null coalescing `??`, null conditional `?.`) to prevent runtime errors.
+- **No Obsolete Members**: Do NOT use obsolete members, properties, or methods (e.g., `IPublishedContent.Parent`). Always use the recommended non-obsolete alternatives (e.g., `.Parent()` extension method).
+- **Code Simplification**: Use modern C# features (e.g., collection expressions `[]` instead of `new List<T>()` or `Enumerable.Empty<T>()`) where available (.NET 8+).
 
 ## 4. Umbraco Specific Rules
 - **Strongly Typed Models**: Always use strongly typed models (mostly `IPublishedContent` or custom ViewModels) in views.

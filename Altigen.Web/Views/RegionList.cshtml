@@ -1,6 +1,9 @@
 ﻿@model RegionList
 @using Umbraco.Cms.Core.Models.PublishedContent
 @using Altigen.Web.Models
+@using Umbraco.Extensions
+
+@inject Altigen.Web.Core.Services.IRegionService RegionService
 
 @{
     Layout = "PagingListLayout.cshtml";
@@ -12,55 +15,13 @@
         .ToList() ?? new List<RegionCategory>();
 
     // -------------------------------------------------------------
-    // 2. Build Location Data Hierarchy
+    // 2. Build Location Data Hierarchy (Using Service)
     // -------------------------------------------------------------
-    var usedCountries = new HashSet<IPublishedContent>(new PublishedContentComparer());
-    var usedCities = new HashSet<IPublishedContent>(new PublishedContentComparer());
-    var usedDistricts = new HashSet<IPublishedContent>(new PublishedContentComparer());
-    var usedNeighborhoods = new HashSet<IPublishedContent>(new PublishedContentComparer());
-    
-    // Helper to traverse up and collect parents
-    void CollectParents(IPublishedContent content)
-    {
-        if (content == null) return;
-        
-        switch (content.ContentType.Alias)
-        {
-            case Neighborhood.ModelTypeAlias:
-                usedNeighborhoods.Add(content);
-                CollectParents(content.Parent);
-                break;
-            case District.ModelTypeAlias:
-                usedDistricts.Add(content);
-                CollectParents(content.Parent);
-                break;
-            case City.ModelTypeAlias:
-                 usedCities.Add(content);
-                 CollectParents(content.Parent);
-                 break;
-            case Country.ModelTypeAlias:
-                 usedCountries.Add(content);
-                 break;
-        }
-    }
-
-    foreach(var cat in categories)
-    {
-        var regions = cat.Children<Region>();
-        if(regions != null)
-        {
-            foreach(var region in regions)
-            {
-                if(region.RegionLocation != null)
-                {
-                    foreach(var loc in region.RegionLocation)
-                    {
-                        CollectParents(loc);
-                    }
-                }
-            }
-        }
-    }
+    var locationData = RegionService.GetLocationsForCategory(Model);
+    var usedCountries = locationData.Countries.ToList();
+    var usedCities = locationData.Cities.ToList();
+    var usedDistricts = locationData.Districts.ToList();
+    var usedNeighborhoods = locationData.Neighborhoods.ToList();
 
     // -------------------------------------------------------------
     // 3. Filter Parameters
@@ -68,79 +29,52 @@
     var selectedDistrictSlug = Context.Request.Query["district"].ToString();
     var selectedNeighborhoodSlug = Context.Request.Query["neighborhood"].ToString();
 
-    // Reset neighborhood if district changed (simple check: if neighborhood parent slug != selectedDistrictSlug)
-    // Actually, distinct filtering logic below handles data consistency.
-    
     // Resolve Selected Objects for Display
+    var resultDistrictSlug = selectedDistrictSlug; // Local mutable copy if needed, but we re-assign selectedDistrictSlug anyway
+    var resultNeighborhoodSlug = selectedNeighborhoodSlug;
+
     var selectedDistrict = usedDistricts.FirstOrDefault(x => x.UrlSegment() == selectedDistrictSlug);
     var selectedNeighborhood = usedNeighborhoods.FirstOrDefault(x => x.UrlSegment() == selectedNeighborhoodSlug);
     
     // If neighborhood selected, enforce its district
     if (selectedNeighborhood != null)
     {
-        // Ensure the district matches the neighborhood's parent
-        if (selectedNeighborhood.Parent != null)
+        var parent = selectedNeighborhood.Parent();
+        if (parent != null)
         {
-            selectedDistrict = selectedNeighborhood.Parent;
-            selectedDistrictSlug = selectedDistrict.UrlSegment();
+             selectedDistrict = parent;
+             selectedDistrictSlug = selectedDistrict.UrlSegment() ?? ""; 
         }
     }
 
     // -------------------------------------------------------------
-    // 4. Apply Filter to Categories (Updated Coverage Logic)
+    // 4. Apply Filter to Categories
     // -------------------------------------------------------------
-    var filteredCategories = categories.AsEnumerable();
+    IPublishedContent? effectiveSelection = selectedNeighborhood ?? selectedDistrict;
     
-    // Determine the most specific selected filter item
-    IPublishedContent effectiveSelection = selectedNeighborhood ?? selectedDistrict;
-
-    if (effectiveSelection != null)
-    {
-        filteredCategories = filteredCategories.Where(cat => {
-            var regions = cat.Children<Region>();
-            if (regions == null) return false;
-            
-            return regions.Any(r => 
-            {
-                if (r.RegionLocation == null) return false;
-                
-                // Check coverage for EACH location defined in the Region
-                foreach(var loc in r.RegionLocation)
-                {
-                    // Logic: Match if the Region's location covers the selection OR is covered by the selection.
-                    
-                    // 1. Exact Match
-                    if (loc.Id == effectiveSelection.Id) return true;
-                    
-                    // 2. Ancestor Match (Region Location covers Selection)
-                    // e.g. Region has "Istanbul" (City), Selection is "Beylikdüzü" (District).
-                    // Istanbul is Ancestor of Beylikdüzü -> TRUE.
-                    if (effectiveSelection.IsDescendant(loc)) return true;
-                    
-                    // 3. Descendant Match (Selection covers Region Location)
-                    // e.g. Region has "Barış Mh." (Neighborhood), Selection is "Beylikdüzü" (District).
-                    // Barış is Descendant of Beylikdüzü -> TRUE.
-                    if (loc.IsDescendant(effectiveSelection)) return true;
-                }
-                return false;
-            });
-        });
-    }
+    // Use Service for filtering logic if available, or keep using the service's logic I put inside FilterCategoriesByLocation(..., effectiveSelection)
+    // To be cleaner, let's call the service overload I created.
+    // However, I defined the overload to take IPublishedContent, which I now have.
+    
+    // We can filter by passing the selection object directly if supported by overloaded interface
+    // Check if effectiveSelection is null handled inside service?
+    var filteredCategories = RegionService.FilterCategoriesByLocation(categories, effectiveSelection);
 
     var totalItems = filteredCategories.Count();
 
     // -------------------------------------------------------------
     // 5. Build Dropdown Lists
     // -------------------------------------------------------------
-    // Districts: Provide all used districts (optionally filtered by City if we had city selection, but here we assume single city context if hidden)
     var districtsList = usedDistricts.OrderBy(x => x.Name).ToList();
 
-    // Neighborhoods: Only show if District is selected
     var neighborhoodsList = new List<IPublishedContent>();
     if (selectedDistrict != null)
     {
         neighborhoodsList = usedNeighborhoods
-            .Where(x => x.Parent != null && x.Parent.Id == selectedDistrict.Id)
+            .Where(x => {
+                var p = x.Parent();
+                return p != null && p.Id == selectedDistrict.Id;
+            })
             .OrderBy(x => x.Name)
             .ToList();
     }
@@ -166,24 +100,7 @@
     var pagerUrlFormat = baseUrl + "page={0}";
 }
 
-@functions {
-    // Comparer to ensure Distinct works on IPublishedContent by Id
-    public class PublishedContentComparer : IEqualityComparer<IPublishedContent>
-    {
-        public bool Equals(IPublishedContent x, IPublishedContent y)
-        {
-            if (Object.ReferenceEquals(x, y)) return true;
-            if (Object.ReferenceEquals(x, null) || Object.ReferenceEquals(y, null)) return false;
-            return x.Id == y.Id;
-        }
 
-        public int GetHashCode(IPublishedContent obj)
-        {
-            if (Object.ReferenceEquals(obj, null)) return 0;
-            return obj.Id.GetHashCode();
-        }
-    }
-}
 
 @section Head {
     <link rel="stylesheet" href="~/assets/styles/region.css" />
@@ -294,7 +211,7 @@
         </div>
 
         @* Region Grid *@
-        @await Html.PartialAsync("~/Views/Partials/Region/_RegionGrid.cshtml", pagedItems)
+        @await Html.PartialAsync("~/Views/Partials/Region/_RegionGrid.cshtml", pagedItems.OfType<RegionCategory>())
 
         @* Pager *@
         @await Html.PartialAsync("~/Views/Partials/Common/_Pager.cshtml", new PagerViewModel

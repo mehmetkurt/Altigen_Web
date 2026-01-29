@@ -79,6 +79,19 @@ The project is in active development (January 2026), focusing on:
 - **Hierarchical & Coverage Filtering**: Refined filtering logic to support hierarchical coverage. If a parent (e.g., City) is selected in the Region, it covers all child filters (District/Neighborhood). Conversely, filtering by a parent (District) shows regions assigned to its children (Neighborhood).
 - **UI Refinement**: Updated `region.scss` to style filter dropdowns with a modern "pill-shaped" look, matching the Blog Category buttons.
 - **Footer Layout**: Fixed horizontal overflow on mobile by using responsive gutter classes (`gx-0 gx-lg-5`) in `Default.cshtml`.
+- **Region Service Extraction**:
+    - Created `IRegionService` and `RegionService` in `Altigen.Web.Core` to encapsulate location data retrieval and filtering logic.
+    - Registered `RegionService` in `ServiceComposer`.
+    - Refactored `RegionList.cshtml` to use `RegionService`, removing complex inline logic.
+    - Implemented `GetRelatedServicesInLocation` to display "Related Services" on `Region.cshtml` sidebar.
+- **Clean Code & Modern Practices**:
+    - Replaced obsolete `IPublishedContent.Parent` property access with `.Parent()` extension method in `RegionService.cs`.
+    - Fixed `CS8604` warnings by adding null checks for `content` in recursive methods.
+    - Resolved widespread nullability warnings (`CS8600`, `CS8602`, `CS8604`) in `RegionList.cshtml` and `RegionService.cs`.
+    - Adopted C# 12 collection expressions (`[]`) in `RegionService.cs` to simplify initialization.
+    - Removed unused `CheckLocationMatch` legacy helper and deprecated the string-based `FilterCategoriesByLocation` overload.
+    - Configured `RequestHandler` in `appsettings.json` to replace Turkish characters (e.g., 'ş' -> 's') and strip special characters (e.g., '?', '!') from URLs.
+    - Updated `GEMINI.md` to enforce modern C# features.
 
 ## Active Decisions
 - **Umbraco 17 Migration**: Project is running on .NET 10/Umbraco 17.

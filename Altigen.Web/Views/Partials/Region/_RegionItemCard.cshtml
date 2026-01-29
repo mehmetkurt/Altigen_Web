@@ -1,0 +1,54 @@
+@using Altigen.Web.Models
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Extensions
+@model Region
+
+@{
+    var mainImage = Model.RegionFeaturedImages?.FirstOrDefault();
+    var postUrl = Model.Url();
+    if (Model is ISeo seoPost && !string.IsNullOrWhiteSpace(seoPost.UmbracoUrlAlias))
+    {
+        postUrl = seoPost.UmbracoUrlAlias;
+        if (!postUrl.StartsWith("/") && !postUrl.StartsWith("http"))
+        {
+            postUrl = "/" + postUrl;
+        }
+    }
+}
+
+<div class="col-md-6 col-lg-4 grid-item">
+    <article class="region-card h-100 d-flex flex-column position-relative">
+        <div class="card-img-top">
+            <a href="@postUrl" title="@Model.Name" class="d-block h-100">
+                @if (mainImage != null)
+                {
+                    <img src="@mainImage.GetCropUrl(width: 400, height: 220)" 
+                         alt="@Model.Name" 
+                         width="400" 
+                         height="220"
+                         loading="lazy">
+                }
+                else
+                {
+                    <img src="https://placehold.co/400x220?text=No+Image" 
+                         alt="No Image" 
+                         width="400" 
+                         height="220"
+                         loading="lazy">
+                }
+            </a>
+        </div>
+        <div class="card-body d-flex flex-column flex-grow-1">
+            <h2 class="card-title">
+                <a href="@postUrl" title="@Model.Name" class="stretched-link">@Model.Name</a>
+            </h2>
+            <p class="card-text flex-grow-1">
+                @Model.RegionDescription
+            </p>
+            <a href="@postUrl" class="btn-read-more mt-auto" title="@Model.Name">
+                İncele
+                <span class="mso">arrow_forward</span>
+            </a>
+        </div>
+    </article>
+</div>

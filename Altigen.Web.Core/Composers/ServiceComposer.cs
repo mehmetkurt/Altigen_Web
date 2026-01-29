@@ -10,6 +10,7 @@ namespace Altigen.Web.Core.Composers
         public void Compose(IUmbracoBuilder builder)
         {
             builder.Services.AddScoped<IGlobalSettingsService, GlobalSettingsService>();
+            builder.Services.AddTransient<IRegionService, RegionService>();
         }
     }
 }

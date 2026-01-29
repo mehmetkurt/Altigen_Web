@@ -1,4 +1,61 @@
-﻿@model RegionCategory
+﻿@using Altigen.Web.Models
+@using Umbraco.Cms.Core.Models.PublishedContent
+@model RegionCategory
+
 @{
-	Layout = "PagingListLayout.cshtml";
+    Layout = "PagingListLayout.cshtml";
+
+    // 1. Get Children (Regions)
+    var items = Model.Children<Region>()?
+        .Where(x => x.IsVisible())
+        .OrderByDescending(x => x.CreateDate)
+        .ToList() ?? new List<Region>();
+
+    // 2. Pagination Logic
+    var pagingConfig = Model.GetEffectivePagingConfig();
+    var pageSize = pagingConfig.PageSize;
+    var pageNumber = 1;
+    if (!int.TryParse(Context.Request.Query["page"], out pageNumber)) pageNumber = 1;
+
+    var totalItems = items.Count;
+    var pagedItems = items.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
+    var pagerUrlFormat = "?page={0}";
 }
+
+@section Head {
+    <link rel="stylesheet" href="~/assets/styles/region.css" />
+}
+
+
+
+<div class="region-list-page">
+    <div class="container">
+        
+        @if (pagedItems.Any())
+        {
+            <div class="row region-grid">
+                @foreach (var item in pagedItems)
+                {
+                    @await Html.PartialAsync("~/Views/Partials/Region/_RegionItemCard.cshtml", item)
+                }
+            </div>
+
+            @* Pager *@
+            @await Html.PartialAsync("~/Views/Partials/Common/_Pager.cshtml", new PagerViewModel
+            {
+                Config = pagingConfig,
+                TotalItems = totalItems,
+                CurrentPage = pageNumber,
+                UrlFormat = pagerUrlFormat
+            })
+        }
+        else
+        {
+            <div class="alert alert-info">
+                Bu kategoride henüz bölge bulunmuyor.
+            </div>
+        }
+
+    </div>
+</div>

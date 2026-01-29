@@ -1,0 +1,109 @@
+﻿@using Altigen.Web.Models
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Extensions
+@model Region
+@inject Altigen.Web.Core.Services.IRegionService RegionService
+
+@{
+    Layout = "SubLayout.cshtml"; // SubLayout already includes PageHeader via Layout = "root.cshtml" and local Invoke
+    var mainImage = Model.RegionFeaturedImages?.FirstOrDefault();
+    
+    // Get Related Services
+    var relatedServices = RegionService.GetRelatedServicesInLocation(Model);
+}
+
+@section Head {
+     @* Reuse region styles if needed, or common styles *@
+}
+
+<div class="region-detail">
+    <div class="row">
+        @* Main Content *@
+        <div class="col-lg-8">
+            
+            @* Featured Image *@
+            @if (mainImage != null)
+            {
+                <div class="mb-4 rounded-3 overflow-hidden shadow-sm">
+                    <img src="@mainImage.GetCropUrl(width: 850, height: 450)" 
+                         alt="@Model.Name" 
+                         class="img-fluid w-100 object-fit-cover"
+                         width="850" loading="eager" />
+                </div>
+            }
+
+            @* Region Locations List *@
+            @if(Model.RegionLocation != null && Model.RegionLocation.Any())
+            {
+                <div class="d-flex flex-wrap gap-2 mb-4 align-items-center">
+                    <span class="text-muted small fw-bold text-uppercase me-2">
+                        <span class="mso align-middle fs-5">location_on</span> 
+                        Hizmet Bölgeleri:
+                    </span>
+                    @foreach(var loc in Model.RegionLocation)
+                    {
+                        <span class="badge bg-light text-primary border fw-medium px-3 py-2 rounded-pill">
+                            @loc.Name
+                        </span>
+                    }
+                </div>
+            }
+
+            @* Content *@
+            <div class="rich-text content-body mb-5">
+                @Model.RegionContent
+            </div>
+             
+             @* Description Fallback if Content is empty *@
+             @if(Model.RegionContent == null || string.IsNullOrWhiteSpace(Model.RegionContent.ToString()))
+             {
+                  <div class="lead">
+                      @Model.RegionDescription
+                  </div>
+             }
+
+        </div>
+
+        @* Sidebar (Optional - for future use or navigation) *@
+        <div class="col-lg-4">
+            <div class="sticky-top" style="top: 10rem; z-index: 10;">
+                
+                @* Info Card *@
+                <div class="card border-0 shadow-sm bg-light mb-4">
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold mb-3">Bilgi</h5>
+                        <p class="card-text text-muted mb-0">
+                            Bu bölge ile ilgili detaylı bilgi almak veya hizmet talebinde bulunmak için bizimle iletişime geçebilirsiniz.
+                        </p>
+                        <a href="/iletisim" class="btn btn-primary w-100 mt-3 rounded-pill fw-bold">
+                            İletişime Geç
+                        </a>
+                    </div>
+                </div>
+
+                @* Related Services *@
+                @if (relatedServices != null && relatedServices.Any())
+                {
+                    <div class="card border-0 shadow-sm bg-white mb-4">
+                        <div class="card-body p-4">
+                            <h5 class="card-title fw-bold mb-3">Bölgedeki Diğer Hizmetler</h5>
+                            <ul class="list-group list-group-flush">
+                                @foreach(var item in relatedServices)
+                                {
+                                     <li class="list-group-item px-0 border-0 bg-transparent py-1">
+                                         <a href="@item.Url()" class="text-decoration-none fw-medium d-flex align-items-center gap-2">
+                                             <span class="mso fs-6 text-primary">arrow_forward</span>
+                                             @item.Name
+                                         </a>
+                                     </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+
+    </div>
+</div>

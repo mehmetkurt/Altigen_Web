@@ -9,8 +9,6 @@
     @await RenderSectionAsync("Head", required: false)
 }
 
-@using Altigen.Web.Models
-
 @section Scripts {
     @await RenderSectionAsync("Scripts", required: false)
 }
@@ -21,7 +19,6 @@
 
 <div class="sub-page-wrapper">
     <div class="container">
-
         @* Top Description *@
         @if (subPage?.SubPageTopDescription != null && subPage.SubPageVisibleTopDescription)
         {
@@ -41,8 +38,9 @@
             </div>
         }
 
+<div class="sub-page-content">
         @RenderBody()
-
+</div>
         @* Bottom Description *@
         @if (subPage?.SubPageBottomDescription != null && subPage.SubPageVisibleBottomDescription)
         {
