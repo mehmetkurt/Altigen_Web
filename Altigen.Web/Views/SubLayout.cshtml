@@ -1,14 +1,14 @@
-@model IPublishedContent
+@model IPublishedContent 
 
 @{
     Layout = "root.cshtml";
+    var subPage = Model as SubPage;
 }
 
 @await Component.InvokeAsync("PageHeader")
 
-@section Head {   
-     <link href="~/assets/styles/subpage.css" rel="stylesheet" />
-
+@section Head {
+    <link href="~/assets/styles/subpage.css" rel="stylesheet" />
     @await RenderSectionAsync("Head", required: false)
 }
 
@@ -16,10 +16,6 @@
 
 @section Scripts {
     @await RenderSectionAsync("Scripts", required: false)
-}
-
-@{
-    var subPage = Model as SubPage;
 }
 
 <div class="sub-page-wrapper">
@@ -40,9 +36,9 @@
                 @subPage.SubPageTopDescription
             </div>
         }
-<div class="sub-page-content">
-        @RenderBody()
-</div>
+        <div class="sub-page-content">
+            @RenderBody()
+        </div>
         @* Bottom Description *@
         @if (subPage?.SubPageBottomDescription != null && subPage.SubPageVisibleBottomDescription)
         {

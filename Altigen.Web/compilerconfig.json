@@ -20,8 +20,12 @@
     "inputFile": "wwwroot/sources/scss/components/main-slider.scss"
   },
   {
-    "outputFile": "wwwroot/assets/styles/region.css",
-    "inputFile": "wwwroot/sources/scss/pages/region.scss"
+    "outputFile": "wwwroot/assets/styles/region-list.css",
+    "inputFile": "wwwroot/sources/scss/pages/region-list.scss"
+  },
+  {
+    "outputFile": "wwwroot/assets/styles/region-detail.css",
+    "inputFile": "wwwroot/sources/scss/pages/region-detail.scss"
   },
   {
     "outputFile": "wwwroot/assets/styles/subpage.css",

@@ -91,7 +91,11 @@ The project is in active development (January 2026), focusing on:
     - Adopted C# 12 collection expressions (`[]`) in `RegionService.cs` to simplify initialization.
     - Removed unused `CheckLocationMatch` legacy helper and deprecated the string-based `FilterCategoriesByLocation` overload.
     - Configured `RequestHandler` in `appsettings.json` to replace Turkish characters (e.g., 'ş' -> 's') and strip special characters (e.g., '?', '!') from URLs.
-    - Updated `GEMINI.md` to enforce modern C# features.
+    - **Region Detail UI**: Refactored "Service Regions" list in `Region.cshtml` to use a Bootstrap List Group with icons and descriptions. Added custom hover effects (#eee background, rounded corners) via `region-detail.scss`.
+    - **SCSS Refactoring**: Split `region.scss` into `region-list.scss`, `region-detail.scss`, and `region-common.scss` for better modularity and scoping. Updated `compilerconfig.json` accordingly.
+    - Updated `GEMINI.md` to enforce modern C# features and SCSS-only styling.
+- **Region Detail UI Update**: Aligned "Bölgedeki Diğer Hizmetler" (Related Services) visual style with the "Hizmet Bölgeleri" list. Both sections now use consistent card headers, circular icons, and list-group styling. Removed non-navigational links from "Hizmet Bölgeleri". 
+- **Related Services Display Fix**: Updated "Related Services" list in `Region.cshtml` to display the Parent Name (Service Category, e.g., "Halı Yıkama") instead of the Item Name (Location, e.g., "Beylikdüzü") to correctly represent distinct services in the same region.
 
 ## Active Decisions
 - **Umbraco 17 Migration**: Project is running on .NET 10/Umbraco 17.

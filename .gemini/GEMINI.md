@@ -130,6 +130,7 @@ REMEMBER: After every memory reset, I begin completely fresh. The Memory Bank is
     - Use `<link rel="preload" as="image">` for critical background images defined in CSS or inline styles that are critical for LCP.
     - Continuously evaluate and implement techniques to minimize render-blocking resources.
 - **Styling**:
+    - **SCSS Only**: Do not edit `.css` files directly. Always use `.scss` files (in `sources/scss/`) and let them compile.
     - Adopt a **Mobile-First** approach for responsive design.
     - Use SCSS variables for colors, fonts, and spacing. Avoid hardcoded string values.
     - Avoid `!important` tags unless overriding external libraries (e.g., Bootstrap) requires it.

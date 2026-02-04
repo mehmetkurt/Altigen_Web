@@ -2,6 +2,7 @@
 @import "../overrides";
 @import "../bootstrap/variables";
 @import "../bootstrap/mixins";
+@import "region-common.scss";
 
 .region-list-page {
     .region-grid {
@@ -17,9 +18,6 @@
         margin-bottom: 30px;
     }
 
-    // Import shared card styles
-    @import "../block";
-
     .region-card {
         @extend .content-card;
     }
@@ -27,7 +25,7 @@
     // Region Filter Styles
     .blog-controls {
         background-color: #ffffff !important;
-        border: 1px solid rgba(0,0,0,0.03); 
+        border: 1px solid rgba(0, 0, 0, 0.03);
     }
 
     .form-select {
@@ -39,9 +37,9 @@
         font-weight: 500;
         font-size: 0.95rem;
         transition: all 0.3s ease;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
         cursor: pointer;
-        
+
         // Custom chevron color if needed, but default is usually fine. 
         // We can override background-image url if we want a colored chevron.
 

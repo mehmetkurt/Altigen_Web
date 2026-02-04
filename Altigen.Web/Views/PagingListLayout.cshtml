@@ -1,11 +1,9 @@
 ﻿@{
-    Layout = "Root.cshtml";
+    Layout = "SubLayout.cshtml";
 }
 
-@await Component.InvokeAsync("PageHeader")
 
 @section Head {
-    <link href="~/assets/styles/subpage.css" rel="stylesheet" />
     @await RenderSectionAsync("Head", required: false)
 }
 
@@ -13,51 +11,4 @@
     @await RenderSectionAsync("Scripts", required: false)
 }
 
-@{
-    var subPage = Model as SubPage;
-}
-
-<div class="sub-page-wrapper">
-    <div class="container">
-        @* Top Description *@
-        @if (subPage?.SubPageTopDescription != null && subPage.SubPageVisibleTopDescription)
-        {
-            var topStyle = "";
-            var topClass = "sub-page-top-description mb-4";
-
-            if (subPage.SubPageTopDescriptionHeight > 0)
-            {
-                topStyle = $"max-height: {subPage.SubPageTopDescriptionHeight}px; overflow-y: auto;";
-                topClass += " p-3 border rounded";
-            }
-
-            <div class="container">
-                <div class="@topClass" style="@topStyle">
-                    @subPage.SubPageTopDescription
-                </div>
-            </div>
-        }
-
-<div class="sub-page-content">
-        @RenderBody()
-</div>
-        @* Bottom Description *@
-        @if (subPage?.SubPageBottomDescription != null && subPage.SubPageVisibleBottomDescription)
-        {
-            var bottomStyle = "";
-            var bottomClass = "sub-page-bottom-description mt-5";
-
-            if (subPage.SubPageBottomDescriptionHeight > 0)
-            {
-                bottomStyle = $"max-height: {subPage.SubPageBottomDescriptionHeight}px; overflow-y: auto;";
-                bottomClass += " p-3 border rounded";
-            }
-
-            <div class="container">
-                <div class="@bottomClass" style="@bottomStyle">
-                    @subPage.SubPageBottomDescription
-                </div>
-            </div>
-        }
-    </div>
-</div>
+@RenderBody()

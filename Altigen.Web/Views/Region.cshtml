@@ -13,6 +13,7 @@
 }
 
 @section Head {
+     <link rel="stylesheet" href="~/assets/styles/region-detail.css" />
      @* Reuse region styles if needed, or common styles *@
 }
 
@@ -20,7 +21,6 @@
     <div class="row">
         @* Main Content *@
         <div class="col-lg-8">
-            
             @* Featured Image *@
             @if (mainImage != null)
             {
@@ -32,22 +32,7 @@
                 </div>
             }
 
-            @* Region Locations List *@
-            @if(Model.RegionLocation != null && Model.RegionLocation.Any())
-            {
-                <div class="d-flex flex-wrap gap-2 mb-4 align-items-center">
-                    <span class="text-muted small fw-bold text-uppercase me-2">
-                        <span class="mso align-middle fs-5">location_on</span> 
-                        Hizmet Bölgeleri:
-                    </span>
-                    @foreach(var loc in Model.RegionLocation)
-                    {
-                        <span class="badge bg-light text-primary border fw-medium px-3 py-2 rounded-pill">
-                            @loc.Name
-                        </span>
-                    }
-                </div>
-            }
+
 
             @* Content *@
             <div class="rich-text content-body mb-5">
@@ -67,9 +52,8 @@
         @* Sidebar (Optional - for future use or navigation) *@
         <div class="col-lg-4">
             <div class="sticky-top" style="top: 10rem; z-index: 10;">
-                
                 @* Info Card *@
-                <div class="card border-0 shadow-sm bg-light mb-4">
+                <div class="card border-0 shadow-sm bg-white mb-4">
                     <div class="card-body p-4">
                         <h5 class="card-title fw-bold mb-3">Bilgi</h5>
                         <p class="card-text text-muted mb-0">
@@ -81,23 +65,67 @@
                     </div>
                 </div>
 
+                @* Region Locations List *@
+                @if(Model.RegionLocation != null && Model.RegionLocation.Any())
+                {
+                    <div class="card border-0 shadow-sm bg-white mb-4">
+                        <div class="card-header bg-white border-0 pt-4 px-4 pb-0">
+                            <h5 class="card-title fw-bold mb-0 d-flex align-items-center gap-2">
+                                <span class="mso text-primary">location_on</span>
+                                Hizmet Bölgeleri
+                            </h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="list-group list-group-flush p-3">
+                                @foreach(var loc in Model.RegionLocation)
+                                {
+                                    <div class="list-group-item d-flex gap-3 py-3 border-0 rounded-4 mb-1">
+                                        <div class="d-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded-circle flex-shrink-0" style="width: 40px; height: 40px;">
+                                            <span class="mso text-primary fs-5">near_me</span>
+                                        </div>
+                                        <div class="d-flex gap-2 w-100 justify-content-between">
+                                            <div>
+                                                <h6 class="mb-0 fw-semibold text-dark">@loc.Name</h6>
+                                                <p class="mb-0 opacity-75 small text-muted">Hizmet Bölgesi</p>
+                                            </div>
+                                            @{ var parent = loc.Parent(); }
+                                            @if (parent != null)
+                                            {
+                                                <small class="opacity-50 text-nowrap text-secondary">@parent.Name</small>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+
                 @* Related Services *@
                 @if (relatedServices != null && relatedServices.Any())
                 {
                     <div class="card border-0 shadow-sm bg-white mb-4">
-                        <div class="card-body p-4">
-                            <h5 class="card-title fw-bold mb-3">Bölgedeki Diğer Hizmetler</h5>
-                            <ul class="list-group list-group-flush">
+                        <div class="card-header bg-white border-0 pt-4 px-4 pb-0">
+                            <h5 class="card-title fw-bold mb-0 d-flex align-items-center gap-2">
+                                <span class="mso text-primary">layers</span>
+                                Bölgedeki Diğer Hizmetler
+                            </h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="list-group list-group-flush p-3">
                                 @foreach(var item in relatedServices)
                                 {
-                                     <li class="list-group-item px-0 border-0 bg-transparent py-1">
-                                         <a href="@item.Url()" class="text-decoration-none fw-medium d-flex align-items-center gap-2">
-                                             <span class="mso fs-6 text-primary">arrow_forward</span>
-                                             @item.Name
-                                         </a>
-                                     </li>
+                                    <a href="@item.Url()" class="list-group-item list-group-item-action d-flex gap-3 py-3 border-0 rounded-4 mb-1 text-decoration-none">
+                                        <div class="d-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded-circle flex-shrink-0" style="width: 40px; height: 40px;">
+                                            <span class="mso text-primary fs-5">arrow_forward</span>
+                                        </div>
+                                        <div class="d-flex flex-column justify-content-center">
+                                            <h6 class="mb-0 fw-semibold text-dark">@item.Parent()?.Name</h6>
+                                            <p class="mb-0 opacity-75 small text-muted">Hizmet</p>
+                                        </div>
+                                    </a>
                                 }
-                            </ul>
+                            </div>
                         </div>
                     </div>
                 }

@@ -15,6 +15,12 @@
 - [x] Code Cleanup & C# 12 Optimization (RegionService)
 - [x] Fixed ModelBindingException (RegionList Check)
 - [x] Configured URL Replacement (Turkish Chars & Punctuation)
+- [x] Refined Region Detail UI (List Group Style & SCSS Hover Effects)
+- [x] Refactored Region Styles (Separated List/Detail SCSS, Updated Compiler)
+- [x] Refined Region Detail Padding (Added explicit padding for hover state)
+21: - [x] Removed non-navigational links from Region Locations list in Region Detail page.
+22: - [x] Aligned "Related Services" UI with "Region Locations" style for visual consistency.
+23: - [x] Validated & Fixed "Related Services" display logic (Showing Service Category Name).
 
 ## In Progress
 - [ ] Refinement of custom Property Editors
