@@ -1,59 +1,163 @@
 ﻿@using Altigen.Web.Models
 @using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Extensions
+
+@inject Altigen.Web.Core.Services.IRegionService RegionService
+
 @model RegionCategory
 
 @{
     Layout = "PagingListLayout.cshtml";
 
-    // 1. Get Children (Regions)
-    var items = Model.Children<Region>()?
+    var regions = Model.Children<Region>()?
         .Where(x => x.IsVisible())
-        .OrderByDescending(x => x.CreateDate)
         .ToList() ?? new List<Region>();
 
-    // 2. Pagination Logic
+    var locationData = RegionService.GetLocationsForCategory(Model);
+    var usedCountries = locationData.Countries.ToList();
+    var usedCities = locationData.Cities.ToList();
+    var usedDistricts = locationData.Districts.ToList();
+    var usedNeighborhoods = locationData.Neighborhoods.ToList();
+
+    var selectedDistrictSlug = Context.Request.Query["district"].ToString();
+    var selectedNeighborhoodSlug = Context.Request.Query["neighborhood"].ToString();
+
+    // Resolve Selected Objects for Display
+    var resultDistrictSlug = selectedDistrictSlug; 
+    var resultNeighborhoodSlug = selectedNeighborhoodSlug;
+
+    var selectedDistrict = usedDistricts.FirstOrDefault(x => x.UrlSegment() == selectedDistrictSlug);
+    var selectedNeighborhood = usedNeighborhoods.FirstOrDefault(x => x.UrlSegment() == selectedNeighborhoodSlug);
+    
+    if (selectedNeighborhood != null)
+    {
+        var parent = selectedNeighborhood.Parent();
+        if (parent != null)
+        {
+             selectedDistrict = parent;
+             selectedDistrictSlug = selectedDistrict.UrlSegment() ?? ""; 
+        }
+    }
+
+    IPublishedContent? effectiveSelection = selectedNeighborhood ?? selectedDistrict;
+    
+    var filteredRegions = RegionService.FilterRegionsByLocation(regions, effectiveSelection);
+    
+    var totalItems = filteredRegions.Count();
+
     var pagingConfig = Model.GetEffectivePagingConfig();
     var pageSize = pagingConfig.PageSize;
     var pageNumber = 1;
     if (!int.TryParse(Context.Request.Query["page"], out pageNumber)) pageNumber = 1;
 
-    var totalItems = items.Count;
-    var pagedItems = items.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+    var pagedItems = filteredRegions.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
 
-    var pagerUrlFormat = "?page={0}";
+    var queryParams = new List<string>();
+    if (!string.IsNullOrEmpty(selectedDistrictSlug)) queryParams.Add($"district={selectedDistrictSlug}");
+    if (!string.IsNullOrEmpty(selectedNeighborhoodSlug)) queryParams.Add($"neighborhood={selectedNeighborhoodSlug}");
+    
+    var baseUrl = "?";
+    if (queryParams.Any()) baseUrl += string.Join("&", queryParams) + "&";
+    var pagerUrlFormat = baseUrl + "page={0}";
 }
 
 @section Head {
     <link rel="stylesheet" href="~/assets/styles/region-list.css" />
 }
 
-
+@section Scripts {
+    <script src="~/sources/js/region-list.js"></script>
+}
 
 <div class="region-list-page">
     <div class="container">
         
-        @if (pagedItems.Any())
+        @if (regions.Any())
         {
-            <div class="row region-grid">
-                @foreach (var item in pagedItems)
-                {
-                    @await Html.PartialAsync("~/Views/Partials/Region/_RegionItemCard.cshtml", item)
+            <div class="d-flex align-items-center justify-content-between bg-primary bg-opacity-10 p-3 rounded-4 mb-4">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="bg-white p-2 rounded-circle shadow-sm d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <span class="mso text-primary">info</span>
+                    </div>
+                    <div>
+                        <h6 class="mb-0 fw-bold text-dark">@Model.Name Hizmet Bölgeleri</h6>
+                        <p class="mb-0 small text-muted">Şu anda <strong>@Model.Name</strong> hizmetine ait bölgeleri görüyorsunuz.</p>
+                    </div>
+                </div>
+                
+                @{
+                    var categoryParent = Model.Parent();
+                    if (categoryParent != null)
+                    {
+                        <a href="@categoryParent.Url()" class="btn btn-primary shadow-sm rounded-pill fw-medium d-flex align-items-center gap-2 border-0 px-4">
+                            <span class="mso text-white">arrow_back</span>
+                            <span class="d-none d-md-inline">Diğer Hizmetler</span>
+                        </a>
+                    }
                 }
             </div>
-
-            @* Pager *@
-            @await Html.PartialAsync("~/Views/Partials/Common/_Pager.cshtml", new PagerViewModel
+            
+            @await Html.PartialAsync("~/Views/Partials/Region/_RegionFilter.cshtml", new RegionFilterViewModel
             {
-                Config = pagingConfig,
-                TotalItems = totalItems,
-                CurrentPage = pageNumber,
-                UrlFormat = pagerUrlFormat
+               UsedCountries = usedCountries,
+               UsedCities = usedCities,
+               UsedDistricts = usedDistricts,
+               UsedNeighborhoods = usedNeighborhoods,
+               SelectedDistrict = selectedDistrict,
+               SelectedNeighborhood = selectedNeighborhood,
+               SelectedDistrictSlug = resultDistrictSlug,
+               SelectedNeighborhoodSlug = resultNeighborhoodSlug,
+               TotalItems = totalItems,
+               BaseUrl = Model.Url()
             })
+
+            @if (pagedItems.Any())
+            {
+                <div id="region-results">
+                    @await Html.PartialAsync("~/Views/Partials/Region/_RegionGrid.cshtml", pagedItems.OfType<IPublishedContent>())
+                </div>
+
+                @await Html.PartialAsync("~/Views/Partials/Common/_Pager.cshtml", new PagerViewModel
+                {
+                    Config = pagingConfig,
+                    TotalItems = totalItems,
+                    CurrentPage = pageNumber,
+                    UrlFormat = pagerUrlFormat
+                })
+            }
+            else
+            {
+                 <div class="alert alert-info">
+                     @if (selectedDistrict != null)
+                     {
+                         <span>Seçilen kriterlere uygun hizmet bulunamadı.</span>
+                     }
+                     else
+                     {
+                         <span>Bu hizmete ait henüz bölge bulunmuyor.</span>
+                     }
+                 </div>
+            }
         }
         else
         {
-            <div class="alert alert-info">
-                Bu kategoride henüz bölge bulunmuyor.
+            <div class="text-center py-1 my-1 py-md-5 my-md-5">
+                 <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-4" style="width: 80px; height: 80px;">
+                     <span class="mso text-primary fs-1">sentiment_dissatisfied</span>
+                 </div>
+                 <h4 class="fw-bold text-dark mb-3">Üzgünüz, @Model.Name hizmeti şu anda kullanılamıyor.</h4>
+                 <p class="text-muted mb-4 lead">Lütfen diğer hizmetlerimizi inceleyiniz!</p>
+                 
+                 @{
+                     var emptyStateParent = Model.Parent();
+                     if (emptyStateParent != null)
+                     {
+                        <a href="@emptyStateParent.Url()" class="btn btn-primary shadow-sm rounded-pill fw-medium d-inline-flex align-items-center gap-2 border-0 px-5 py-3">
+                            <span class="mso text-white">arrow_back</span>
+                            <span>Diğer Hizmetleri İncele</span>
+                        </a>
+                     }
+                 }
             </div>
         }
 

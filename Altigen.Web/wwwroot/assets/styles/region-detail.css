@@ -141,3 +141,31 @@
 .region-detail .list-group-item.list-group-item-action:hover {
   background-color: #eee !important;
 }
+.region-detail .other-service-areas .district-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.6rem 1.4rem;
+  background-color: #fff;
+  color: #20486d;
+  border: 1px solid rgba(32, 72, 109, 0.15);
+  border-radius: 50rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+  text-decoration: none;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+  z-index: 1;
+  white-space: nowrap;
+}
+.region-detail .other-service-areas .district-tag:hover {
+  background-color: #20486d;
+  color: #fff;
+  border-color: #20486d;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 15px -3px rgba(32, 72, 109, 0.4), 0 4px 6px -2px rgba(32, 72, 109, 0.1);
+}
+.region-detail .other-service-areas .district-tag:active {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 10px -3px rgba(32, 72, 109, 0.4), 0 2px 3px -2px rgba(32, 72, 109, 0.1);
+}

@@ -50,6 +50,22 @@ namespace Altigen.Web.Models
 		// properties
 
 		///<summary>
+		/// Contact Link
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("globalSettingsContactLink")]
+		public virtual string GlobalSettingsContactLink => this.Value<string>(_publishedValueFallback, "globalSettingsContactLink");
+
+		///<summary>
+		/// Whatsapp Link
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("globalSettingsWhatsappLink")]
+		public virtual string GlobalSettingsWhatsappLink => this.Value<string>(_publishedValueFallback, "globalSettingsWhatsappLink");
+
+		///<summary>
 		/// Address
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.1.0+2832436")]

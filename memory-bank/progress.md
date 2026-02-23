@@ -21,6 +21,8 @@
 21: - [x] Removed non-navigational links from Region Locations list in Region Detail page.
 22: - [x] Aligned "Related Services" UI with "Region Locations" style for visual consistency.
 23: - [x] Validated & Fixed "Related Services" display logic (Showing Service Category Name).
+24: - [x] Removed custom sorting logic from Region List & Service to respect Umbraco Sort Order.
+25: - [x] Removed custom sorting & redundant namespaces from Region Category.
 
 ## In Progress
 - [ ] Refinement of custom Property Editors

@@ -1,0 +1,117 @@
+@using Altigen.Web.Models
+@using Umbraco.Extensions
+
+@model RegionFilterViewModel
+
+@{
+    var districtsList = Model.UsedDistricts.OrderBy(x => x.Name).ToList();
+    var neighborhoodsList = new List<IPublishedContent>();
+
+    if (Model.SelectedDistrict != null)
+    {
+        neighborhoodsList = Model.UsedNeighborhoods
+            .Where(x => {
+                var p = x.Parent();
+                return p != null && p.Id == Model.SelectedDistrict.Id;
+            })
+            .OrderBy(x => x.Name)
+            .ToList();
+    }
+}
+
+@* Filter Toolbar *@
+<div class="blog-controls mb-5 p-4 bg-light rounded-3 shadow-sm">
+    <div class="row g-3 align-items-end">
+        
+        <div class="col-12">
+            <h5 class="mb-3 text-secondary d-flex align-items-center gap-2">
+                <span class="mso">filter_list</span>
+                Hizmet Bölgesi Ara
+            </h5>
+        </div>
+
+        @* Filter Form *@
+        <div class="col-12">
+            <form id="regionFilterForm" method="get" class="row g-3">
+                
+                @* Country & City (Hidden logic: Show only if count > 1) *@
+                @if (Model.UsedCountries.Count() > 1)
+                {
+                    <div class="col-md-3">
+                        <label class="form-label small text-muted">Ülke</label>
+                        <select class="form-select" disabled>
+                            <option selected>Türkiye</option>
+                        </select>
+                    </div>
+                }
+
+                @if (Model.UsedCities.Count() > 1)
+                {
+                    <div class="col-md-3">
+                        <label class="form-label small text-muted">Şehir</label>
+                        <select class="form-select" disabled>
+                            <option selected>İstanbul</option>
+                        </select>
+                    </div>
+                }
+
+                @* District Select *@
+                <div class="col-md-4 col-lg-3">
+                    <label class="form-label small text-muted">İlçe</label>
+                    <select name="district" class="form-select">
+                        <option value="">Tüm İlçeler</option>
+                        @foreach (var item in districtsList)
+                        {
+                            <!option value="@item.UrlSegment()" @(item.UrlSegment() == Model.SelectedDistrictSlug ? "selected" : "")>
+                                @item.Name
+                            </!option>
+                        }
+                    </select>
+                </div>
+
+                @* Neighborhood Select *@
+                <div class="col-md-4 col-lg-3">
+                    <label class="form-label small text-muted">Semt / Mahalle</label>
+                    <select name="neighborhood" class="form-select" @(Model.SelectedDistrict == null ? "disabled" : "")>
+                        <option value="">@(Model.SelectedDistrict == null ? "Önce İlçe Seçiniz" : "Tüm Semtler")</option>
+                        @foreach (var item in neighborhoodsList)
+                        {
+                            <!option value="@item.UrlSegment()" @(item.UrlSegment() == Model.SelectedNeighborhoodSlug ? "selected" : "")>
+                                @item.Name
+                            </!option>
+                        }
+                    </select>
+                </div>
+
+                @* Reset Button *@
+                    <div class="col-auto ms-auto">
+                    @if (Model.SelectedDistrict != null)
+                    {
+                        <a href="@Model.BaseUrl" class="btn btn-outline-danger d-flex align-items-center gap-2" title="Filtreyi Temizle">
+                            <span class="mso">close</span>
+                            Temizle
+                        </a>
+                    }
+                </div>
+
+            </form>
+        </div>
+
+        @* Active Filter Status *@
+        @if (Model.SelectedDistrict != null)
+        {
+            <div class="col-12 mt-3">
+                <div class="alert alert-info border-0 bg-primary bg-opacity-10 text-primary mb-0 d-flex align-items-center gap-2 small">
+                    <span class="mso">info</span>
+                    <span>
+                        <strong>
+                            Türkiye > İstanbul > @Model.SelectedDistrict.Name 
+                            @(Model.SelectedNeighborhood != null ? " > " + Model.SelectedNeighborhood.Name : "")
+                        </strong> 
+                        bölgesindeki <strong>@Model.TotalItems</strong> hizmet listeleniyor.
+                    </span>
+                </div>
+            </div>
+        }
+    </div>
+</div>

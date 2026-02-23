@@ -96,6 +96,8 @@ The project is in active development (January 2026), focusing on:
     - Updated `GEMINI.md` to enforce modern C# features and SCSS-only styling.
 - **Region Detail UI Update**: Aligned "Bölgedeki Diğer Hizmetler" (Related Services) visual style with the "Hizmet Bölgeleri" list. Both sections now use consistent card headers, circular icons, and list-group styling. Removed non-navigational links from "Hizmet Bölgeleri". 
 - **Related Services Display Fix**: Updated "Related Services" list in `Region.cshtml` to display the Parent Name (Service Category, e.g., "Halı Yıkama") instead of the Item Name (Location, e.g., "Beylikdüzü") to correctly represent distinct services in the same region.
+- **Sorting Fix**: Removed custom sorting (`OrderByDescending`, `Guid.NewGuid`) from `RegionList.cshtml`, `RegionCategory.cshtml`, and `RegionService.cs`. The application now fully respects the Sort Order defined in Umbraco Backoffice.
+- **Cleanup**: Removed redundant `@using` statements from `RegionCategory.cshtml`, relying on `_ViewImports.cshtml`.
 
 ## Active Decisions
 - **Umbraco 17 Migration**: Project is running on .NET 10/Umbraco 17.

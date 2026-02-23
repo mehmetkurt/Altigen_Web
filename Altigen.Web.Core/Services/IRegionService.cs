@@ -32,12 +32,22 @@ public interface IRegionService
     /// <param name="maxCount">Maximum number of related items to return.</param>
     /// <returns>Related Region items.</returns>
     IEnumerable<IPublishedContent> GetRelatedServicesInLocation(IPublishedContent currentRegion, int maxCount = 5);
+
+    /// <summary>
+    /// Filters regions using a resolved Selection object (Neighborhood or District).
+    /// </summary>
+    IEnumerable<IPublishedContent> FilterRegionsByLocation(IEnumerable<IPublishedContent> regions, IPublishedContent? effectiveSelection);
+
+    /// <summary>
+    /// Filters regions that cover the selected location.
+    /// </summary>
+    IEnumerable<IPublishedContent> FilterRegionsByLocation(IEnumerable<IPublishedContent> regions, string districtSlug, string neighborhoodSlug);
 }
 
 public class RegionLocationData
 {
-    public IEnumerable<IPublishedContent> Countries { get; set; } = Enumerable.Empty<IPublishedContent>();
-    public IEnumerable<IPublishedContent> Cities { get; set; } = Enumerable.Empty<IPublishedContent>();
-    public IEnumerable<IPublishedContent> Districts { get; set; } = Enumerable.Empty<IPublishedContent>();
-    public IEnumerable<IPublishedContent> Neighborhoods { get; set; } = Enumerable.Empty<IPublishedContent>();
+    public IEnumerable<IPublishedContent> Countries { get; set; } = [];
+    public IEnumerable<IPublishedContent> Cities { get; set; } = [];
+    public IEnumerable<IPublishedContent> Districts { get; set; } = [];
+    public IEnumerable<IPublishedContent> Neighborhoods { get; set; } = [];
 }

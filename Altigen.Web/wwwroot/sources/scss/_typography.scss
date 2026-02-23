@@ -14,3 +14,81 @@ h4, h5, h6 {
 body, p {
     @include open-sans(400);
 }
+
+
+
+// -------------------------------------------------------------
+// Selected Title Styles
+// -------------------------------------------------------------
+
+// Style 8: Centered & Decorated => .heading-decorated
+.heading-decorated {
+    @include dosis(700);
+    text-align: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    color: $dark;
+    margin-bottom: 1.5rem;
+
+    &::before, &::after {
+        content: '';
+        display: block;
+        height: 2px;
+        width: 40px;
+        background: linear-gradient(90deg, transparent, $primary);
+        border-radius: 2px;
+    }
+
+    &::after {
+        background: linear-gradient(90deg, $primary, transparent);
+    }
+}
+
+// Style 10: Gradient Underline => .heading-interactive
+.heading-interactive {
+    @include google-sans(700);
+    display: inline-block;
+    position: relative;
+    margin-bottom: 1.5rem;
+    color: $dark;
+    
+    &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -8px; 
+        width: 40%; // Starts partial
+        height: 4px;
+        background: linear-gradient(90deg, $primary, $secondary);
+        border-radius: 4px;
+        transition: width 0.3s ease;
+    }
+
+    &:hover::after {
+        width: 100%; // Expands on hover
+    }
+}
+
+// Style 13: Vertical Gradient Bar => .heading-accent
+.heading-accent {
+    @include google-sans(700);
+    padding-left: 20px;
+    position: relative;
+    margin-bottom: 1.5rem;
+    color: $dark;
+    
+    &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 2px;
+        bottom: 2px;
+        width: 6px;
+        background: linear-gradient(to bottom, $primary, $secondary);
+        border-radius: 6px;
+        box-shadow: 2px 0 10px rgba($primary, 0.3); // Subtle glow
+    }
+}

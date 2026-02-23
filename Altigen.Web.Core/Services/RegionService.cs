@@ -14,7 +14,6 @@ public class RegionService : IRegionService
         var usedDistricts = new HashSet<IPublishedContent>(new PublishedContentComparer());
         var usedNeighborhoods = new HashSet<IPublishedContent>(new PublishedContentComparer());
 
-        // Recursive helper to collect parents
         void CollectParents(IPublishedContent? content)
         {
             if (content == null) return;
@@ -38,13 +37,6 @@ public class RegionService : IRegionService
                     break;
             }
         }
-
-        // Logic adapted from RegionList.cshtml
-        // If category is RegionCategory, we look at its children.
-        // If category is a list root (like RegionList), we look at its children categories then their regions?
-        // Let's assume the passed 'category' is the root context we want to search under.
-        // If 'category' is RegionList, it has RegionCategory children.
-        // If 'category' is RegionCategory, it has Region children.
 
         IEnumerable<Region> regions = [];
 
@@ -83,9 +75,119 @@ public class RegionService : IRegionService
 
     public IEnumerable<IPublishedContent> FilterCategoriesByLocation(IEnumerable<IPublishedContent> categories, string districtSlug, string neighborhoodSlug)
     {
-        // This functionality is deprecated or requires resolving slugs to IPublishedContent first.
-        // Currently falling back to returning input to avoid runtime errors similar to previous implementation plan.
-        return categories;
+        if (string.IsNullOrWhiteSpace(districtSlug) && string.IsNullOrWhiteSpace(neighborhoodSlug))
+        {
+            return categories;
+        }
+
+        // Gather all referenced locations in the provided context (categories) to resolve slugs
+        var allUsedLocations = new HashSet<IPublishedContent>(new PublishedContentComparer());
+        
+        // We only need to scan if we have slugs to resolve
+        var relevantRegions = categories.SelectMany(x => x.Children<Region>() ?? []);
+        
+        foreach (var region in relevantRegions)
+        {
+            if (region.RegionLocation == null) continue;
+            foreach (var loc in region.RegionLocation)
+            {
+                // Traverse up to capture parents (e.g. user selects District, but region has Neighborhood assigned)
+                var pointer = loc;
+                while (pointer != null)
+                {
+                    allUsedLocations.Add(pointer);
+                    pointer = pointer.Parent();
+                }
+            }
+        }
+
+        IPublishedContent? selectedDistrict = null;
+        IPublishedContent? selectedNeighborhood = null;
+
+        if (!string.IsNullOrWhiteSpace(districtSlug))
+        {
+            selectedDistrict = allUsedLocations.FirstOrDefault(x => x.ContentType.Alias == District.ModelTypeAlias && x.UrlSegment() == districtSlug);
+        }
+
+        if (!string.IsNullOrWhiteSpace(neighborhoodSlug))
+        {
+            selectedNeighborhood = allUsedLocations.FirstOrDefault(x => x.ContentType.Alias == Neighborhood.ModelTypeAlias && x.UrlSegment() == neighborhoodSlug);
+        }
+
+        // If a slug was provided but not found, return empty (strict filter)
+        if ((!string.IsNullOrWhiteSpace(districtSlug) && selectedDistrict == null) ||
+            (!string.IsNullOrWhiteSpace(neighborhoodSlug) && selectedNeighborhood == null))
+        {
+            return [];
+        }
+
+        var effectiveSelection = selectedNeighborhood ?? selectedDistrict;
+        return FilterCategoriesByLocation(categories, effectiveSelection);
+    }
+
+    public IEnumerable<IPublishedContent> FilterRegionsByLocation(IEnumerable<IPublishedContent> regions, string districtSlug, string neighborhoodSlug)
+    {
+        if (string.IsNullOrWhiteSpace(districtSlug) && string.IsNullOrWhiteSpace(neighborhoodSlug))
+        {
+            return regions;
+        }
+
+        // Gather all referenced locations in the provided context
+        var allUsedLocations = new HashSet<IPublishedContent>(new PublishedContentComparer());
+        
+        foreach (var region in regions.OfType<Region>())
+        {
+            if (region.RegionLocation == null) continue;
+            foreach (var loc in region.RegionLocation)
+            {
+                var pointer = loc;
+                while (pointer != null)
+                {
+                    allUsedLocations.Add(pointer);
+                    pointer = pointer.Parent();
+                }
+            }
+        }
+
+        IPublishedContent? selectedDistrict = null;
+        IPublishedContent? selectedNeighborhood = null;
+
+        if (!string.IsNullOrWhiteSpace(districtSlug))
+        {
+            selectedDistrict = allUsedLocations.FirstOrDefault(x => x.ContentType.Alias == District.ModelTypeAlias && x.UrlSegment() == districtSlug);
+        }
+
+        if (!string.IsNullOrWhiteSpace(neighborhoodSlug))
+        {
+            selectedNeighborhood = allUsedLocations.FirstOrDefault(x => x.ContentType.Alias == Neighborhood.ModelTypeAlias && x.UrlSegment() == neighborhoodSlug);
+        }
+
+        if ((!string.IsNullOrWhiteSpace(districtSlug) && selectedDistrict == null) ||
+            (!string.IsNullOrWhiteSpace(neighborhoodSlug) && selectedNeighborhood == null))
+        {
+            return [];
+        }
+
+        var effectiveSelection = selectedNeighborhood ?? selectedDistrict;
+        return FilterRegionsByLocation(regions, effectiveSelection);
+    }
+
+    public IEnumerable<IPublishedContent> FilterRegionsByLocation(IEnumerable<IPublishedContent> regions, IPublishedContent? effectiveSelection)
+    {
+        if (effectiveSelection == null) return regions;
+
+        return regions.Where(x => 
+        {
+             if (x is not Region region || region.RegionLocation == null) return false;
+             
+             return region.RegionLocation.Any(loc => 
+             {
+                 if (loc.Id == effectiveSelection.Id) return true;
+                 if (effectiveSelection.IsDescendant(loc)) return true;
+                 if (loc.IsDescendant(effectiveSelection)) return true;
+                 return false;
+             });
+        });
     }
 
     public IEnumerable<IPublishedContent> FilterCategoriesByLocation(IEnumerable<IPublishedContent> categories, IPublishedContent? effectiveSelection)
@@ -126,15 +228,14 @@ public class RegionService : IRegionService
             return [];
 
         // Logic: Find other regions (services) that share at least one location.
-        // Since regions are typically children of Category -> RegionList, we can traverse up.
+        // Traverse up to find the root RegionList
         
-        var category = region.Parent(); // RegionCategory
+        var category = region.AncestorOrSelf<RegionCategory>();
         if (category == null) return [];
         
-        // If we want related services from *any* category:
-        var regionList = category.Parent(); // RegionList
+        var regionList = category.AncestorOrSelf<RegionList>();
         var allRegions = regionList?.Children<RegionCategory>()?
-            .SelectMany(x => x.Children<Region>()) 
+            .SelectMany(x => x.Children<Region>() ?? []) 
             ?? category.Children<Region>() ?? [];
             
         // Filter
@@ -143,7 +244,6 @@ public class RegionService : IRegionService
             .Where(x => x.RegionLocation != null && x.RegionLocation.Any(l => 
                 region.RegionLocation.Any(rl => rl.Id == l.Id || l.IsDescendantOrSelf(rl) || rl.IsDescendantOrSelf(l))
             ))
-            .OrderBy(_ => Guid.NewGuid()) // Randomize
             .Take(maxCount);
 
         return related;

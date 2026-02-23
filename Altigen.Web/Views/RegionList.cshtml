@@ -3,104 +3,25 @@
 @using Altigen.Web.Models
 @using Umbraco.Extensions
 
-@inject Altigen.Web.Core.Services.IRegionService RegionService
-
 @{
     Layout = "PagingListLayout.cshtml";
 
-    // 1. Get All Categories (Children of RegionList)
     var categories = Model.Children<RegionCategory>()?
         .Where(x => x.IsVisible())
-        .OrderByDescending(x => x.CreateDate)
         .ToList() ?? new List<RegionCategory>();
 
-    // -------------------------------------------------------------
-    // 2. Build Location Data Hierarchy (Using Service)
-    // -------------------------------------------------------------
-    var locationData = RegionService.GetLocationsForCategory(Model);
-    var usedCountries = locationData.Countries.ToList();
-    var usedCities = locationData.Cities.ToList();
-    var usedDistricts = locationData.Districts.ToList();
-    var usedNeighborhoods = locationData.Neighborhoods.ToList();
+    var totalItems = categories.Count();
 
-    // -------------------------------------------------------------
-    // 3. Filter Parameters
-    // -------------------------------------------------------------
-    var selectedDistrictSlug = Context.Request.Query["district"].ToString();
-    var selectedNeighborhoodSlug = Context.Request.Query["neighborhood"].ToString();
-
-    // Resolve Selected Objects for Display
-    var resultDistrictSlug = selectedDistrictSlug; // Local mutable copy if needed, but we re-assign selectedDistrictSlug anyway
-    var resultNeighborhoodSlug = selectedNeighborhoodSlug;
-
-    var selectedDistrict = usedDistricts.FirstOrDefault(x => x.UrlSegment() == selectedDistrictSlug);
-    var selectedNeighborhood = usedNeighborhoods.FirstOrDefault(x => x.UrlSegment() == selectedNeighborhoodSlug);
-    
-    // If neighborhood selected, enforce its district
-    if (selectedNeighborhood != null)
-    {
-        var parent = selectedNeighborhood.Parent();
-        if (parent != null)
-        {
-             selectedDistrict = parent;
-             selectedDistrictSlug = selectedDistrict.UrlSegment() ?? ""; 
-        }
-    }
-
-    // -------------------------------------------------------------
-    // 4. Apply Filter to Categories
-    // -------------------------------------------------------------
-    IPublishedContent? effectiveSelection = selectedNeighborhood ?? selectedDistrict;
-    
-    // Use Service for filtering logic if available, or keep using the service's logic I put inside FilterCategoriesByLocation(..., effectiveSelection)
-    // To be cleaner, let's call the service overload I created.
-    // However, I defined the overload to take IPublishedContent, which I now have.
-    
-    // We can filter by passing the selection object directly if supported by overloaded interface
-    // Check if effectiveSelection is null handled inside service?
-    var filteredCategories = RegionService.FilterCategoriesByLocation(categories, effectiveSelection);
-
-    var totalItems = filteredCategories.Count();
-
-    // -------------------------------------------------------------
-    // 5. Build Dropdown Lists
-    // -------------------------------------------------------------
-    var districtsList = usedDistricts.OrderBy(x => x.Name).ToList();
-
-    var neighborhoodsList = new List<IPublishedContent>();
-    if (selectedDistrict != null)
-    {
-        neighborhoodsList = usedNeighborhoods
-            .Where(x => {
-                var p = x.Parent();
-                return p != null && p.Id == selectedDistrict.Id;
-            })
-            .OrderBy(x => x.Name)
-            .ToList();
-    }
-
-    // -------------------------------------------------------------
-    // 6. Pagination Logic
-    // -------------------------------------------------------------
     var pagingConfig = Model.GetEffectivePagingConfig();
     var pageSize = pagingConfig.PageSize;
     var pageNumber = 1;
 
     if (!int.TryParse(Context.Request.Query["page"], out pageNumber)) pageNumber = 1;
 
-    var pagedItems = filteredCategories.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+    var pagedItems = categories.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
     
-    // Build Pager URL
-    var queryParams = new List<string>();
-    if (!string.IsNullOrEmpty(selectedDistrictSlug)) queryParams.Add($"district={selectedDistrictSlug}");
-    if (!string.IsNullOrEmpty(selectedNeighborhoodSlug)) queryParams.Add($"neighborhood={selectedNeighborhoodSlug}");
-    
-    var baseUrl = "?";
-    if (queryParams.Any()) baseUrl += string.Join("&", queryParams) + "&";
-    var pagerUrlFormat = baseUrl + "page={0}";
+    var pagerUrlFormat = "?page={0}";
 }
-
-
 
 @section Head {
     <link rel="stylesheet" href="~/assets/styles/region-list.css" />
@@ -111,107 +32,17 @@
 }
 
 <div class="region-list-page">
-        @* Filter Toolbar *@
-        <div class="blog-controls mb-5 p-4 bg-light rounded-3 shadow-sm">
-            <div class="row g-3 align-items-end">
-                
-                <div class="col-12">
-                    <h5 class="mb-3 text-secondary d-flex align-items-center gap-2">
-                        <span class="mso">filter_list</span>
-                        Hizmet Bölgesi Ara
-                    </h5>
-                </div>
+        @if (pagedItems.Any())
+        {
+             @await Html.PartialAsync("~/Views/Partials/Region/_RegionGrid.cshtml", pagedItems.OfType<IPublishedContent>())
+        }
+        else
+        {
+             <div class="alert alert-info">
+                <span>Henüz eklenmiş bir bölge kategorisi bulunmuyor.</span>
+             </div>
+        }
 
-                @* Filter Form *@
-                <div class="col-12">
-                    <form id="regionFilterForm" method="get" class="row g-3">
-                        
-                        @* Country & City (Hidden logic: Show only if count > 1) *@
-                        @if (usedCountries.Count > 1)
-                        {
-                            <div class="col-md-3">
-                                <label class="form-label small text-muted">Ülke</label>
-                                <select class="form-select" disabled>
-                                    <option selected>Türkiye</option>
-                                </select>
-                            </div>
-                        }
-
-                        @if (usedCities.Count > 1)
-                        {
-                            <div class="col-md-3">
-                                <label class="form-label small text-muted">Şehir</label>
-                                <select class="form-select" disabled>
-                                    <option selected>İstanbul</option>
-                                </select>
-                            </div>
-                        }
-
-                        @* District Select *@
-                        <div class="col-md-4 col-lg-3">
-                            <label class="form-label small text-muted">İlçe</label>
-                            <select name="district" class="form-select">
-                                <option value="">Tüm İlçeler</option>
-                                @foreach (var item in districtsList)
-                                {
-                                    <!option value="@item.UrlSegment()" @(item.UrlSegment() == selectedDistrictSlug ? "selected" : "")>
-                                        @item.Name
-                                    </!option>
-                                }
-                            </select>
-                        </div>
-
-                        @* Neighborhood Select *@
-                        <div class="col-md-4 col-lg-3">
-                            <label class="form-label small text-muted">Semt / Mahalle</label>
-                            <select name="neighborhood" class="form-select" @(selectedDistrict == null ? "disabled" : "")>
-                                <option value="">@(selectedDistrict == null ? "Önce İlçe Seçiniz" : "Tüm Semtler")</option>
-                                @foreach (var item in neighborhoodsList)
-                                {
-                                    <!option value="@item.UrlSegment()" @(item.UrlSegment() == selectedNeighborhoodSlug ? "selected" : "")>
-                                        @item.Name
-                                    </!option>
-                                }
-                            </select>
-                        </div>
-
-                        @* Reset Button *@
-                         <div class="col-auto ms-auto">
-                            @if (selectedDistrict != null)
-                            {
-                                <a href="@Model.Url()" class="btn btn-outline-danger d-flex align-items-center gap-2" title="Filtreyi Temizle">
-                                    <span class="mso">close</span>
-                                    Temizle
-                                </a>
-                            }
-                        </div>
-
-                    </form>
-                </div>
-
-                @* Active Filter Status *@
-                @if (selectedDistrict != null)
-                {
-                    <div class="col-12 mt-3">
-                        <div class="alert alert-info border-0 bg-primary bg-opacity-10 text-primary mb-0 d-flex align-items-center gap-2 small">
-                            <span class="mso">info</span>
-                            <span>
-                                <strong>
-                                    Türkiye > İstanbul > @selectedDistrict.Name 
-                                    @(selectedNeighborhood != null ? " > " + selectedNeighborhood.Name : "")
-                                </strong> 
-                                bölgesindeki <strong>@totalItems</strong> hizmet kategorisi listeleniyor.
-                            </span>
-                        </div>
-                    </div>
-                }
-            </div>
-        </div>
-
-        @* Region Grid *@
-        @await Html.PartialAsync("~/Views/Partials/Region/_RegionGrid.cshtml", pagedItems.OfType<RegionCategory>())
-
-        @* Pager *@
         @await Html.PartialAsync("~/Views/Partials/Common/_Pager.cshtml", new PagerViewModel
         {
             Config = pagingConfig,

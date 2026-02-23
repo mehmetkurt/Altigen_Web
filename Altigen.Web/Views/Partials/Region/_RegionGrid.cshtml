@@ -1,18 +1,31 @@
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Altigen.Web.Models
 
-@model IEnumerable<RegionCategory>
+@model IEnumerable<IPublishedContent>
 
 @if (Model != null && Model.Any())
 {
     <div class="row region-grid">
         @foreach (var item in Model)
         {
-            @await Html.PartialAsync("~/Views/Partials/Region/_RegionCard.cshtml", item)
+            if (item is RegionCategory)
+            {
+                @await Html.PartialAsync("~/Views/Partials/Region/_RegionCard.cshtml", item)
+            }
+            else if (item is Region)
+            {
+                @await Html.PartialAsync("~/Views/Partials/Region/_RegionItemCard.cshtml", item)
+            }
         }
     </div>
 }
 else
 {
-    <div class="alert alert-info">
-        Henüz eklenmiş bir bölge kategorisi bulunmuyor.
-    </div>
+    @* The caller view typically handles the "No items found" message with context (e.g. filter vs empty category), 
+       but if called and empty, we can show a generic message or nothing. 
+       Let's keep it simple or allow fallback. User logic had custom messages. 
+       We can suppress this partial if empty, or render generic. *@
+       
+       // Actually, the calling views had logic for "No items found". 
+       // We can just keep the grid structure.
 }

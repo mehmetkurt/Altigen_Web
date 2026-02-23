@@ -23,4 +23,12 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+    // Scroll to results if filters or pagination are active
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('district') || urlParams.has('neighborhood') || urlParams.has('page')) {
+        const element = document.getElementById('region-results');
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
 });

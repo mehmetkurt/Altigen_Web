@@ -4,24 +4,21 @@
 @model Region
 @inject Altigen.Web.Core.Services.IRegionService RegionService
 
+
+
 @{
-    Layout = "SubLayout.cshtml"; // SubLayout already includes PageHeader via Layout = "root.cshtml" and local Invoke
+    Layout = "SubLayout.cshtml"; 
     var mainImage = Model.RegionFeaturedImages?.FirstOrDefault();
-    
-    // Get Related Services
     var relatedServices = RegionService.GetRelatedServicesInLocation(Model);
 }
 
 @section Head {
      <link rel="stylesheet" href="~/assets/styles/region-detail.css" />
-     @* Reuse region styles if needed, or common styles *@
 }
 
 <div class="region-detail">
     <div class="row">
-        @* Main Content *@
         <div class="col-lg-8">
-            @* Featured Image *@
             @if (mainImage != null)
             {
                 <div class="mb-4 rounded-3 overflow-hidden shadow-sm">
@@ -34,10 +31,72 @@
 
 
 
-            @* Content *@
             <div class="rich-text content-body mb-5">
                 @Model.RegionContent
             </div>
+
+            @{
+                var category = Model.Parent<RegionCategory>();
+                var otherDistricts = new List<IPublishedContent>();
+                
+                if (category != null)
+                {
+                    var categoryLocations = RegionService.GetLocationsForCategory(category);
+                    var allDistricts = categoryLocations.Districts;
+
+                    var currentDistricts = new List<int>();
+                    if (Model.RegionLocation != null)
+                    {
+                        foreach (var loc in Model.RegionLocation)
+                        {
+                            if (loc.ContentType.Alias == Altigen.Web.Models.District.ModelTypeAlias)
+                            {
+                                currentDistricts.Add(loc.Id);
+                            }
+                            else if (loc.ContentType.Alias == Altigen.Web.Models.Neighborhood.ModelTypeAlias)
+                            {
+                                var parent = loc.Parent();
+                                if (parent != null && parent.ContentType.Alias == Altigen.Web.Models.District.ModelTypeAlias)
+                                {
+                                    currentDistricts.Add(parent.Id);
+                                }
+                            }
+                        }
+                    }
+
+                    otherDistricts = allDistricts
+                        .Where(x => !currentDistricts.Contains(x.Id))
+                        .OrderBy(x => x.Name)
+                        .ToList();
+                }
+            }
+
+            @if (otherDistricts.Any())
+            {
+                <div class="other-service-areas mb-5">
+                    <h4 class="heading-decorated">Hizmet Verilen Diğer Bölgeler</h4>
+                    <div class="d-flex flex-wrap gap-2 justify-content-center">
+                        @foreach (var dist in otherDistricts)
+                        {
+                            // Find a sibling region that covers this district
+                            var targetRegion = category?.Children<Region>()?
+                                .FirstOrDefault(r => r.RegionLocation != null && r.RegionLocation.Any(l => l.Id == dist.Id || l.IsDescendantOrSelf(dist) || dist.IsDescendantOrSelf(l)));
+                            
+                            var url = targetRegion?.Url() ?? "#";
+                            
+                            if (targetRegion != null)
+                            {
+                                <a href="@url" class="district-tag">
+                                    @dist.Name
+                                </a>
+                            }
+                        }
+                    </div>
+
+                </div>
+            }
+
+
              
              @* Description Fallback if Content is empty *@
              @if(Model.RegionContent == null || string.IsNullOrWhiteSpace(Model.RegionContent.ToString()))
@@ -49,10 +108,8 @@
 
         </div>
 
-        @* Sidebar (Optional - for future use or navigation) *@
         <div class="col-lg-4">
             <div class="sticky-top" style="top: 10rem; z-index: 10;">
-                @* Info Card *@
                 <div class="card border-0 shadow-sm bg-white mb-4">
                     <div class="card-body p-4">
                         <h5 class="card-title fw-bold mb-3">Bilgi</h5>
@@ -65,7 +122,6 @@
                     </div>
                 </div>
 
-                @* Region Locations List *@
                 @if(Model.RegionLocation != null && Model.RegionLocation.Any())
                 {
                     <div class="card border-0 shadow-sm bg-white mb-4">
@@ -79,7 +135,7 @@
                             <div class="list-group list-group-flush p-3">
                                 @foreach(var loc in Model.RegionLocation)
                                 {
-                                    <div class="list-group-item d-flex gap-3 py-3 border-0 rounded-4 mb-1">
+                                    <a href="@GetLocationFilterUrl(Model.Parent(), loc)" class="list-group-item list-group-item-action d-flex gap-3 py-3 border-0 rounded-4 mb-1 text-decoration-none">
                                         <div class="d-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded-circle flex-shrink-0" style="width: 40px; height: 40px;">
                                             <span class="mso text-primary fs-5">near_me</span>
                                         </div>
@@ -94,14 +150,13 @@
                                                 <small class="opacity-50 text-nowrap text-secondary">@parent.Name</small>
                                             }
                                         </div>
-                                    </div>
+                                    </a>
                                 }
                             </div>
                         </div>
                     </div>
                 }
 
-                @* Related Services *@
                 @if (relatedServices != null && relatedServices.Any())
                 {
                     <div class="card border-0 shadow-sm bg-white mb-4">
@@ -135,3 +190,23 @@
 
     </div>
 </div>
+
+@functions {
+    public string GetLocationFilterUrl(IPublishedContent? regionPageParent, IPublishedContent loc)
+    {
+        var categoryUrl = regionPageParent?.Url();
+        if (string.IsNullOrEmpty(categoryUrl)) return "#";
+
+        var parent = loc.Parent();
+        if (loc.ContentType.Alias == Altigen.Web.Models.Neighborhood.ModelTypeAlias && parent != null)
+        {
+            return $"{categoryUrl}?district={parent.UrlSegment()}&neighborhood={loc.UrlSegment()}";
+        }
+        else if (loc.ContentType.Alias == Altigen.Web.Models.District.ModelTypeAlias)
+        {
+            return $"{categoryUrl}?district={loc.UrlSegment()}";
+        }
+        
+        return categoryUrl;
+    }
+}

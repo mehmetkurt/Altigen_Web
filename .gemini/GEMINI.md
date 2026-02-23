@@ -121,8 +121,8 @@ REMEMBER: After every memory reset, I begin completely fresh. The Memory Bank is
 - **Documentation**: Keep artifacts concise and up-to-date.
 
 ## 2. UI Rules (HTML, CSS, SCSS, Razor)
-- **No Comments**: Do not add comment lines in files such as HTML, CSS, and SCSS unless otherwise specified.
-- **Razor Comments**: Do not use HTML comments (`<!-- ... -->`) in Razor views as they appear in the rendered output. Use Razor comments (`@* ... *`) instead.
+- **No Comments**: Strictly do not add comment lines in files such as HTML, CSS, SCSS, JS, C#, and Razor files. The code must be self-explanatory (Clean Code). Remove existing comments if found during refactoring.
+- **Razor Comments**: Do not use HTML comments (`<!-- ... -->`) in Razor views. Use Razor comments (`@* ... *`) only if absolutely necessary for temporary disabling of code, but prefer removing unused code.
 - **Performance & Core Web Vitals**:
     - Prioritize First Contentful Paint (FCP) and Largest Contentful Paint (LCP) optimizations.
     - Use `loading="eager"` for above-the-fold images (LCP candidates).
